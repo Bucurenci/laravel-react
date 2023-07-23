@@ -4,23 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1dfa4427-e271-4c98-972a-a61b44f4b2a9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/admin-frontend/.eslintrc.cjs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin-frontend/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin-frontend/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin-frontend/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin-frontend/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin-frontend/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin-frontend/public/vite.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin-frontend/src/App.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin-frontend/src/App.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin-frontend/src/assets/scss/bootstrap.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin-frontend/src/assets/scss/variables.scss" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin-frontend/src/main.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin-frontend/src/vite-env.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin-frontend/tsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin-frontend/tsconfig.node.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/admin-frontend/vite.config.ts" afterDir="false" />
+    <list default="true" id="1dfa4427-e271-4c98-972a-a61b44f4b2a9" name="Changes" comment="Add the admin frontend (react js + bootstrap + fontawesome)">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,6 +169,9 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\wamp\www\demo-ecommerce" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\wamp\www\demo-ecommerce\admin-frontend\src\assets\scss" />
     </key>
@@ -196,8 +184,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1690121359766</updated>
-      <workItem from="1690121361264" duration="5754000" />
+      <workItem from="1690121361264" duration="6051000" />
     </task>
+    <task id="LOCAL-00001" summary="Add the admin frontend (react js + bootstrap + fontawesome)">
+      <created>1690137012236</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1690137012237</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -216,5 +212,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Add the admin frontend (react js + bootstrap + fontawesome)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add the admin frontend (react js + bootstrap + fontawesome)" />
   </component>
 </project>
