@@ -1,14 +1,14 @@
 import {createBrowserRouter, Navigate} from "react-router-dom";
 import AdminLayout from "./components/admin/AdminLayout";
 import GuestLayout from "./components/guest/GuestLayout";
-import Dashboard from "./views/Dashboard";
-import Login from "./views/Login";
-import Signup from "./views/Signup";
-import NotFound from "./views/NotFound";
-import Users from "./views/Users";
-import ForgotPassword from "./views/ForgotPassword";
-import UserForm from "./views/UserForm";
-import TodoListForm from "./views/TodoListForm";
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import NotFound from "./pages/NotFound";
+import Users from "./pages/Users";
+import ForgotPassword from "./pages/ForgotPassword";
+import UserForm from "./pages/UserForm";
+import TodoListForm from "./pages/TodoListForm";
 
 const router = createBrowserRouter([
   {
