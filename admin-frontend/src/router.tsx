@@ -8,6 +8,7 @@ import NotFound from "./views/NotFound";
 import Users from "./views/Users";
 import ForgotPassword from "./views/ForgotPassword";
 import UserForm from "./views/UserForm";
+import TodoListForm from "./views/TodoListForm";
 
 const router = createBrowserRouter([
   {
@@ -33,7 +34,11 @@ const router = createBrowserRouter([
       {
         path: '/users/:id',
         element: <UserForm key="UserUpdate" />
-      }
+      },
+      {
+        path: '/todo-list',
+        element: <TodoListForm />
+      },
     ]
   },
   {

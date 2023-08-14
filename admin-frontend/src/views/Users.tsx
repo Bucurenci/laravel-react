@@ -39,7 +39,7 @@ export default function Users() {
   }
 
   return (
-      <div>
+      <>
         <div className="d-flex flex-row justify-content-between mb-4">
           <div className="align-self-start">
             <h1>Users</h1>
@@ -91,6 +91,6 @@ export default function Users() {
             }
           </table>
         </div>
-      </div>
+      </>
   );
 }

@@ -1,4 +1,3 @@
-import React from 'react'
 import {Link} from "react-router-dom";
 
 function Sidebar() {
@@ -26,6 +25,13 @@ function Sidebar() {
                 <Link to="/users" className="nav-link">
                     <i className="fas fa-fw fa-user-alt"></i>
                     <span>Users</span>
+                </Link>
+            </li>
+
+            <li className="nav-item">
+                <Link to="/todo-list" className="nav-link">
+                    <i className="fas fa-fw fa-list-alt"></i>
+                    <span>Todo List</span>
                 </Link>
             </li>
 
