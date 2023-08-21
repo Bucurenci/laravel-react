@@ -5,11 +5,11 @@ import {useStateContext} from "../contexts/ContextProvider";
 
 export default function Signup() {
 
-  const firstNameRef = useRef();
-  const lastNameRef = useRef();
-  const emailRef = useRef();
-  const passwordRef = useRef();
-  const passwordConfirmationRef = useRef();
+  const firstNameRef = useRef<HTMLInputElement>(null!);
+  const lastNameRef = useRef<HTMLInputElement>(null!);
+  const emailRef = useRef<HTMLInputElement>(null!);
+  const passwordRef = useRef<HTMLInputElement>(null!);
+  const passwordConfirmationRef = useRef<HTMLInputElement>(null!);
 
   const [errors, setErrors] = useState();
   const {setUser, setToken} =  useStateContext();

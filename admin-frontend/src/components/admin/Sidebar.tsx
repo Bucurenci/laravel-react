@@ -9,7 +9,7 @@ function Sidebar() {
                 <div className="sidebar-brand-icon rotate-n-15">
                     <i className="fas fa-laugh-wink"></i>
                 </div>
-                <div className="sidebar-brand-text mx-3">Demo Ecommerce</div>
+                <div className="sidebar-brand-text mx-3">{import.meta.env.VITE_APP_NAME}</div>
             </Link>
 
             <hr className="sidebar-divider my-0" />

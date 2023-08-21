@@ -5,8 +5,8 @@ import axiosClient from "../axios-client";
 
 export default function Login() {
 
-  const emailRef = useRef();
-  const passwordRef = useRef();
+  const emailRef = useRef<HTMLInputElement>(null!);
+  const passwordRef = useRef<HTMLInputElement>(null!);
 
   const [errors, setErrors] = useState();
   const {setUser, setToken} =  useStateContext();
@@ -30,14 +30,12 @@ export default function Login() {
       .catch(error => {
         const response = error.response;
 
-        console.log(response.data);
-
         if (response && response.status === 422) {
           if (response.data.errors) {
             setErrors(response.data.errors);
           }
           else {
-              setErrors({password: [response.data.message]});
+              setErrors({...errors, password: [response.data.message]});
           }
         }
       })
@@ -51,14 +49,21 @@ export default function Login() {
       </div>
 
       <div className="mb-3">
-        <input ref={emailRef} type="email" className="form-control form-control-user"
+        <input ref={emailRef}
+               type="email"
+               className="form-control form-control-user"
                id="exampleInputEmail" aria-describedby="emailHelp"
-               placeholder="Email Address..."/>
+               placeholder="Email Address..."
+        />
         {errors && errors.email && <div className="text-danger ps-3 mt-2">{errors.email[0]}</div>}
       </div>
       <div className="mb-3">
-        <input ref={passwordRef} type="password" className="form-control form-control-user"
-               id="exampleInputPassword" placeholder="Password"/>
+        <input ref={passwordRef}
+               type="password"
+               className="form-control form-control-user"
+               id="exampleInputPassword"
+               placeholder="Password"
+        />
         {errors && errors.password && <div className="text-danger ps-3 mt-2">{errors.password[0]}</div>}
       </div>
       {/*<div className="mb-3">

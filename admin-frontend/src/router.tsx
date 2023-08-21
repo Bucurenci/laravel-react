@@ -8,7 +8,7 @@ import NotFound from "./pages/NotFound";
 import Users from "./pages/Users";
 import ForgotPassword from "./pages/ForgotPassword";
 import UserForm from "./pages/UserForm";
-import TodoListForm from "./pages/TodoListForm";
+import TodoList from "./pages/TodoList";
 
 const router = createBrowserRouter([
   {
@@ -37,7 +37,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/todo-list',
-        element: <TodoListForm />
+        element: <TodoList />
       },
     ]
   },
@@ -52,6 +52,10 @@ const router = createBrowserRouter([
       {
         path: '/signup',
         element: <Signup />
+      },
+      {
+        path: '/forgot-password',
+        element: <ForgotPassword />
       }
     ]
   },

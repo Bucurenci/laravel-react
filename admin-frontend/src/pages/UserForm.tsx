@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useParams, useNavigate} from "react-router-dom";
+import {useParams, useNavigate, Link} from "react-router-dom";
 import axiosClient from "../axios-client";
 import {useStateContext} from "../contexts/ContextProvider";
 
@@ -78,15 +78,23 @@ export default function UserForm() {
   }
 
   return (
-      <div className="card pb-5">
-        <div className="row justify-content-center">
-          <div className="col-12 text-center my-5">
-            <h1>
-              {user.id && `Edit User: ${user.first_name} ${user.last_name}`}
-              {!user.id && `Add new User`}
+    <div className="card border-0 shadow-lg">
+      <div className="card-header">
+
+        <div className="d-flex flex-row justify-content-between py-2">
+          <div className="align-self-start">
+            <h1 className="h2">
+              {user.id ? `Edit User: ${user.first_name} ${user.last_name}` : `Add new User`}
             </h1>
           </div>
+          <div className="align-self-end">
+            <Link to="/users" className="btn btn-success btn-lg text-white align-self-end"><i className="fa fa-arrow-left me-2"></i>Back to users</Link>
+          </div>
+        </div>
+      </div>
 
+      <div className="card-body">
+        <div className="row  justify-content-center">
           <form onSubmit={onSubmit} className="user col col-md-9 col-xl-7">
 
             {loading &&
@@ -131,14 +139,14 @@ export default function UserForm() {
                 </div>
                 <div className="d-grid gap-2">
                   <button className="btn btn-primary btn-user text-white">
-                    {user.id && `Edit`}
-                    {!user.id && `Create`}
+                    {user.id ? `Edit`: 'Create'}
                   </button>
                 </div>
               </div>
             }
           </form>
         </div>
+      </div>
       </div>
   );
 }
