@@ -2,41 +2,57 @@ import {useEffect, useState} from "react";
 import axiosClient from "../axios-client";
 import {Link} from "react-router-dom";
 import {useStateContext} from "../contexts/ContextProvider";
+import UsersTable from "../components/admin/UsersTable";
+import Pagination from "../components/admin/Pagination";
 
 export default function Users() {
-  const {setNotification} = useStateContext();
   const [users, setUsers] = useState([]);
+  const [paginationData, setPaginationData] = useState({
+    current_page: 1,
+    sibilings: 1
+  });
+
+  const currentPage = paginationData.current_page;
   const [loading, setLoading] = useState(false);
+  const {setNotification} = useStateContext();
 
   useEffect(() => {
-    getUsers();
+    getUsers(currentPage);
   }, []);
 
-  const getUsers = () => {
+  const getUsers = (page: number) => {
     setLoading(true);
-    axiosClient.get('/users')
+
+    axiosClient.get('/users?page=' + page)
       .then(({data}) => {
+        setUsers(data.data);
+        setPaginationData({...paginationData, ...data.meta});
         setLoading(false);
-        setUsers(data.data)
       })
       .catch(() => {
         setLoading(false);
       })
   }
 
-  const onDelete = (user) => {
+  const handlePageChange = (page: number) => {
+    getUsers(page);
+  }
+
+  const handleUserDelete = (userId: number) => {
 
     if (!window.confirm("Are you sure you want to delete this user?")) {
       return;
     }
 
-    axiosClient.delete(`/users/${user.id}`)
+    axiosClient.delete(`/users/${userId}`)
     .then(() => {
       setNotification("User was successfully deleted! ");
 
-      getUsers();
+      getUsers(currentPage);
     })
   }
+
+  console.log('Users Rendered');
 
   return (
     <div className="card border-0 shadow-lg">
@@ -51,47 +67,17 @@ export default function Users() {
         </div>
       </div>
       <div className="card-body">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Email</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Create Date</th>
-              <th className="text-end">Actions</th>
-            </tr>
-          </thead>
-          {loading &&
-            <tbody>
-              <tr>
-                <td colSpan={6} className="text-center">Loading...</td>
-              </tr>
-            </tbody>}
-          {!loading &&
-            <tbody>
-              {users.map(u => (
-                <tr key={u.id}>
-                  <td>{u.id}</td>
-                  <td>{u.email}</td>
-                  <td>{u.first_name}</td>
-                  <td>{u.last_name}</td>
-                  <td>{u.created_at}</td>
-                  <td className="text-right">
-                    <button onClick={ev => onDelete(u)} className="btn btn-danger ms-2 float-end">
-                      <i className="fa fa-trash me-2"></i>
-                      Delete
-                    </button>
-                    <Link to={"/users/" + u.id} className="btn btn-primary float-end">
-                      <i className="fa fa-pencil me-2"></i>
-                      Edit
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-          </tbody>
-          }
-        </table>
+        {loading
+        ?
+        <div className="text-center h4 p-4">Loading...</div>
+        :
+        <>
+          <UsersTable users={users} onUserDelete={handleUserDelete} />
+          <div className="mt-4">
+            <Pagination paginationData={paginationData} onPageChange={handlePageChange} />
+          </div>
+        </>
+        }
       </div>
     </div>
   );

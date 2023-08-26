@@ -1,41 +1,71 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {useParams, useNavigate, Link} from "react-router-dom";
 import axiosClient from "../axios-client";
 import {useStateContext} from "../contexts/ContextProvider";
+
+interface UserType {
+  id: number|null;
+  first_name: string;
+  last_name: string;
+  email: string
+  password?: string;
+  password_confirmation?: string;
+  created_at?: string;
+}
 
 export default function UserForm() {
 
   const {setNotification} = useStateContext();
   const {id} = useParams();
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState();
-  const navigate = useNavigate();
   const [user, setUser] = useState({
     id: null,
-    first_name: '',
-    last_name: '',
-    email: '',
-    password: '',
-    password_confirmation: ''
+    first_name: "",
+    last_name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
   });
+  const [errors, setErrors] = useState();
+  const navigate = useNavigate();
+
+  const firstNameRef = useRef<HTMLInputElement>(null!);
+  const lastNameRef = useRef<HTMLInputElement>(null!);
+  const emailRef = useRef<HTMLInputElement>(null!);
+  const passwordRef = useRef<HTMLInputElement>(null!);
+  const passwordConfirmationRef = useRef<HTMLInputElement>(null!);
 
   if (id) {
     useEffect(() => {
-      setLoading(true);
-
       axiosClient.get(`/users/${id}`)
         .then(({data}) => {
-          setLoading(false);
           setUser(data);
         })
         .catch(error => {
-          setLoading(false);
         });
     }, []);
   }
 
+  const getUserValues = (): UserType => {
+
+    let user: UserType = {
+      id: id ? id : null,
+      first_name: firstNameRef.current.value,
+      last_name: lastNameRef.current.value,
+      email: emailRef.current.value,
+    }
+
+    if (passwordRef.current.value || passwordConfirmationRef.current.value) {
+        user.password = passwordRef.current.value;
+        user.password_confirmation = passwordConfirmationRef.current.value;
+    }
+
+    return user;
+  }
+
   const updateUser = () => {
-    axiosClient.put(`/users/${user.id}`, user)
+
+    axiosClient.put(`/users/${user.id}`, getUserValues())
       .then(() => {
        setNotification("User was successfully updated!");
         navigate('/users');
@@ -51,7 +81,8 @@ export default function UserForm() {
   }
 
   const createUser = () => {
-    axiosClient.post(`/users`, user)
+
+    axiosClient.post(`/users`, getUserValues())
       .then(() => {
         setNotification("User was successfully created!");
         navigate('/users');
@@ -77,6 +108,8 @@ export default function UserForm() {
     }
   }
 
+  console.log('UserForm Rendered');
+
   return (
     <div className="card border-0 shadow-lg">
       <div className="card-header">
@@ -84,7 +117,7 @@ export default function UserForm() {
         <div className="d-flex flex-row justify-content-between py-2">
           <div className="align-self-start">
             <h1 className="h2">
-              {user.id ? `Edit User: ${user.first_name} ${user.last_name}` : `Add new User`}
+              {!user.id ? `Add new User` : `Edit User: ${user.first_name} ${user.last_name}`}
             </h1>
           </div>
           <div className="align-self-end">
@@ -95,51 +128,69 @@ export default function UserForm() {
 
       <div className="card-body">
         <div className="row  justify-content-center">
-          <form onSubmit={onSubmit} className="user col col-md-9 col-xl-7">
+          <form onSubmit={onSubmit} className="user col col-md-9 col-xl-7" autoComplete="off">
 
-            {loading &&
+            {loading
+              ?
               <div className="row">
                 <div className="col text-center"><h2>Loading...</h2></div>
               </div>
-            }
-
-            {!loading &&
+              :
               <div>
+                <input type="hidden" value="something" />
 
                 <div className="row mb-3">
                   <div className="col-sm-6 mb-3 mb-sm-0">
-                    <input type="text" value={user.first_name} onChange={ev => setUser({...user, first_name: ev.target.value})} className="form-control form-control-user" id="exampleFirstName"
+                    <input key={0} defaultValue={user.first_name}
+                           ref={firstNameRef}
+                           type="text" autoComplete="off"
+                           className="form-control form-control-user"
+                           id="exampleFirstName"
                            placeholder="First Name"/>
-                    {errors && errors.first_name && <div className="text-danger ps-3 mt-2">{errors.first_name[0]}</div>}
+                    {errors?.first_name && <div className="text-danger ps-3 mt-2">{errors.first_name[0]}</div>}
                   </div>
                   <div className="col-sm-6">
-                    <input type="text" value={user.last_name} onChange={ev => setUser({...user, last_name: ev.target.value})} className="form-control form-control-user" id="exampleLastName"
+                    <input key={1} defaultValue={user.last_name}
+                           ref={lastNameRef}
+                           type="text" autoComplete="off"
+                           className="form-control form-control-user"
+                           id="exampleLastName"
                            placeholder="Last Name"/>
-                    {errors && errors.last_name && <div className="text-danger ps-3 mt-2">{errors.last_name[0]}</div>}
+                    {errors?.last_name && <div className="text-danger ps-3 mt-2">{errors.last_name[0]}</div>}
                   </div>
                 </div>
                 <div className="mb-3">
-                  <input type="email" value={user.email} onChange={ev => setUser({...user, email: ev.target.value})} className="form-control form-control-user" id="exampleInputEmail"
+                  <input key={2} defaultValue={user.email}
+                         ref={emailRef}
+                         type="email"
+                         className="form-control form-control-user"
+                         id="exampleInputEmail" autoComplete="off"
                          placeholder="Email Address"/>
-                  {errors && errors.email && <div className="text-danger ps-3 mt-2">{errors.email[0]}</div>}
+                  {errors?.email && <div className="text-danger ps-3 mt-2">{errors.email[0]}</div>}
                 </div>
                 <div className="row mb-3">
                   <div className="col-sm-6 mb-3 mb-sm-0">
-                    <input type="password" onChange={ev => setUser({...user, password: ev.target.value})} className="form-control form-control-user"
-                           id="exampleInputPassword" placeholder="Password"/>
+                    <input key={3} ref={passwordRef}
+                           type="password"
+                           className="form-control form-control-user"
+                           id="exampleInputPassword" autoComplete="off"
+                           placeholder="Password"/>
                   </div>
                   <div className="col-sm-6">
-                    <input type="password" onChange={ev => setUser({...user, password_confirmation: ev.target.value})} className="form-control form-control-user"
-                           id="exampleRepeatPassword" placeholder="Repeat Password" />
+                    <input key={4} ref={passwordConfirmationRef}
+                           type="password"
+                           className="form-control form-control-user"
+                           id="exampleRepeatPassword" autoComplete="off"
+                           placeholder="Repeat Password" />
                   </div>
                   <div className="col">
-                    {errors && errors.password && <div className="text-danger ps-3 mt-2">{errors.password[0]}</div>}
-                    {errors && errors.password_confirmation && <div className="text-danger ps-3 mt-2">{errors.password_confirmation[0]}</div>}
+                    {errors?.password && <div className="text-danger ps-3 mt-2">{errors.password[0]}</div>}
+                    {errors?.password_confirmation && <div className="text-danger ps-3 mt-2">{errors.password_confirmation[0]}</div>}
                   </div>
                 </div>
                 <div className="d-grid gap-2">
                   <button className="btn btn-primary btn-user text-white">
-                    {user.id ? `Edit`: 'Create'}
+                    {user.id ? `Save`: 'Create'}
                   </button>
                 </div>
               </div>

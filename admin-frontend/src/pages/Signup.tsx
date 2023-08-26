@@ -41,6 +41,8 @@ export default function Signup() {
       })
   }
 
+  console.log('Signup Rendered');
+
   return (
     <form onSubmit={onSubmit} className="user">
 

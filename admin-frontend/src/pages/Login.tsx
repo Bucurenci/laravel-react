@@ -41,6 +41,8 @@ export default function Login() {
       })
   }
 
+  console.log('Login Rendered');
+
   return (
     <form onSubmit={onSubmit} className="user">
 
