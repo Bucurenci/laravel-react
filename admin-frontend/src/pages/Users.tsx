@@ -9,15 +9,15 @@ export default function Users() {
   const [users, setUsers] = useState([]);
   const [paginationData, setPaginationData] = useState({
     current_page: 1,
-    sibilings: 1
+    siblings: 1,
+    last_page: 1
   });
 
-  const currentPage = paginationData.current_page;
   const [loading, setLoading] = useState(false);
   const {setNotification} = useStateContext();
 
   useEffect(() => {
-    getUsers(currentPage);
+    getUsers(paginationData.current_page);
   }, []);
 
   const getUsers = (page: number) => {
@@ -26,7 +26,8 @@ export default function Users() {
     axiosClient.get('/users?page=' + page)
       .then(({data}) => {
         setUsers(data.data);
-        setPaginationData({...paginationData, ...data.meta});
+        setPaginationData({
+          ...paginationData, current_page: data.meta.current_page, last_page: data.meta.last_page});
         setLoading(false);
       })
       .catch(() => {
@@ -48,7 +49,7 @@ export default function Users() {
     .then(() => {
       setNotification("User was successfully deleted! ");
 
-      getUsers(currentPage);
+      getUsers(paginationData.current_page);
     })
   }
 

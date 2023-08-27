@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import {Link, NavLink} from "react-router-dom";
 
 function Sidebar() {
 
@@ -15,24 +15,24 @@ function Sidebar() {
             <hr className="sidebar-divider my-0" />
 
             <li className="nav-item">
-                <Link to="/dashboard" className="nav-link">
+                <NavLink to="/dashboard" className="nav-link">
                     <i className="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span>
-                </Link>
+                </NavLink>
             </li>
 
             <li className="nav-item">
-                <Link to="/users" className="nav-link">
+                <NavLink to="/users" className="nav-link">
                     <i className="fas fa-fw fa-user-alt"></i>
                     <span>Users</span>
-                </Link>
+                </NavLink>
             </li>
 
             <li className="nav-item">
-                <Link to="/todo-list" className="nav-link">
+                <NavLink to="/todo-list" className="nav-link">
                     <i className="fas fa-fw fa-list-alt"></i>
                     <span>Todo List</span>
-                </Link>
+                </NavLink>
             </li>
 
             {/*<hr className="sidebar-divider" />

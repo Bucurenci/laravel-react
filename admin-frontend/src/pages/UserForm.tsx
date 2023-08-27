@@ -15,8 +15,8 @@ interface UserType {
 
 export default function UserForm() {
 
-  const {setNotification} = useStateContext();
   const {id} = useParams();
+  const {setNotification} = useStateContext();
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({
     id: null,
@@ -137,11 +137,10 @@ export default function UserForm() {
               </div>
               :
               <div>
-                <input type="hidden" value="something" />
 
                 <div className="row mb-3">
                   <div className="col-sm-6 mb-3 mb-sm-0">
-                    <input key={0} defaultValue={user.first_name}
+                    <input defaultValue={user.first_name}
                            ref={firstNameRef}
                            type="text" autoComplete="off"
                            className="form-control form-control-user"
@@ -150,7 +149,7 @@ export default function UserForm() {
                     {errors?.first_name && <div className="text-danger ps-3 mt-2">{errors.first_name[0]}</div>}
                   </div>
                   <div className="col-sm-6">
-                    <input key={1} defaultValue={user.last_name}
+                    <input defaultValue={user.last_name}
                            ref={lastNameRef}
                            type="text" autoComplete="off"
                            className="form-control form-control-user"
@@ -160,7 +159,7 @@ export default function UserForm() {
                   </div>
                 </div>
                 <div className="mb-3">
-                  <input key={2} defaultValue={user.email}
+                  <input defaultValue={user.email}
                          ref={emailRef}
                          type="email"
                          className="form-control form-control-user"
@@ -170,17 +169,17 @@ export default function UserForm() {
                 </div>
                 <div className="row mb-3">
                   <div className="col-sm-6 mb-3 mb-sm-0">
-                    <input key={3} ref={passwordRef}
+                    <input ref={passwordRef}
                            type="password"
                            className="form-control form-control-user"
-                           id="exampleInputPassword" autoComplete="off"
+                           id="exampleInputPassword" autoComplete="new-password"
                            placeholder="Password"/>
                   </div>
                   <div className="col-sm-6">
-                    <input key={4} ref={passwordConfirmationRef}
+                    <input ref={passwordConfirmationRef}
                            type="password"
                            className="form-control form-control-user"
-                           id="exampleRepeatPassword" autoComplete="off"
+                           id="exampleRepeatPassword" autoComplete="new-password"
                            placeholder="Repeat Password" />
                   </div>
                   <div className="col">
