@@ -35,6 +35,13 @@ function Sidebar() {
                 </NavLink>
             </li>
 
+            <li className="nav-item">
+                <NavLink to="/use-loader" className="nav-link">
+                    <i className="fas fa-fw fa-list-alt"></i>
+                    <span>UseLoader Hook</span>
+                </NavLink>
+            </li>
+
             {/*<hr className="sidebar-divider" />
 
             <div className="sidebar-heading">

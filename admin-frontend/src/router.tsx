@@ -1,14 +1,15 @@
 import {createBrowserRouter, Navigate} from "react-router-dom";
-import AdminLayout from "./components/admin/AdminLayout";
-import GuestLayout from "./components/guest/GuestLayout";
+import AdminLayout from "./components/AdminLayout";
+import GuestLayout from "./components/GuestLayout";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import Users from "./pages/Users";
 import ForgotPassword from "./pages/ForgotPassword";
-import UserForm from "./pages/UserForm";
+import UserCreateUpdate from "./pages/UserCreateUpdate";
 import TodoList from "./pages/TodoList";
+import UseLoaderHook, {dogData} from "./pages/UseLoaderHook";
 
 const router = createBrowserRouter([
   {
@@ -29,15 +30,20 @@ const router = createBrowserRouter([
       },
       {
         path: '/users/add',
-        element: <UserForm key="UserCreate" />
+        element: <UserCreateUpdate key="UserCreate" />
       },
       {
         path: '/users/:id',
-        element: <UserForm key="UserUpdate" />
+        element: <UserCreateUpdate key="UserUpdate" />
       },
       {
         path: '/todo-list',
         element: <TodoList />
+      },
+      {
+        path: '/use-loader',
+        element: <UseLoaderHook />,
+        loader: dogData
       },
     ]
   },

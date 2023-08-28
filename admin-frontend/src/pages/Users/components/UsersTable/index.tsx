@@ -6,10 +6,8 @@ export default function UsersTable({users, onUserDelete}) {
 
   return (
     <>
-      {!users.length
-        ?
-        <div className="text-center h4 p-4">No username...</div>
-        :
+      {!users.length && <div className="text-center h4 p-4">No username...</div>}
+      {users.length &&
         <table className="table">
           <thead>
           <tr>

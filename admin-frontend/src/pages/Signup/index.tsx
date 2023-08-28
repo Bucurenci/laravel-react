@@ -1,7 +1,7 @@
 import {Link} from "react-router-dom";
 import {useRef, useState} from "react";
-import axiosClient from "../axios-client";
-import {useStateContext} from "../contexts/ContextProvider";
+import axiosClient from "../../axios-client";
+import {useStateContext} from "../../contexts/ContextProvider";
 
 export default function Signup() {
 
@@ -12,7 +12,7 @@ export default function Signup() {
   const passwordConfirmationRef = useRef<HTMLInputElement>(null!);
 
   const [errors, setErrors] = useState();
-  const {setUser, setToken} =  useStateContext();
+  const {setLoggedInUser, setToken} =  useStateContext();
 
   const onSubmit = (ev) => {
     ev.preventDefault();
@@ -29,7 +29,7 @@ export default function Signup() {
 
     axiosClient.post('/signup', payload)
       .then(({data}) => {
-        setUser(data.user);
+        setLoggedInUser(data.user);
         setToken(data.token);
       })
       .catch(error => {

@@ -1,7 +1,7 @@
 import {Link} from "react-router-dom";
 import {useRef, useState} from "react";
-import {useStateContext} from "../contexts/ContextProvider";
-import axiosClient from "../axios-client";
+import {useStateContext} from "../../contexts/ContextProvider";
+import axiosClient from "../../axios-client";
 
 export default function Login() {
 
@@ -9,7 +9,7 @@ export default function Login() {
   const passwordRef = useRef<HTMLInputElement>(null!);
 
   const [errors, setErrors] = useState();
-  const {setUser, setToken} =  useStateContext();
+  const {setLoggedInUser, setToken} =  useStateContext();
 
   const onSubmit = (ev) => {
     ev.preventDefault();
@@ -23,7 +23,7 @@ export default function Login() {
 
     axiosClient.post('/login', payload)
       .then(({data}) => {
-        setUser(data.user);
+        setLoggedInUser(data.user);
         setToken(data.token);
 
       })

@@ -39,10 +39,12 @@ export default function Pagination({paginationData, onPageChange} : PaginationPr
       <ul className="pagination justify-content-center">
 
         {/* Previous Page */}
-        <li className="page-item">
-          <button className={`page-link ${paginationData.current_page == 1 ? 'disabled' : ''}`}
-                  onClick={(ev) => onPageChange(paginationData.current_page - 1)}>Prev</button>
-        </li>
+        {paginationData.current_page != 1 &&
+          <li className="page-item">
+            <button className={`page-link`}
+                    onClick={(ev) => onPageChange(paginationData.current_page - 1)}>Prev</button>
+          </li>
+        }
 
         {/* First Page */}
         {paginationData.current_page >= (paginationData.siblings + 2) &&
@@ -84,10 +86,13 @@ export default function Pagination({paginationData, onPageChange} : PaginationPr
         }
 
         {/* Next Page */}
-        <li className="page-item">
-          <button className={`page-link ${paginationData.current_page == paginationData.last_page ? 'disabled' : ''}`}
-                  onClick={(ev) => onPageChange(paginationData.current_page + 1)}>Next</button>
-        </li>
+        {paginationData.current_page != paginationData.last_page &&
+          <li className="page-item">
+            <button className={`page-link`}
+                    onClick={(ev) => onPageChange(paginationData.current_page + 1)}>Next
+            </button>
+          </li>
+        }
       </ul>
     </nav>
   );

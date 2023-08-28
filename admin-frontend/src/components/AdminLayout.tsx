@@ -1,6 +1,6 @@
 import React from 'react'
 import {Outlet, Navigate} from 'react-router-dom';
-import {useStateContext} from "../../contexts/ContextProvider";
+import {useStateContext} from "../contexts/ContextProvider";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";

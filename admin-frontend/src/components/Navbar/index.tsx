@@ -4,14 +4,14 @@ import {useStateContext} from "../../contexts/ContextProvider";
 import axiosClient from "../../axios-client";
 
 function Navbar() {
-  const {user, token, setUser, setToken} = useStateContext();
+  const {loggedInUser, token, setLoggedInUser, setToken} = useStateContext();
 
   const onLogout = (ev) => {
     ev.preventDefault();
 
     axiosClient.post('/logout')
       .then(() => {
-        setUser(null);
+        setLoggedInUser(null);
         setToken(null);
       });
   }
@@ -19,7 +19,7 @@ function Navbar() {
   useEffect(() => {
     axiosClient.get('/user')
       .then(({data}) => {
-        setUser(data);
+        setLoggedInUser(data);
       })
   }, []);
 
@@ -181,7 +181,7 @@ function Navbar() {
               <li className="nav-item dropdown no-arrow">
                   <Link className="nav-link dropdown-toggle" to="#" id="userDropdown" role="button"
                      data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span className="me-2 d-none d-lg-inline text-gray-600 small">{user.first_name} {user.last_name}</span>
+                      <span className="me-2 d-none d-lg-inline text-gray-600 small">{loggedInUser.first_name} {loggedInUser.last_name}</span>
                       <img className="img-profile rounded-circle" src="/img/undraw_profile.svg" />
                   </Link>
                   <div className="dropdown-menu  dropdown-menu-end shadow animated--grow-in"

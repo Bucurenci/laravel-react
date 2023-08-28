@@ -7,9 +7,8 @@ import './main.scss';
 import './assets/js/demo-admin';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+
     <ContextProvider>
       <RouterProvider router={router} />
     </ContextProvider>
-  </React.StrictMode>,
 )

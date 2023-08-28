@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
-import axiosClient from "../axios-client";
+import axiosClient from "../../axios-client";
 import {Link} from "react-router-dom";
-import {useStateContext} from "../contexts/ContextProvider";
-import UsersTable from "../components/admin/UsersTable";
-import Pagination from "../components/admin/Pagination";
+import {useStateContext} from "../../contexts/ContextProvider";
+import UsersTable from "./components/UsersTable";
+import Pagination from "../../components/Pagination";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -74,11 +74,12 @@ export default function Users() {
         :
         <>
           <UsersTable users={users} onUserDelete={handleUserDelete} />
-          <div className="mt-4">
-            <Pagination paginationData={paginationData} onPageChange={handlePageChange} />
-          </div>
         </>
         }
+
+        <div className="mt-4">
+          <Pagination paginationData={paginationData} onPageChange={handlePageChange} />
+        </div>
       </div>
     </div>
   );

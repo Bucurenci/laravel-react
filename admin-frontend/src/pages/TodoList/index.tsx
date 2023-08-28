@@ -1,5 +1,5 @@
 import {FormEvent, useRef, useState} from "react";
-import Task from "../components/admin/Task";
+import Task from "../../components/Task";
 
 export default function TodoList() {
 
