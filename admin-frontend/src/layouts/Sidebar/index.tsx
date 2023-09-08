@@ -42,6 +42,13 @@ function Sidebar() {
                 </NavLink>
             </li>
 
+            <li className="nav-item">
+              <Link to="/settings" className="nav-link">
+                <i className="fas fa-fw fa-cog"></i>
+                <span>Settings</span>
+              </Link>
+            </li>
+
             {/*<hr className="sidebar-divider" />
 
             <div className="sidebar-heading">

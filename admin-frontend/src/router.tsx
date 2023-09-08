@@ -1,6 +1,6 @@
 import {createBrowserRouter, Navigate} from "react-router-dom";
-import AdminLayout from "./components/AdminLayout";
-import GuestLayout from "./components/GuestLayout";
+import AdminLayout from "./layouts/AdminLayout";
+import GuestLayout from "./layouts/GuestLayout";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -10,6 +10,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import UserCreateUpdate from "./pages/UserCreateUpdate";
 import TodoList from "./pages/TodoList";
 import UseLoaderHook, {dogData} from "./pages/UseLoaderHook";
+import Settings from "./pages/Settings";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
         path: '/use-loader',
         element: <UseLoaderHook />,
         loader: dogData
+      },
+      {
+        path: '/settings',
+        element: <Settings />
       },
     ]
   },
