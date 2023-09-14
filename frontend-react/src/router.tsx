@@ -8,71 +8,67 @@ import NotFound from "./pages/NotFound";
 import Users from "./pages/Users";
 import ForgotPassword from "./pages/ForgotPassword";
 import UserCreateUpdate from "./pages/UserCreateUpdate";
-import TodoList from "./pages/TodoList";
-import UseLoaderHook, {dogData} from "./pages/UseLoaderHook";
+import TodoList from "./pages/_TodoList";
+import UseLoaderHook, {dogData} from "./pages/_UseLoaderHook";
 import Settings from "./pages/Settings";
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <AdminLayout />,
+    element: <AdminLayout/>,
     children: [
       {
         path: '/',
-        element: <Navigate to='/users' />
-      },
-      {
-        path: '/dashboard',
-        element: <Dashboard />
+        element: <Navigate to='/users'/>
       },
       {
         path: '/users',
-        element: <Users />
+        element: <Users/>
       },
       {
         path: '/users/add',
-        element: <UserCreateUpdate key="UserCreate" />
+        element: <UserCreateUpdate key="UserCreate"/>
       },
       {
         path: '/users/:id',
-        element: <UserCreateUpdate key="UserUpdate" />
+        element: <UserCreateUpdate key="UserUpdate"/>
       },
       {
         path: '/todo-list',
-        element: <TodoList />
+        element: <TodoList/>
       },
       {
         path: '/use-loader',
-        element: <UseLoaderHook />,
+        element: <UseLoaderHook/>,
         loader: dogData
       },
       {
         path: '/settings',
-        element: <Settings />
+        element: <Settings/>
       },
     ]
   },
   {
     path: '/',
-    element: <GuestLayout />,
+    element: <GuestLayout/>,
     children: [
       {
         path: '/login',
-        element: <Login />
+        element: <Login/>
       },
       {
         path: '/signup',
-        element: <Signup />
+        element: <Signup/>
       },
       {
         path: '/forgot-password',
-        element: <ForgotPassword />
+        element: <ForgotPassword/>
       }
     ]
   },
   {
     path: '*',
-    element: <NotFound />
+    element: <NotFound/>
   }
 ]);
 

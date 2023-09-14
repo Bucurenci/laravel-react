@@ -2,40 +2,33 @@ import {Link, NavLink} from "react-router-dom";
 
 function Sidebar() {
 
-    return (
-        <ul className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+  return (
+    <ul className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-          <Link className="sidebar-brand d-flex align-items-center justify-content-center" to="#">
-              <div className="sidebar-brand-icon rotate-n-15">
-                  <i className="fas fa-laugh-wink"></i>
-              </div>
-              <div className="sidebar-brand-text mx-3">{import.meta.env.VITE_APP_NAME}</div>
-          </Link>
+      <Link className="sidebar-brand d-flex align-items-center justify-content-center" to="#">
+        <div className="sidebar-brand-icon rotate-n-15">
+          <i className="fas fa-laugh-wink"></i>
+        </div>
+        <div className="sidebar-brand-text mx-3">{import.meta.env.VITE_APP_NAME}</div>
+      </Link>
 
-          <hr className="sidebar-divider my-0" />
+      <hr className="sidebar-divider my-0"/>
 
-          <li className="nav-item">
-              <NavLink to="/dashboard" className="nav-link">
-                  <i className="fas fa-fw fa-tachometer-alt"></i>
-                  <span>Dashboard</span>
-              </NavLink>
-          </li>
+      <li className="nav-item">
+        <NavLink to="/users" className="nav-link">
+          <i className="fas fa-fw fa-user-alt"></i>
+          <span>Users</span>
+        </NavLink>
+      </li>
 
-          <li className="nav-item">
-              <NavLink to="/users" className="nav-link">
-                  <i className="fas fa-fw fa-user-alt"></i>
-                  <span>Users</span>
-              </NavLink>
-          </li>
+      <li className="nav-item">
+        <NavLink to="/settings" className="nav-link">
+          <i className="fas fa-fw fa-cog"></i>
+          <span>Settings</span>
+        </NavLink>
+      </li>
 
-          <li className="nav-item">
-            <NavLink to="/settings" className="nav-link">
-              <i className="fas fa-fw fa-cog"></i>
-              <span>Settings</span>
-            </NavLink>
-          </li>
-
-            {/*<hr className="sidebar-divider" />
+      {/*<hr className="sidebar-divider" />
 
             <div className="sidebar-heading">
                 Interface
@@ -128,36 +121,36 @@ function Sidebar() {
                 <Link className="btn btn-success btn-sm" to="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</Link>
             </div>*/}
 
-          <li className="nav-item position-absolute bottom-0">
+      <li className="nav-item position-absolute bottom-0">
 
-            <hr className="sidebar-divider" />
+        <hr className="sidebar-divider"/>
 
-            <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse"
-                  data-bs-target="#collapseUtilities"
-                  aria-expanded="true" aria-controls="collapseUtilities">
-              <i className="fas fa-fw fa-tenge-sign me-2"></i>
-              <span>Tests</span>
-            </Link>
+        <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse"
+              data-bs-target="#collapseUtilities"
+              aria-expanded="true" aria-controls="collapseUtilities">
+          <i className="fas fa-fw fa-tenge-sign me-2"></i>
+          <span>Tests</span>
+        </Link>
 
-            <div id="collapseUtilities" className="collapse" aria-labelledby="headingUtilities"
-                 data-parent="#accordionSidebar">
-              <div className="bg-white py-2 collapse-inner rounded">
+        <div id="collapseUtilities" className="collapse" aria-labelledby="headingUtilities"
+             data-parent="#accordionSidebar">
+          <div className="bg-white py-2 collapse-inner rounded">
 
-                <NavLink to="/todo-list" className="collapse-item">
-                  <i className="fas fa-fw fa-list-alt me-2"></i>
-                  <span>Todo List</span>
-                </NavLink>
-                <NavLink to="/use-loader" className="collapse-item">
-                  <i className="fa fa-fw fa-file-photo-o me-2"></i>
-                  <span>UseLoader Hook</span>
-                </NavLink>
-              </div>
-            </div>
+            <NavLink to="/todo-list" className="collapse-item">
+              <i className="fas fa-fw fa-list-alt me-2"></i>
+              <span>Todo List</span>
+            </NavLink>
+            <NavLink to="/use-loader" className="collapse-item">
+              <i className="fa fa-fw fa-file-photo-o me-2"></i>
+              <span>UseLoader Hook</span>
+            </NavLink>
+          </div>
+        </div>
 
-          </li>
+      </li>
 
-        </ul>
-    );
+    </ul>
+  );
 }
 
 export default Sidebar;

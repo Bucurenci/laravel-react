@@ -1,4 +1,5 @@
 import {createContext, useContext, useState} from "react";
+
 const StateContext = createContext({})
 
 export const ContextProvider = ({children}) => {
@@ -19,8 +20,7 @@ export const ContextProvider = ({children}) => {
 
     if (token) {
       localStorage.setItem('ACCESS_TOKEN', token);
-    }
-    else {
+    } else {
       localStorage.removeItem('ACCESS_TOKEN');
     }
   }

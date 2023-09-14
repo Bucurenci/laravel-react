@@ -8,6 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class UserResource extends JsonResource
 {
     public static $wrap = false;
+
     /**
      * Transform the resource into an array.
      *
@@ -20,6 +21,7 @@ class UserResource extends JsonResource
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->email,
+            'avatar' => $this->avatar ? asset('storage') . '/' . $this->avatar : null,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
         ];
     }

@@ -8,6 +8,9 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -45,14 +48,24 @@ class UserController extends Controller
 
     /**
      * Update the specified resource in storage.
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function update(UpdateUserRequest $request, User $user)
     {
         $data = $request->validated();
 
+        /*Validator::make($request->file(), [
+            'avatar' => 'nullable|image|dimensions:min_width=50,min_height=50,max_width=2048,max_height=2048',
+        ])->validate();*/
+
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         }
+
+        /*if ($request->file('avatar') !== null) {
+            $data['avatar'] = Str::random(32) . "." . $request->file('avatar')->getClientOriginalExtension();
+            storage_path('public')->put($data['avatar'], file_get_contents($request->file('avatar')));
+        }*/
 
         $user->update($data);
 
