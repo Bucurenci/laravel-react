@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserImageRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
@@ -17,7 +18,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
         return UserResource::collection(
             User::query()->orderBy('id', 'desc')->paginate(3)
@@ -54,18 +55,9 @@ class UserController extends Controller
     {
         $data = $request->validated();
 
-        /*Validator::make($request->file(), [
-            'avatar' => 'nullable|image|dimensions:min_width=50,min_height=50,max_width=2048,max_height=2048',
-        ])->validate();*/
-
         if (isset($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         }
-
-        /*if ($request->file('avatar') !== null) {
-            $data['avatar'] = Str::random(32) . "." . $request->file('avatar')->getClientOriginalExtension();
-            storage_path('public')->put($data['avatar'], file_get_contents($request->file('avatar')));
-        }*/
 
         $user->update($data);
 
@@ -80,5 +72,46 @@ class UserController extends Controller
         $user->delete();
 
         return response('', 204);
+    }
+
+    public function uploadImage(UpdateUserImageRequest $request, int $id)
+    {
+        $data = $request->validated();
+
+        $user = User::query()->find($id);
+
+        if ($request->hasFile('avatar')) {
+            $path = '/images/users/avatar/full';
+            $filename = $user->id . '-' . Str::random(16) . "." . $request->file('avatar')->getClientOriginalExtension();
+
+            if ($user->avatar) {
+                $pathForRemove = $path . '/' . $user->avatar;
+                Storage::disk('public')->delete($pathForRemove);
+            }
+
+            Storage::disk('public')->put($path . '/' . $filename, file_get_contents($request->file('avatar')));
+            $data['avatar'] = $filename;
+        }
+
+        $user->update($data);
+
+        return new UserResource($user);
+    }
+
+    public function deleteImage(int $id)
+    {
+        $user = User::query()->find($id);
+
+        if ($user->avatar) {
+            $path = '/images/users/avatar/full';
+            $pathForRemove = $path . '/' . $user->avatar;
+            Storage::disk('public')->delete($pathForRemove);
+
+            $data['avatar'] = NULL;
+
+            $user->update($data);
+        }
+
+        return response()->noContent();
     }
 }

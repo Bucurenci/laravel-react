@@ -21,6 +21,7 @@ export default function UserCreateUpdate() {
   const {id} = useParams();
   const {loggedInUser, setLoggedInUser, setNotification} = useStateContext();
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState();
   const [user, setUser] = useState<UserType>({
     id: null,
     first_name: "",
@@ -30,7 +31,6 @@ export default function UserCreateUpdate() {
     password: "",
     password_confirmation: "",
   });
-  const [errors, setErrors] = useState();
   const navigate = useNavigate();
 
   if (id) {
@@ -61,11 +61,13 @@ export default function UserCreateUpdate() {
     axiosClient.put(`/users/${user.id}`, formData)
       .then((response) => {
 
+        setUser(response.data);
+        setUpdateComplete(true);
+
         if (user.id == loggedInUser.id) {
           setLoggedInUser(response.data);
         }
         setNotification("User was successfully updated!");
-        navigate('/users');
       })
       .catch(({response}) => {
 
@@ -97,28 +99,47 @@ export default function UserCreateUpdate() {
     let formData = new FormData();
 
     formData.append('avatar', imageFile);
-    
-    console.log(imageFile);
 
-    /*axiosClient.patch(`/users/${user.id}`, formData)
+    axiosClient.post(`/users/${id}/upload-image`, formData, {
+        headers: {"Content-Type": "multipart/form-data"},
+        onUploadProgress: (progressEvent) => {
+          let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+          console.log(percentCompleted)
+        },
+      },
+    )
       .then((response) => {
+
+        setUser(response.data);
 
         if (user.id == loggedInUser.id) {
           setLoggedInUser(response.data);
         }
         setNotification("User was successfully updated!");
-        navigate('/users');
       })
       .catch(({response}) => {
+        console.error(response);
 
         if (response && response.status === 422) {
           setErrors(response.data.errors);
         }
-      })*/
+      })
   }
 
   const handleAvatarDelete = () => {
 
+
+    if (!window.confirm("Are you sure you want to delete this image?")) {
+      return;
+    }
+
+    axiosClient.patch(`/users/${id}/delete-image`)
+      .then(() => {
+
+        setUser({...user, avatar: null});
+
+        setNotification("The image was successfully deleted!");
+      })
   }
 
   return (
@@ -139,17 +160,19 @@ export default function UserCreateUpdate() {
       </div>
 
       <div className="card-body">
-        <div className="row  justify-content-center">
+        <div className="row justify-content-center">
           {loading ? (
               <div className="col text-center"><h2>Loading...</h2></div>
             )
             : (
               <div className="col-12 col-xxl-9">
-                <div className="row align-items-center">
-                  <div className="col-12 col-lg-4 col-xl-4 col-xxl-4 mb-4 mb-xl-0">
-                    <AvatarForm user={user} errors={errors} onUpdate={handleAvatarUpdate}
-                                onDelete={handleAvatarDelete}/>
-                  </div>
+                <div className="row align-items-center justify-content-center">
+                  {user.id && (
+                    <div className="col-12 col-lg-4 col-xl-4 col-xxl-4 mb-4 mb-xl-0">
+                      <AvatarForm user={user} errors={errors} onUpdate={handleAvatarUpdate}
+                                  onDelete={handleAvatarDelete}/>
+                    </div>
+                  )}
                   <div className="col-12 col-xl-8 col-xxl-8">
                     <UserForm user={user} errors={errors} onSubmit={handleUserSubmit}/>
                   </div>

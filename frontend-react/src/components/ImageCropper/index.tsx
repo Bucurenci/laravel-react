@@ -1,6 +1,7 @@
 import React, {useState, createRef} from "react";
 import Cropper, {ReactCropperElement} from "react-cropper";
 import "cropperjs/dist/cropper.css";
+import {dataURLtoFile} from "../../utils/Files";
 
 export const ImageCropper: React.FC = ({uploadedImage, onCropFile}) => {
 
@@ -23,22 +24,15 @@ export const ImageCropper: React.FC = ({uploadedImage, onCropFile}) => {
     style: {maxHeight: 700, width: "100%"}
   }
 
-
   const getCropData = () => {
-    let cropDataUrlBase64 = cropperRef.current?.cropper.getCroppedCanvas().toDataURL();
+    let dataUrl = cropperRef.current?.cropper.getCroppedCanvas().toDataURL();
 
-    if (typeof cropDataUrlBase64 !== "undefined") {
+    if (typeof dataUrl !== "undefined") {
 
-      setCropData(cropDataUrlBase64);
+      setCropData(dataUrl);
 
-      if (cropDataUrlBase64) {
-
-        let binaryString = atob(cropDataUrlBase64.split(',')[1]); // Binary data string
-        let blob = new Blob([binaryString], {type: 'image/png'}); // Create a BLOB object
-
-        let file = new File([blob], 'user-avatar.png', {type: 'image/png'});
-
-        onCropFile(file);
+      if (dataUrl) {
+        onCropFile(dataURLtoFile(dataUrl));
       }
     }
   }

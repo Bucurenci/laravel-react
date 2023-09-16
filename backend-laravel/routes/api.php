@@ -26,7 +26,12 @@ Route::prefix('v1')->group(function () {
             return $request->user();
         });
 
-        Route::apiResource('/users', UserController::class);
+        Route::controller(UserController::class)->group(function () {
+            Route::apiResource('/users', UserController::class);
+            Route::post('/users/{id}/upload-image', 'uploadImage');
+            Route::patch('/users/{id}/delete-image', 'deleteImage');
+        });
+
         Route::apiResource('/settings', SettingsController::class);
     });
 
