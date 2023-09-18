@@ -4,33 +4,33 @@ import {useStateContext} from "../../contexts/ContextProvider";
 import axiosClient from "../../axios-client";
 
 function Navbar() {
-  const {loggedInUser, token, setLoggedInUser, setToken} = useStateContext();
+  const {authUser, setAuthUser, setToken} = useStateContext();
+
+  useEffect(() => {
+    axiosClient.get('/user')
+      .then(({data}) => {
+        setAuthUser(data);
+      })
+  }, []);
 
   const onLogout = (ev) => {
     ev.preventDefault();
 
     axiosClient.post('/logout')
       .then(() => {
-        setLoggedInUser(null);
+        setAuthUser(null);
         setToken(null);
       });
   }
 
-  useEffect(() => {
-    axiosClient.get('/user')
-      .then(({data}) => {
-        setLoggedInUser(data);
-      })
-  }, []);
-
   return (
-      <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+    <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-          <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle me-3">
-              <i className="fa fa-bars"></i>
-          </button>
+      <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle me-3">
+        <i className="fa fa-bars"></i>
+      </button>
 
-          {/*<form
+      {/*<form
               className="d-none d-sm-inline-block form-inline me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
               <div className="input-group">
                   <input type="text" className="form-control bg-light border-0 small" placeholder="Search for... (not working for now)"
@@ -41,9 +41,9 @@ function Navbar() {
               </div>
           </form>*/}
 
-          <ul className="navbar-nav ms-auto">
+      <ul className="navbar-nav ms-auto">
 
-              {/*<li className="nav-item dropdown no-arrow d-sm-none">
+        {/*<li className="nav-item dropdown no-arrow d-sm-none">
                   <Link className="nav-link dropdown-toggle" to="#" id="searchDropdown" role="button"
                      data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i className="fas fa-search fa-fw"></i>
@@ -65,7 +65,7 @@ function Navbar() {
                   </div>
               </li>*/}
 
-              {/*<li className="nav-item dropdown no-arrow mx-1">
+        {/*<li className="nav-item dropdown no-arrow mx-1">
                   <Link className="nav-link dropdown-toggle" to="#" id="alertsDropdown" role="button"
                      data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i className="fas fa-bell fa-fw"></i>
@@ -113,7 +113,7 @@ function Navbar() {
                   </div>
               </li>*/}
 
-              {/*<li className="nav-item dropdown no-arrow mx-1">
+        {/*<li className="nav-item dropdown no-arrow mx-1">
                   <Link className="nav-link dropdown-toggle" to="#" id="messagesDropdown" role="button"
                      data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                       <i className="fas fa-envelope fa-fw"></i>
@@ -176,17 +176,20 @@ function Navbar() {
                   </div>
               </li>*/}
 
-              <div className="topbar-divider d-none d-sm-block"></div>
+        <div className="topbar-divider d-none d-sm-block"></div>
 
-              <li className="nav-item dropdown no-arrow">
-                  <Link className="nav-link dropdown-toggle" to="#" id="userDropdown" role="button"
-                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <span className="me-2 d-none d-lg-inline text-gray-600 small">{loggedInUser.first_name} {loggedInUser.last_name}</span>
-                      <img className="img-profile rounded-circle" src="/img/undraw_profile.svg" />
-                  </Link>
-                  <div className="dropdown-menu  dropdown-menu-end shadow animated--grow-in"
-                       aria-labelledby="userDropdown">
-                      {/*<Link className="dropdown-item" to="#">
+        <li className="nav-item dropdown no-arrow position-relative pe-3">
+          <Link className="nav-link dropdown-toggle" to="#" id="userDropdown" role="button"
+                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span className="me-2 d-none d-lg-inline text-gray-600 small">
+              {authUser.first_name} {authUser.last_name}
+            </span>
+            <img src={authUser.avatar ? authUser.avatar : "/img/user-avatar-placeholder-xs.png"}
+                 className="img-fluid rounded-circle shadow" alt="User Avatar" width={50}/>
+          </Link>
+          <div className="dropdown-menu  dropdown-menu-end shadow animated--grow-in"
+               aria-labelledby="userDropdown">
+            {/*<Link className="dropdown-item" to="#">
                           <i className="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>
                           Profile
                       </Link>
@@ -199,16 +202,16 @@ function Navbar() {
                           Activity Log
                       </Link>
                       <div className="dropdown-divider"></div>*/}
-                      <Link to="#" onClick={onLogout} className="dropdown-item" data-toggle="modal" data-bs-target="#logoutModal">
-                          <i className="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>
-                          Logout
-                      </Link>
-                  </div>
-              </li>
+            <Link to="#" onClick={onLogout} className="dropdown-item" data-toggle="modal" data-bs-target="#logoutModal">
+              <i className="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>
+              Logout
+            </Link>
+          </div>
+        </li>
 
-          </ul>
+      </ul>
 
-      </nav>
+    </nav>
   );
 }
 

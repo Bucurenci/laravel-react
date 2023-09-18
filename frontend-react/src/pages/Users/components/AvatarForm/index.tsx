@@ -14,6 +14,7 @@ export default function AvatarForm({user, errors, onUpdate, onDelete}) {
   }
 
   const onImageSelected = (e): void => {
+    setCroppedImage(null);
 
     if (e.target.files && e.target.files.length > 0) {
 
@@ -40,7 +41,7 @@ export default function AvatarForm({user, errors, onUpdate, onDelete}) {
     <>
       {user && (
         <>
-          <div className="position-relative">
+          <div className="position-relative d-inline-block">
             <img src={user.avatar ? user.avatar : "/img/user-avatar-placeholder.png"}
                  className="img-fluid rounded shadow" alt="User Avatar"/>
             <div className="position-absolute bottom-0 end-0 mb-2 me-2">
@@ -78,7 +79,7 @@ export default function AvatarForm({user, errors, onUpdate, onDelete}) {
       </form>
 
       <Modal title="Crop the image" showModal={showModal} setShowModal={setShowModal}
-             saveButton={croppedImage ? "Save selection" : null}
+             saveButton={croppedImage ? "Upload selection" : null}
              onSave={handleSave}>
 
         <div className="text-center">

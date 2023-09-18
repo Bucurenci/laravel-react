@@ -1,22 +1,52 @@
-export default function Modal({children, title, saveButton, onSave, deleteButton, onDelete, showModal, setShowModal}) {
+export default function Modal({
+                                children,
+                                showModal,
+                                setShowModal,
+                                title,
+                                saveButton,
+                                deleteButton,
+                                onSave,
+                                onDelete,
+                                onClose
+                              }) {
+
+  if (!showModal) {
+    return;
+  }
 
   const modalStyle = {
     display: 'block',
     backgroundColor: 'rgba(0, 0, 0, .6)'
   }
 
-  if (!showModal) {
-    return;
+  const handleSave = () => {
+    if (onSave) {
+      onSave();
+    }
+  }
+
+  const handleDelete = () => {
+    if (onDelete) {
+      onDelete();
+    }
+  }
+
+  const handleClose = () => {
+    setShowModal(false);
+    
+    if (onClose) {
+      onClose();
+    }
   }
 
   return (
-    <div onMouseDown={() => setShowModal(false)} className="modal show modal-xl fade" tabIndex="-1" style={modalStyle}>
+    <div onMouseDown={handleClose} className="modal show modal-xl fade" tabIndex="-1" style={modalStyle}>
       <div onMouseDown={(ev) => ev.stopPropagation()}
            className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">{title ? title : ''}</h5>
-            <button onClick={() => setShowModal(false)} type="button" className="btn-close" aria-label="Close"></button>
+            <button onClick={handleClose} type="button" className="btn-close" aria-label="Close"></button>
           </div>
           <div className="modal-body">
             {children}
@@ -24,10 +54,10 @@ export default function Modal({children, title, saveButton, onSave, deleteButton
           {(saveButton || deleteButton) && (
             <div className="modal-footer">
               {saveButton && (
-                <button className="btn btn-lg btn-primary ms-auto" onClick={onSave}>{saveButton}</button>
+                <button className="btn btn-lg btn-primary ms-auto" onClick={handleSave}>{saveButton}</button>
               )}
               {deleteButton && (
-                <button className="btn btn-lg btn-primary ms-auto" onClick={onDelete}>{deleteButton}</button>
+                <button className="btn btn-lg btn-danger ms-auto" onClick={handleDelete}>{deleteButton}</button>
               )}
             </div>
           )}

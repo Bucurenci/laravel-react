@@ -24,7 +24,7 @@ export default function AdminLayout() {
 
             <Navbar/>
 
-            <div className="container-fluid">
+            <div className="container-fluid position-relative">
 
               {notification && <Toaster>{notification}</Toaster>}
 

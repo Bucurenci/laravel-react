@@ -3,7 +3,7 @@ import {createContext, useContext, useState} from "react";
 const StateContext = createContext({})
 
 export const ContextProvider = ({children}) => {
-  const [loggedInUser, setLoggedInUser] = useState({});
+  const [authUser, setAuthUser] = useState({});
   const [notification, _setNotification] = useState('');
   const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
 
@@ -26,10 +26,10 @@ export const ContextProvider = ({children}) => {
   }
 
   const providerValue = {
-    loggedInUser,
+    authUser,
     token,
     notification,
-    setLoggedInUser,
+    setAuthUser,
     setToken,
     setNotification
   }

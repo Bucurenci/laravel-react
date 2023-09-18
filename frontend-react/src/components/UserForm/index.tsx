@@ -1,7 +1,7 @@
 import {useRef} from "react";
-import {UserType} from "../../index";
+import {UserType} from "../../pages/Users";
 
-export default function UserForm({user, errors, onSubmit}) {
+export default function UserForm({user, errors, onUserSubmit}) {
 
   const firstNameRef = useRef<HTMLInputElement>(null!);
   const lastNameRef = useRef<HTMLInputElement>(null!);
@@ -13,7 +13,7 @@ export default function UserForm({user, errors, onSubmit}) {
     ev.preventDefault();
 
     let userData: UserType = {
-      id: user.id ? user.id : null,
+      id: user?.id ? user.id : null,
       first_name: firstNameRef.current.value,
       last_name: lastNameRef.current.value,
       email: emailRef.current.value,
@@ -21,11 +21,14 @@ export default function UserForm({user, errors, onSubmit}) {
     }
 
     if (passwordRef.current.value || passwordConfirmationRef.current.value) {
-      userData.password = passwordRef.current.value;
-      userData.password_confirmation = passwordConfirmationRef.current.value;
+      userData = {
+        ...userData,
+        password: passwordRef.current.value,
+        password_confirmation: passwordConfirmationRef.current.value
+      }
     }
 
-    onSubmit(userData);
+    onUserSubmit<UserType>(userData);
   }
 
   return (
@@ -43,7 +46,7 @@ export default function UserForm({user, errors, onSubmit}) {
                      className="form-control form-control-user"
                      id="exampleFirstName"
                      placeholder="First Name"/>
-              {errors?.first_name && <div className="text-danger ps-3 mt-2">{errors.first_name[0]}</div>}
+              {errors?.first_name && <div className="text-danger ps-3 my-2">{errors.first_name[0]}</div>}
             </div>
             <div className="col-md-6 mb-3">
               <input defaultValue={user?.last_name}
@@ -52,7 +55,7 @@ export default function UserForm({user, errors, onSubmit}) {
                      className="form-control form-control-user"
                      id="exampleLastName"
                      placeholder="Last Name"/>
-              {errors?.last_name && <div className="text-danger ps-3 mt-2">{errors.last_name[0]}</div>}
+              {errors?.last_name && <div className="text-danger ps-3 my-2">{errors.last_name[0]}</div>}
             </div>
           </div>
           <div className="mb-3">
@@ -62,7 +65,7 @@ export default function UserForm({user, errors, onSubmit}) {
                    className="form-control form-control-user"
                    id="exampleInputEmail" autoComplete="off"
                    placeholder="Email Address"/>
-            {errors?.email && <div className="text-danger ps-3 mt-2">{errors.email[0]}</div>}
+            {errors?.email && <div className="text-danger ps-3 my-2">{errors.email[0]}</div>}
           </div>
           <div className="row mb-3">
             <div className="col-md-6 mb-3 mb-md-0">
@@ -80,9 +83,9 @@ export default function UserForm({user, errors, onSubmit}) {
                      placeholder="Repeat Password"/>
             </div>
             <div className="col">
-              {errors?.password && <div className="text-danger ps-3 mt-2">{errors.password[0]}</div>}
+              {errors?.password && <div className="text-danger ps-3 my-2">{errors.password[0]}</div>}
               {errors?.password_confirmation &&
-                <div className="text-danger ps-3 mt-2">{errors.password_confirmation[0]}</div>}
+                <div className="text-danger ps-3 my-2">{errors.password_confirmation[0]}</div>}
             </div>
           </div>
           <div className="d-grid gap-2">

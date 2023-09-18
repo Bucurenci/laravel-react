@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AuthController;
-use App\Http\Controllers\Api\V1\SettingsController;
+use App\Http\Controllers\Api\V1\SettingController;
 use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,10 +21,7 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
-
-        Route::get('/user', function (Request $request) {
-            return $request->user();
-        });
+        Route::get('/user', [AuthController::class, 'getUser']);
 
         Route::controller(UserController::class)->group(function () {
             Route::apiResource('/users', UserController::class);
@@ -32,7 +29,7 @@ Route::prefix('v1')->group(function () {
             Route::patch('/users/{id}/delete-image', 'deleteImage');
         });
 
-        Route::apiResource('/settings', SettingsController::class);
+        Route::apiResource('/settings', SettingController::class);
     });
 
     Route::post('/login', [AuthController::class, 'login']);

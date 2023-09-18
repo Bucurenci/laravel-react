@@ -3,38 +3,38 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreSettingsRequest;
-use App\Http\Requests\UpdateSettingsRequest;
-use App\Http\Resources\SettingsResource;
-use App\Models\Settings;
+use App\Http\Requests\StoreSettingRequest;
+use App\Http\Requests\UpdateSettingRequest;
+use App\Http\Resources\SettingResource;
+use App\Models\Setting;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
-class SettingsController extends Controller
+class SettingController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(): AnonymousResourceCollection
     {
-        return SettingsResource::collection(Settings::all());
+        return SettingResource::collection(Setting::all());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSettingsRequest $request)
+    public function store(StoreSettingRequest $request)
     {
         $data = $request->validated();
 
-        $setting = Settings::create($data);
+        $setting = Setting::create($data);
 
-        return response(new SettingsResource($setting), 201);
+        return response(new SettingResource($setting), 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Settings $settings)
+    public function show(Setting $setting)
     {
         //
     }
@@ -42,7 +42,7 @@ class SettingsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSettingsRequest $request, Settings $settings)
+    public function update(UpdateSettingRequest $request, Setting $setting)
     {
         //
     }
@@ -50,9 +50,9 @@ class SettingsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Settings $settings)
+    public function destroy(Setting $setting)
     {
-        $settings->delete();
+        $setting->delete();
 
         return response()->noContent();
     }

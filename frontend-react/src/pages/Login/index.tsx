@@ -9,7 +9,7 @@ export default function Login() {
   const passwordRef = useRef<HTMLInputElement>(null!);
 
   const [errors, setErrors] = useState();
-  const {setLoggedInUser, setToken} =  useStateContext();
+  const {setAuthUser, setToken} = useStateContext();
 
   const onSubmit = (ev) => {
     ev.preventDefault();
@@ -23,7 +23,7 @@ export default function Login() {
 
     axiosClient.post('/login', payload)
       .then(({data}) => {
-        setLoggedInUser(data.user);
+        setAuthUser(data.user);
         setToken(data.token);
 
       })
@@ -33,9 +33,8 @@ export default function Login() {
         if (response && response.status === 422) {
           if (response.data.errors) {
             setErrors(response.data.errors);
-          }
-          else {
-              setErrors({...errors, password: [response.data.message]});
+          } else {
+            setErrors({...errors, password: [response.data.message]});
           }
         }
       })

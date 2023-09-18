@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SettingsResource extends JsonResource
+class AuthResource extends JsonResource
 {
     public static $wrap = false;
 
@@ -18,12 +18,11 @@ class SettingsResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'type' => $this->type,
-            'value' => $this->value,
-            'description' => $this->description,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'first_name' => $this->first_name,
+            'last_name' => $this->last_name,
+            'email' => $this->email,
+            'avatar' => $this->avatar ? asset('storage/images/users/avatar/full/' . $this->avatar) : null,
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
         ];
     }
 }

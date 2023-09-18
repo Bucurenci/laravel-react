@@ -18,10 +18,13 @@ export default function SettingsItem({setting}) {
       return;
     }
 
-    axiosClient.delete(`/settings/${id}`)
-      .then(() => {
+    axiosClient.delete(`/settings/${setting.id}`)
+      .then((response) => {
+        console.log(response);
         setNotification("Setting was successfully deleted! ");
-      })
+      }).catch(({response}) => {
+      console.log(response);
+    })
   }
 
   const onSettingChange = (ev) => {
@@ -30,19 +33,22 @@ export default function SettingsItem({setting}) {
 
   const renderSwitchType = () => {
 
-    switch(setting.type) {
+    switch (setting.type) {
 
       case "text":
-        return <input onChange={onSettingChange} type="email" defaultValue={settingValue.value} className="form-control form-control-lg w-75" autoFocus={true} />;
+        return <input onChange={onSettingChange} type="email" defaultValue={settingValue.value}
+                      className="form-control form-control-lg w-75" autoFocus={true}/>;
       case "email":
-        return <input onChange={onSettingChange} type="email" defaultValue={settingValue.value} className="form-control form-control-lg w-75" autoFocus={true} />;
+        return <input onChange={onSettingChange} type="email" defaultValue={settingValue.value}
+                      className="form-control form-control-lg w-75" autoFocus={true}/>;
       case "select":
         return <select onChange={onSettingChange} autoFocus={true}>
           <option value="1">True</option>
           <option value="0">False</option>
         </select>;
 
-      default:      return <h1>No project match</h1>
+      default:
+        return <h1>No project match</h1>
     }
   }
 
@@ -62,7 +68,7 @@ export default function SettingsItem({setting}) {
           :
           <button className="btn btn-primary btn-lg" onClick={() => setEditable(true)}>Edit</button>
         }
-        <button className="btn btn-danger btn-lg ms-2" onClick={() => handleDelete(setting.id)}>Delete</button>
+        <button className="btn btn-danger btn-lg ms-2" onClick={handleDelete}>Delete</button>
       </td>
     </tr>
   );

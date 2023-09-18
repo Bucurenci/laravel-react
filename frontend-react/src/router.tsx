@@ -25,14 +25,6 @@ const router = createBrowserRouter([
         element: <Users/>
       },
       {
-        path: '/users/add',
-        element: <UserCreateUpdate key="UserCreate"/>
-      },
-      {
-        path: '/users/:id',
-        element: <UserCreateUpdate key="UserUpdate"/>
-      },
-      {
         path: '/todo-list',
         element: <TodoList/>
       },

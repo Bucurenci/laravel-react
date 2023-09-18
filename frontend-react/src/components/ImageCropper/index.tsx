@@ -31,7 +31,7 @@ export const ImageCropper: React.FC = ({uploadedImage, onCropFile}) => {
 
       setCropData(dataUrl);
 
-      if (dataUrl) {
+      if (dataUrl && onCropFile) {
         onCropFile(dataURLtoFile(dataUrl));
       }
     }
@@ -39,7 +39,10 @@ export const ImageCropper: React.FC = ({uploadedImage, onCropFile}) => {
 
   const onCancel = () => {
     setCropData(null);
-    onCropFile(null);
+
+    if (onCropFile) {
+      onCropFile(null);
+    }
   }
 
   return (

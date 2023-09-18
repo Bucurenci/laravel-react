@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignupRequest;
+use App\Http\Resources\AuthResource;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +14,8 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function login(LoginRequest $request) {
+    public function login(LoginRequest $request)
+    {
 
         $credentials = $request->validated();
 
@@ -33,7 +36,8 @@ class AuthController extends Controller
 
     }
 
-    public function signup(SignupRequest $request) {
+    public function signup(SignupRequest $request)
+    {
 
         $data = $request->validated();
 
@@ -51,13 +55,24 @@ class AuthController extends Controller
         return response(compact('user', 'token'));
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request)
+    {
 
         /** @var User $user */
 
         $user = $request->user();
         $user->currentAccessToken()->delete();
 
-        return response('', 204);
+        return response()->noContent();
+    }
+
+    public function getUser(Request $request)
+    {
+
+        /** @var User $user */
+
+        $user = Auth::user();
+
+        return new AuthResource($user);
     }
 }

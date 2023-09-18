@@ -12,7 +12,7 @@ export default function Signup() {
   const passwordConfirmationRef = useRef<HTMLInputElement>(null!);
 
   const [errors, setErrors] = useState();
-  const {setLoggedInUser, setToken} =  useStateContext();
+  const {setAuthUser, setToken} = useStateContext();
 
   const onSubmit = (ev) => {
     ev.preventDefault();
@@ -29,7 +29,7 @@ export default function Signup() {
 
     axiosClient.post('/signup', payload)
       .then(({data}) => {
-        setLoggedInUser(data.user);
+        setAuthUser(data.user);
         setToken(data.token);
       })
       .catch(error => {
@@ -72,11 +72,12 @@ export default function Signup() {
         </div>
         <div className="col-sm-6">
           <input ref={passwordConfirmationRef} type="password" className="form-control form-control-user"
-                 id="exampleRepeatPassword" placeholder="Repeat Password" />
+                 id="exampleRepeatPassword" placeholder="Repeat Password"/>
         </div>
         <div className="col">
           {errors && errors.password && <div className="text-danger ps-3 mt-2">{errors.password[0]}</div>}
-          {errors && errors.password_confirmation && <div className="text-danger ps-3 mt-2">{errors.password_confirmation[0]}</div>}
+          {errors && errors.password_confirmation &&
+            <div className="text-danger ps-3 mt-2">{errors.password_confirmation[0]}</div>}
         </div>
       </div>
       <div className="d-grid gap-2">
