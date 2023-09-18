@@ -19,7 +19,8 @@ export default function UsersList({users, onUserDelete, openUserUpdate}) {
         <tr key={u.id}>
           <td>{u.id}</td>
           <td>
-            <img src={u.avatar ? u.avatar : "/img/user-avatar-placeholder-xs.png"} alt={`${u.first_name} Photo`}
+            <img src={u.avatar.thumb ? u.avatar.thumb : "/img/user-avatar-placeholder-xs.png"}
+                 alt={`${u.first_name} Photo`}
                  className="img-fluid rounded-circle"/>
           </td>
           <td>{u.email}</td>

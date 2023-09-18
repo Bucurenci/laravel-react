@@ -12,6 +12,7 @@ use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class UserController extends Controller
 {
@@ -81,15 +82,36 @@ class UserController extends Controller
         $user = User::query()->find($id);
 
         if ($request->hasFile('avatar')) {
-            $path = '/images/users/avatar/full';
-            $filename = $user->id . '-' . Str::random(16) . "." . $request->file('avatar')->getClientOriginalExtension();
+            $rootPath = '/images/users/avatar/';
 
-            if ($user->avatar) {
-                $pathForRemove = $path . '/' . $user->avatar;
-                Storage::disk('public')->delete($pathForRemove);
+            $path['full'] = $rootPath . 'full/';
+            $path['thumb'] = $rootPath . 'thumb/';
+            $path['medium'] = $rootPath . 'medium/';
+
+            if (!Storage::disk('public')->directoryExists($path['full'])) {
+                Storage::disk('public')->makeDirectory($path['full']);
             }
 
-            Storage::disk('public')->put($path . '/' . $filename, file_get_contents($request->file('avatar')));
+            if (!Storage::disk('public')->directoryExists($path['medium'])) {
+                Storage::disk('public')->makeDirectory($path['medium']);
+            }
+
+            if (!Storage::disk('public')->directoryExists($path['thumb'])) {
+                Storage::disk('public')->makeDirectory($path['thumb']);
+            }
+
+            if ($user->avatar) {
+                Storage::disk('public')->delete($path['full'] . $user->avatar);
+                Storage::disk('public')->delete($path['medium'] . $user->avatar);
+                Storage::disk('public')->delete($path['thumb'] . $user->avatar);
+            }
+
+            $filename = $user->id . '-' . Str::random(16) . "." . $request->file('avatar')->getClientOriginalExtension();
+
+            Image::make($request->file('avatar'))->save(storage_path('app/public') . $path['full'] . $filename);
+            Image::make($request->file('avatar'))->fit(400, 400)->save(storage_path('app/public') . $path['medium'] . $filename);
+            Image::make($request->file('avatar'))->fit(100, 100)->save(storage_path('app/public') . $path['thumb'] . $filename);
+
             $data['avatar'] = $filename;
         }
 
@@ -103,9 +125,15 @@ class UserController extends Controller
         $user = User::query()->find($id);
 
         if ($user->avatar) {
-            $path = '/images/users/avatar/full';
-            $pathForRemove = $path . '/' . $user->avatar;
-            Storage::disk('public')->delete($pathForRemove);
+            $rootPath = '/images/users/avatar/';
+
+            $path['full'] = $rootPath . 'full/';
+            $path['thumb'] = $rootPath . 'thumb/';
+            $path['medium'] = $rootPath . 'medium/';
+
+            Storage::disk('public')->delete($path['full'] . $user->avatar);
+            Storage::disk('public')->delete($path['thumb'] . $user->avatar);
+            Storage::disk('public')->delete($path['medium'] . $user->avatar);
 
             $data['avatar'] = NULL;
 

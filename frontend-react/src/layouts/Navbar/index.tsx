@@ -184,7 +184,7 @@ function Navbar() {
             <span className="me-2 d-none d-lg-inline text-gray-600 small">
               {authUser.first_name} {authUser.last_name}
             </span>
-            <img src={authUser.avatar ? authUser.avatar : "/img/user-avatar-placeholder-xs.png"}
+            <img src={authUser.avatar.thumb ? authUser.avatar.thumb : "/img/user-avatar-placeholder-xs.png"}
                  className="img-fluid rounded-circle shadow" alt="User Avatar" width={50}/>
           </Link>
           <div className="dropdown-menu  dropdown-menu-end shadow animated--grow-in"

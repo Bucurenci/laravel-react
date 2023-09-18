@@ -16,8 +16,6 @@ export default function ModalForm() {
       value: JSON.stringify(valueRef.current.value),
     }
 
-    console.log(payload);
-
     setErrors(null);
 
     axiosClient.post(`/settings`, payload)
@@ -39,9 +37,9 @@ export default function ModalForm() {
     <form onSubmit={onSubmit} className="user">
 
       <div className="mb-3">
-          <input ref={nameRef} type="text" className="form-control form-control-user" id="setting_name"
-                 placeholder="Name..."/>
-          {errors && errors.name && <div className="text-danger ps-3 mt-2">{errors.name[0]}</div>}
+        <input ref={nameRef} type="text" className="form-control form-control-user" id="setting_name"
+               placeholder="Name..."/>
+        {errors && errors.name && <div className="text-danger ps-3 mt-2">{errors.name[0]}</div>}
       </div>
 
       <div className="mb-3">

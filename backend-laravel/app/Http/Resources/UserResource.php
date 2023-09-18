@@ -21,7 +21,11 @@ class UserResource extends JsonResource
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->email,
-            'avatar' => $this->avatar ? asset('storage/images/users/avatar/full/' . $this->avatar) : null,
+            'avatar' => [
+                'full' => $this->avatar ? asset('storage/images/users/avatar/full/' . $this->avatar) : null,
+                'medium' => $this->avatar ? asset('storage/images/users/avatar/medium/' . $this->avatar) : null,
+                'thumb' => $this->avatar ? asset('storage/images/users/avatar/thumb/' . $this->avatar) : null,
+            ],
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
         ];
     }

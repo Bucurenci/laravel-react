@@ -11,7 +11,11 @@ export interface UserType {
   first_name: string;
   last_name: string;
   email: string;
-  avatar: string | null;
+  avatar: {
+    full: string | null;
+    medium: string | null;
+    thumb: string | null;
+  };
   password?: string;
   password_confirmation?: string;
   created_at?: string;
@@ -88,7 +92,7 @@ export default function Users() {
         setSelectedUser(userData);
 
         if (selectedUser.id == authUser.id) {
-          setAuthUser({...authUser, userData});
+          setAuthUser({...authUser, ...userData});
         }
 
         users.map((user, index) => {
@@ -150,7 +154,7 @@ export default function Users() {
         setSelectedUser(userData);
 
         if (userData.id == authUser.id) {
-          setAuthUser({...authUser, userData});
+          setAuthUser({...authUser, ...userData});
         }
 
         users.map((user, index) => {
