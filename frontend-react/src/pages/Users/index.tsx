@@ -11,7 +11,7 @@ export interface UserType {
   first_name: string;
   last_name: string;
   email: string;
-  avatar: null | {
+  avatar: {
     full: string | null;
     medium: string | null;
     thumb: string | null;
@@ -31,7 +31,7 @@ export default function Users() {
   const [updatePage, setUpdatePage] = useState<boolean>(false);
   const [paginationData, setPaginationData] = useState({
     current_page: 1,
-    siblings: 1,
+    siblings: 2,
     last_page: 1
   });
 
@@ -174,24 +174,37 @@ export default function Users() {
   }
 
   const handleAvatarDelete = () => {
-    setLoading(true);
 
     if (!window.confirm("Are you sure you want to delete this image?")) {
       return;
     }
 
+    setLoading(true);
+
     axiosClient.patch(`/users/${selectedUser.id}/delete-image`)
       .then(() => {
         setLoading(false);
-        setSelectedUser({...selectedUser, avatar: null});
+        setSelectedUser({
+          ...selectedUser, avatar: {
+            thumb: null,
+            medium: null,
+            full: null
+          }
+        });
 
         if (selectedUser.id == authUser.id) {
-          setAuthUser({...authUser, avatar: null});
+          setAuthUser({
+            ...authUser, avatar: {
+              thumb: null,
+              medium: null,
+              full: null
+            }
+          });
         }
 
         users.map((user, index) => {
           if (user.id == selectedUser.id) {
-            users[index] = {...users[index], avatar: null};
+            users[index] = {...users[index], avatar: {}};
           }
         });
 

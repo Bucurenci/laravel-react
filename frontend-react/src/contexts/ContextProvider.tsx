@@ -2,8 +2,33 @@ import {createContext, useContext, useState} from "react";
 
 const StateContext = createContext({})
 
+export interface AuthUserType {
+  id: number | null;
+  first_name: string;
+  last_name: string;
+  email: string;
+  avatar: {
+    full: string | null;
+    medium: string | null;
+    thumb: string | null;
+  };
+  password?: string;
+  password_confirmation?: string;
+  created_at?: string;
+}
+
 export const ContextProvider = ({children}) => {
-  const [authUser, setAuthUser] = useState({});
+  const [authUser, setAuthUser] = useState<AuthUserType>({
+    id: null,
+    first_name: '',
+    last_name: '',
+    email: '',
+    avatar: {
+      full: null,
+      medium: null,
+      thumb: null,
+    }
+  });
   const [notification, _setNotification] = useState('');
   const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
 

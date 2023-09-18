@@ -46,7 +46,7 @@ export default function AvatarForm({user, errors, onUpdate, onDelete}) {
             <img src={user.avatar.medium ? user.avatar.medium : "/img/user-avatar-placeholder.png"}
                  className="img-fluid rounded shadow" alt="User Avatar"/>
             <div className="position-absolute bottom-0 end-0 mb-2 me-2">
-              {user.avatar ? (
+              {user.avatar.medium ? (
                 <>
                   <button onClick={onSelectImage} className="btn btn-primary"><i className="fa fa-pencil"></i></button>
                   <button onClick={onDelete} className="btn btn-danger ms-2"><i className="fa fa-trash"></i>

@@ -1,9 +1,9 @@
-import React, {useState, createRef} from "react";
+import {useState, createRef, FC} from "react";
 import Cropper, {ReactCropperElement} from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import {dataURLtoFile} from "../../utils/Files";
 
-export const ImageCropper: React.FC = ({uploadedImage, onCropFile}) => {
+export const ImageCropper: FC = ({uploadedImage, onCropFile}) => {
 
   const [cropData, setCropData] = useState<string | undefined>(null);
   const cropperRef = createRef<ReactCropperElement>();
