@@ -11,7 +11,7 @@ export interface UserType {
   first_name: string;
   last_name: string;
   email: string;
-  avatar: {
+  avatar: null | {
     full: string | null;
     medium: string | null;
     thumb: string | null;
@@ -49,7 +49,6 @@ export default function Users() {
         setPaginationData({
           ...paginationData, current_page: data.meta.current_page, last_page: data.meta.last_page
         });
-
       })
       .catch(() => {
         setLoading(false);

@@ -6,7 +6,6 @@ import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import Users from "./pages/Users";
 import ForgotPassword from "./pages/ForgotPassword";
-import UserCreateUpdate from "./pages/UserCreateUpdate";
 import TodoList from "./pages/_TodoList";
 import UseLoaderHook, {dogData} from "./pages/_UseLoaderHook";
 import Settings from "./pages/Settings";
