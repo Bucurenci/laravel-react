@@ -1,13 +1,22 @@
 import {useEffect, useState} from "react";
 import axiosClient from "../../axios-client";
-import SettingsTable from "./components/SettingsTable";
+import SettingsList from "./components/SettingsList";
 import Modal from "../../components/Modal";
 import ModalForm from "./components/ModalForm";
+import {useStateContext} from "../../contexts/ContextProvider";
+
+export interface SettingItem {
+  id: number,
+  name: string,
+  type: string,
+  value: string
+}
 
 export default function Settings() {
-  const [settings, setSettings] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const {setNotification} = useStateContext();
+  const [settings, setSettings] = useState<SettingItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   useEffect(() => {
     getSettings();
@@ -26,6 +35,22 @@ export default function Settings() {
       })
   }
 
+  const handleSettingDelete = (settingId: number) => {
+    if (!window.confirm("Are you sure you want to delete this setting?")) {
+      return;
+    }
+
+    axiosClient.delete(`/settings/${settingId}`)
+      .then(() => {
+
+        setSettings(settings.filter((setting) => (setting.id != settingId)));
+
+        setNotification("Setting was successfully deleted! ");
+      }).catch(({response}) => {
+      console.error(response);
+    })
+  }
+
   return (
     <div className="card border-0 shadow-lg">
       <div className="card-header">
@@ -41,7 +66,7 @@ export default function Settings() {
         </div>
       </div>
       <div className="card-body">
-        <SettingsTable settings={settings} loading={loading}/>
+        <SettingsList settings={settings} loading={loading} onSettingDelete={handleSettingDelete}/>
       </div>
       <Modal title="Add new setting" showModal={showModal} setShowModal={setShowModal}>
         <ModalForm/>

@@ -1,6 +1,13 @@
 import SettingsItem from "../SettingsItem";
+import {SettingItem} from "../../index";
 
-export default function SettingsTable({settings, loading}) {
+interface SettingsListProps {
+  settings: SettingItem[],
+  loading: boolean,
+  onSettingDelete: (userId: number) => void
+}
+
+export default function SettingsList({settings, loading, onSettingDelete}: SettingsListProps) {
 
   return (
     <div className="table-responsive">
@@ -15,13 +22,13 @@ export default function SettingsTable({settings, loading}) {
         <tbody>
         {loading ?
           <tr>
-            <td colSpan="3">
+            <td colSpan={3}>
               <div className="text-center fs-4 my-3">Loading...</div>
             </td>
           </tr>
           :
           settings.map((settingData) => (
-            <SettingsItem key={settingData.id} setting={settingData} />
+            <SettingsItem key={settingData.id} setting={settingData} onDelete={onSettingDelete}/>
           ))
         }
         </tbody>

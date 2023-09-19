@@ -1,7 +1,14 @@
-import {useRef} from "react";
-import {UserType} from "../../pages/Users";
+import {SyntheticEvent, useRef} from "react";
+import {NewUser, User, UserFormErrors} from "../../models/User";
 
-export default function UserForm({user, errors, onUserSubmit}) {
+interface UserFormProps {
+  user?: User,
+  errors: UserFormErrors | null,
+  onUserUpdate?: (formData: User) => void
+  onUserCreate?: (formData: NewUser) => void
+}
+
+export default function UserForm({user, errors, onUserCreate, onUserUpdate}: UserFormProps) {
 
   const firstNameRef = useRef<HTMLInputElement>(null!);
   const lastNameRef = useRef<HTMLInputElement>(null!);
@@ -9,26 +16,33 @@ export default function UserForm({user, errors, onUserSubmit}) {
   const passwordRef = useRef<HTMLInputElement>(null!);
   const passwordConfirmationRef = useRef<HTMLInputElement>(null!);
 
-  const handleSubmit = (ev) => {
+  const handleSubmit = (ev: SyntheticEvent<HTMLFormElement>) => {
     ev.preventDefault();
 
-    let userData: UserType = {
-      id: user?.id ? user.id : null,
-      first_name: firstNameRef.current.value,
-      last_name: lastNameRef.current.value,
-      email: emailRef.current.value,
-      avatar: null,
-    }
+    if (onUserUpdate && user) {
 
-    if (passwordRef.current.value || passwordConfirmationRef.current.value) {
-      userData = {
-        ...userData,
+      let updateUserData: User = {
+        id: user.id,
+        first_name: firstNameRef.current.value,
+        last_name: lastNameRef.current.value,
+        email: emailRef.current.value,
+        avatar: null,
+      }
+
+      onUserUpdate(updateUserData);
+
+    } else if (onUserCreate) {
+
+      let createUserData: NewUser = {
+        first_name: firstNameRef.current.value,
+        last_name: lastNameRef.current.value,
+        email: emailRef.current.value,
         password: passwordRef.current.value,
         password_confirmation: passwordConfirmationRef.current.value
       }
-    }
 
-    onUserSubmit<UserType>(userData);
+      onUserCreate(createUserData)
+    }
   }
 
   return (
@@ -40,7 +54,7 @@ export default function UserForm({user, errors, onUserSubmit}) {
 
           <div className="row">
             <div className="col-md-6 mb-3 mb-md-0">
-              <input defaultValue={user?.first_name}
+              <input defaultValue={user?.first_name ? user.first_name : ''}
                      ref={firstNameRef}
                      type="text" autoComplete="off"
                      className="form-control form-control-user"
@@ -49,7 +63,7 @@ export default function UserForm({user, errors, onUserSubmit}) {
               {errors?.first_name && <div className="text-danger ps-3 my-2">{errors.first_name[0]}</div>}
             </div>
             <div className="col-md-6 mb-3">
-              <input defaultValue={user?.last_name}
+              <input defaultValue={user?.last_name ? user.last_name : ''}
                      ref={lastNameRef}
                      type="text" autoComplete="off"
                      className="form-control form-control-user"
@@ -59,7 +73,7 @@ export default function UserForm({user, errors, onUserSubmit}) {
             </div>
           </div>
           <div className="mb-3">
-            <input defaultValue={user?.email}
+            <input defaultValue={user?.email ? user.email : ''}
                    ref={emailRef}
                    type="email"
                    className="form-control form-control-user"

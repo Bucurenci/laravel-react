@@ -16,15 +16,8 @@ function Sidebar() {
 
       <li className="nav-item">
         <NavLink to="/users" className="nav-link">
-          <i className="fas fa-fw fa-user-alt"></i>
+          <i className="fas fa-fw fa-user-alt me-2"></i>
           <span>Users</span>
-        </NavLink>
-      </li>
-
-      <li className="nav-item">
-        <NavLink to="/settings" className="nav-link">
-          <i className="fas fa-fw fa-cog"></i>
-          <span>Settings</span>
         </NavLink>
       </li>
 
@@ -129,13 +122,17 @@ function Sidebar() {
               data-bs-target="#collapseUtilities"
               aria-expanded="true" aria-controls="collapseUtilities">
           <i className="fas fa-fw fa-tenge-sign me-2"></i>
-          <span>Tests</span>
+          <span>In progress</span>
         </Link>
 
         <div id="collapseUtilities" className="collapse" aria-labelledby="headingUtilities"
              data-parent="#accordionSidebar">
           <div className="bg-white py-2 collapse-inner rounded">
 
+            <NavLink to="/settings" className="collapse-item">
+              <i className="fas fa-fw fa-cog me-2"></i>
+              <span>Settings</span>
+            </NavLink>
             <NavLink to="/todo-list" className="collapse-item">
               <i className="fas fa-fw fa-list-alt me-2"></i>
               <span>Todo List</span>

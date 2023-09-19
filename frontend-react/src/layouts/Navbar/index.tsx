@@ -13,8 +13,7 @@ function Navbar() {
       })
   }, []);
 
-  const onLogout = (ev) => {
-    ev.preventDefault();
+  const onLogout = () => {
 
     axiosClient.post('/logout')
       .then(() => {
@@ -182,9 +181,9 @@ function Navbar() {
           <Link className="nav-link dropdown-toggle" to="#" id="userDropdown" role="button"
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span className="me-2 d-none d-lg-inline text-gray-600 small">
-              {authUser.first_name} {authUser.last_name}
+              {authUser?.first_name} {authUser?.last_name}
             </span>
-            <img src={authUser.avatar.thumb ? authUser.avatar.thumb : "/img/user-avatar-placeholder-xs.png"}
+            <img src={authUser?.avatar?.thumb ? authUser.avatar.thumb : "/img/user-avatar-placeholder-xs.png"}
                  className="img-fluid rounded-circle shadow" alt="User Avatar" width={50}/>
           </Link>
           <div className="dropdown-menu  dropdown-menu-end shadow animated--grow-in"
@@ -202,10 +201,10 @@ function Navbar() {
                           Activity Log
                       </Link>
                       <div className="dropdown-divider"></div>*/}
-            <Link to="#" onClick={onLogout} className="dropdown-item" data-toggle="modal" data-bs-target="#logoutModal">
+            <button onClick={onLogout} className="dropdown-item" data-toggle="modal" data-bs-target="#logoutModal">
               <i className="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>
               Logout
-            </Link>
+            </button>
           </div>
         </li>
 

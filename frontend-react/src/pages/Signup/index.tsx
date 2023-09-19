@@ -1,7 +1,8 @@
 import {Link} from "react-router-dom";
-import {useRef, useState} from "react";
+import {FormEvent, useRef, useState} from "react";
 import axiosClient from "../../axios-client";
 import {useStateContext} from "../../contexts/ContextProvider";
+import {UserFormErrors} from "../../models/User";
 
 export default function Signup() {
 
@@ -11,10 +12,10 @@ export default function Signup() {
   const passwordRef = useRef<HTMLInputElement>(null!);
   const passwordConfirmationRef = useRef<HTMLInputElement>(null!);
 
-  const [errors, setErrors] = useState();
+  const [errors, setErrors] = useState<UserFormErrors | null>(null);
   const {setAuthUser, setToken} = useStateContext();
 
-  const onSubmit = (ev) => {
+  const onSubmit = (ev: FormEvent) => {
     ev.preventDefault();
 
     const payload = {

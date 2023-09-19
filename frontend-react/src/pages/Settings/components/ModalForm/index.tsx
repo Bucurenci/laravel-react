@@ -1,13 +1,19 @@
-import {useRef, useState} from "react";
+import {FormEvent, useRef, useState} from "react";
 import axiosClient from "../../../../axios-client";
+
+interface SettingsFormErrors {
+  name?: string[],
+  type?: string[],
+  value?: string[]
+}
 
 export default function ModalForm() {
   const nameRef = useRef<HTMLInputElement>(null!);
-  const typeRef = useRef<HTMLInputElement>(null!);
+  const typeRef = useRef<HTMLSelectElement>(null!);
   const valueRef = useRef<HTMLInputElement>(null!);
-  const [errors, setErrors] = useState();
+  const [errors, setErrors] = useState<SettingsFormErrors | null>(null);
 
-  const onSubmit = (ev) => {
+  const onSubmit = (ev: FormEvent) => {
     ev.preventDefault();
 
     let payload = {
@@ -39,7 +45,7 @@ export default function ModalForm() {
       <div className="mb-3">
         <input ref={nameRef} type="text" className="form-control form-control-user" id="setting_name"
                placeholder="Name..."/>
-        {errors && errors.name && <div className="text-danger ps-3 mt-2">{errors.name[0]}</div>}
+        {errors && errors?.name && <div className="text-danger ps-3 mt-2">{errors.name[0]}</div>}
       </div>
 
       <div className="mb-3">
@@ -50,13 +56,13 @@ export default function ModalForm() {
           <option value="email">Email</option>
           <option value="select">Dropdown</option>
         </select>
-        {errors && errors.type && <div className="text-danger ps-3 mt-2">{errors.type[0]}</div>}
+        {errors && errors?.type && <div className="text-danger ps-3 mt-2">{errors.type[0]}</div>}
       </div>
 
       <div className="mb-3">
         <input ref={valueRef} type="text" className="form-control form-control-user" id="setting_value"
                placeholder="Value..."/>
-        {errors && errors.value && <div className="text-danger ps-3 mt-2">{errors.value[0]}</div>}
+        {errors && errors?.value && <div className="text-danger ps-3 mt-2">{errors.value[0]}</div>}
       </div>
 
       <div className="d-grid gap-2">

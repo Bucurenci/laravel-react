@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {useLoaderData} from 'react-router-dom'
 
 export default function UseLoaderHook() {
@@ -9,13 +10,13 @@ export default function UseLoaderHook() {
         <h1 className="h2">Use Loader Hook</h1>
       </div>
       <div className="card-body py-4 text-center">
-        <img src={loaderData.url} width={500} height={500} />
+        {loaderData && loaderData.url && <img src={loaderData.url} width={500} height={500} alt="Loader Hook Image"/>}
       </div>
     </div>
   );
 }
 
-export const dogData= async () => {
+export const dogData = async () => {
 
   const response = await fetch('https://random.dog/woof.json');
 

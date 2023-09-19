@@ -1,11 +1,19 @@
-export default function UsersList({users, onUserDelete, openUserUpdate}) {
+import {User} from "../../../../models/User";
+
+interface UsersListProps {
+  users: User[],
+  onUserDelete: (id: number) => void,
+  openUserUpdate: (u: User) => void,
+}
+
+export default function UsersList({users, onUserDelete, openUserUpdate}: UsersListProps) {
 
   return (
     <table className="table align-middle">
       <thead>
       <tr>
         <th>ID</th>
-        <th width={75}>Avatar</th>
+        <th style={{width: '75px'}}>Avatar</th>
         <th>Email</th>
         <th>First Name</th>
         <th>Last Name</th>
@@ -15,11 +23,11 @@ export default function UsersList({users, onUserDelete, openUserUpdate}) {
       </thead>
       <tbody>
 
-      {users.map(u => (
-        <tr key={u.id}>
+      {users.map((u, index) => (
+        <tr key={index}>
           <td>{u.id}</td>
           <td>
-            <img src={u.avatar.thumb ? u.avatar.thumb : "/img/user-avatar-placeholder-xs.png"}
+            <img src={u.avatar ? u.avatar.thumb : "/img/user-avatar-placeholder-xs.png"}
                  alt={`${u.first_name} Photo`}
                  className="img-fluid rounded-circle"/>
           </td>
@@ -28,7 +36,7 @@ export default function UsersList({users, onUserDelete, openUserUpdate}) {
           <td>{u.last_name}</td>
           <td>{u.created_at}</td>
           <td className="text-right">
-            <button onClick={ev => onUserDelete(u.id)} className="btn btn-danger ms-2 float-end">
+            <button onClick={() => onUserDelete(u.id)} className="btn btn-danger ms-2 float-end">
               <i className="fa fa-trash me-2"></i>
               Delete
             </button>

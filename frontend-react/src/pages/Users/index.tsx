@@ -5,27 +5,13 @@ import UsersList from "./components/UsersList";
 import Pagination from "../../components/Pagination";
 import UsersCreate from "./components/UsersCreate";
 import UsersUpdate from "./components/UsersUpdate";
-
-export interface UserType {
-  id: number | null;
-  first_name: string;
-  last_name: string;
-  email: string;
-  avatar: {
-    full: string | null;
-    medium: string | null;
-    thumb: string | null;
-  };
-  password?: string;
-  password_confirmation?: string;
-  created_at?: string;
-}
+import {NewUser, User, UserFormErrors} from "../../models/User";
 
 export default function Users() {
   const {authUser, setNotification, setAuthUser} = useStateContext();
-  const [users, setUsers] = useState<UserType[]>([]);
-  const [selectedUser, setSelectedUser] = useState<UserType>(null);
-  const [errors, setErrors] = useState(null);
+  const [users, setUsers] = useState<User[]>([]);
+  const [selectedUser, setSelectedUser] = useState<User>({} as User);
+  const [errors, setErrors] = useState<UserFormErrors | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [createPage, setCreatePage] = useState<boolean>(false);
   const [updatePage, setUpdatePage] = useState<boolean>(false);
@@ -56,7 +42,7 @@ export default function Users() {
       })
   }
 
-  const handleUserCreate = (userData) => {
+  const handleUserCreate = (userData: NewUser) => {
     setLoading(true);
 
     axiosClient.post(`/users`, userData)
@@ -64,9 +50,7 @@ export default function Users() {
         setLoading(false);
         openUsersList();
         getUsers(1);
-
         setNotification("User was successfully created!");
-
       })
       .catch((error) => {
         setLoading(false);
@@ -79,18 +63,17 @@ export default function Users() {
       })
   }
 
-  const handleUserUpdate = (formData: UserType) => {
+  const handleUserUpdate = (formData: User) => {
+
     setLoading(true);
 
-    axiosClient.put(`/users/${selectedUser.id}`, formData)
+    axiosClient.put(`/users/${formData.id}`, formData)
       .then((response) => {
-        let userData: UserType = response.data;
+        let userData: User = response.data;
 
         setLoading(false);
-        setLoading(false);
-        setSelectedUser(userData);
 
-        if (selectedUser.id == authUser.id) {
+        if (userData.id == authUser?.id) {
           setAuthUser({...authUser, ...userData});
         }
 
@@ -100,12 +83,11 @@ export default function Users() {
           }
         });
 
+        setSelectedUser(userData);
         openUsersList();
-
         setNotification("User was successfully updated!");
       })
       .catch(({response}) => {
-        setLoading(false);
         setLoading(false);
 
         if (response && response.status === 422) {
@@ -126,33 +108,35 @@ export default function Users() {
       .then(() => {
         setLoading(false);
         getUsers(paginationData.current_page);
-
         setNotification("User was successfully deleted! ");
       })
   }
 
-  const handleAvatarUpdate = (imageFile) => {
+  const handleAvatarUpdate = (user: User, imageFile: File) => {
+
     let formData = new FormData();
 
     setLoading(true);
 
     formData.append('avatar', imageFile);
-
-    axiosClient.post(`/users/${selectedUser.id}/upload-image`, formData, {
+    axiosClient.post(`/users/${user.id}/upload-image`, formData, {
         headers: {"Content-Type": "multipart/form-data"},
-        onUploadProgress: (progressEvent) => {
-          let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
-          console.log(percentCompleted)
-        },
+        /* TODO a progress bar */
+        /* onUploadProgress: (progressEvent) => {
+           let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+           console.log(percentCompleted)
+         },*/
       },
     )
       .then((response) => {
-        let userData: UserType = response.data;
+        let userData: User = response.data;
 
         setLoading(false);
+        setErrors(null);
         setSelectedUser(userData);
+        setNotification("The image was successfully updated!");
 
-        if (userData.id == authUser.id) {
+        if (userData.id == authUser?.id) {
           setAuthUser({...authUser, ...userData});
         }
 
@@ -161,8 +145,6 @@ export default function Users() {
             users[index] = {...users[index], ...userData};
           }
         });
-
-        setNotification("The image was successfully updated!");
       })
       .catch(({response}) => {
         setLoading(false);
@@ -173,7 +155,7 @@ export default function Users() {
       })
   }
 
-  const handleAvatarDelete = () => {
+  const handleAvatarDelete = (user: User) => {
 
     if (!window.confirm("Are you sure you want to delete this image?")) {
       return;
@@ -181,33 +163,21 @@ export default function Users() {
 
     setLoading(true);
 
-    axiosClient.patch(`/users/${selectedUser.id}/delete-image`)
+    axiosClient.patch(`/users/${user?.id}/delete-image`)
       .then(() => {
         setLoading(false);
-        setSelectedUser({
-          ...selectedUser, avatar: {
-            thumb: null,
-            medium: null,
-            full: null
-          }
-        });
 
-        if (selectedUser.id == authUser.id) {
-          setAuthUser({
-            ...authUser, avatar: {
-              thumb: null,
-              medium: null,
-              full: null
-            }
-          });
+        if (authUser && user.id == authUser.id) {
+          setAuthUser({...authUser, avatar: null});
         }
 
-        users.map((user, index) => {
-          if (user.id == selectedUser.id) {
-            users[index] = {...users[index], avatar: {}};
+        users.map((u, index) => {
+          if (u.id == user?.id) {
+            users[index] = {...users[index], avatar: null};
           }
         });
 
+        setSelectedUser({...selectedUser, avatar: null});
         setNotification("The image was successfully deleted!");
       })
   }
@@ -227,7 +197,7 @@ export default function Users() {
     setUpdatePage(false);
   }
 
-  const openUserUpdate = (user: UserType) => {
+  const openUserUpdate = (user: User) => {
     setCreatePage(false);
     setUpdatePage(true);
     setSelectedUser(user);

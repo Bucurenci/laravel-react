@@ -1,46 +1,45 @@
-import {createContext, useContext, useState} from "react";
+import {ReactNode, createContext, useContext, useState, Dispatch, SetStateAction} from "react";
+import {AuthUser} from "../models/User";
 
-const StateContext = createContext({})
-
-export interface AuthUserType {
-  id: number | null;
-  first_name: string;
-  last_name: string;
-  email: string;
-  avatar: {
-    full: string | null;
-    medium: string | null;
-    thumb: string | null;
-  };
-  password?: string;
-  password_confirmation?: string;
-  created_at?: string;
+export interface ContextProviderType {
+  authUser: AuthUser | null;
+  notification: ReactNode;
+  token: string | null;
+  setAuthUser: Dispatch<SetStateAction<AuthUser | null>>,
+  setNotification: (message: ReactNode) => void;
+  setToken: (token: string | null) => void,
 }
 
-export const ContextProvider = ({children}) => {
-  const [authUser, setAuthUser] = useState<AuthUserType>({
-    id: null,
-    first_name: '',
-    last_name: '',
-    email: '',
-    avatar: {
-      full: null,
-      medium: null,
-      thumb: null,
-    }
-  });
-  const [notification, _setNotification] = useState('');
-  const [token, _setToken] = useState(localStorage.getItem('ACCESS_TOKEN'));
+interface ContextProviderProps {
+  children: ReactNode;
+}
 
-  const setNotification = (message) => {
+const StateContext = createContext<ContextProviderType>({
+  authUser: null,
+  notification: '',
+  token: localStorage.getItem('ACCESS_TOKEN'),
+  setAuthUser: () => {
+  },
+  setNotification: () => {
+  },
+  setToken: () => {
+  },
+});
+
+export const ContextProvider = ({children}: ContextProviderProps) => {
+  const [authUser, setAuthUser] = useState<AuthUser | null>(null);
+  const [notification, _setNotification] = useState<ReactNode>('');
+  const [token, _setToken] = useState<string | null>(localStorage.getItem('ACCESS_TOKEN'));
+
+  const setNotification = (message: ReactNode | null) => {
     _setNotification(message);
 
     setTimeout(() => {
       _setNotification('');
-    }, 5000);
+    }, 4000);
   }
 
-  const setToken = (token) => {
+  const setToken = (token: string | null) => {
     _setToken(token);
 
     if (token) {
@@ -50,7 +49,7 @@ export const ContextProvider = ({children}) => {
     }
   }
 
-  const providerValue = {
+  const providerValue: ContextProviderType = {
     authUser,
     token,
     notification,

@@ -16,17 +16,22 @@ class AuthResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
+        $authUser = [
             'id' => $this->id,
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'email' => $this->email,
-            'avatar' => [
+            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+        ];
+
+        if ($this->avatar) {
+            $authUser['avatar'] = [
                 'full' => $this->avatar ? asset('storage/images/users/avatar/full/' . $this->avatar) : null,
                 'medium' => $this->avatar ? asset('storage/images/users/avatar/medium/' . $this->avatar) : null,
                 'thumb' => $this->avatar ? asset('storage/images/users/avatar/thumb/' . $this->avatar) : null,
-            ],
-            'created_at' => $this->created_at->format('Y-m-d H:i:s'),
-        ];
+            ];
+        }
+
+        return $authUser;
     }
 }

@@ -1,25 +1,26 @@
 import {Link} from "react-router-dom";
-import {useRef, useState} from "react";
+import {FormEvent, useRef, useState} from "react";
 import {useStateContext} from "../../contexts/ContextProvider";
 import axiosClient from "../../axios-client";
+import {UserFormErrors} from "../../models/User";
 
 export default function Login() {
 
   const emailRef = useRef<HTMLInputElement>(null!);
   const passwordRef = useRef<HTMLInputElement>(null!);
 
-  const [errors, setErrors] = useState();
+  const [errors, setErrors] = useState<UserFormErrors | null>(null);
   const {setAuthUser, setToken} = useStateContext();
 
-  const onSubmit = (ev) => {
+  const onSubmit = (ev: FormEvent) => {
     ev.preventDefault();
+
+    setErrors(null);
 
     const payload = {
       email: emailRef.current.value,
       password: passwordRef.current.value
     }
-
-    setErrors(null);
 
     axiosClient.post('/login', payload)
       .then(({data}) => {
@@ -33,8 +34,11 @@ export default function Login() {
         if (response && response.status === 422) {
           if (response.data.errors) {
             setErrors(response.data.errors);
-          } else {
-            setErrors({...errors, password: [response.data.message]});
+          } else if (response.data.message) {
+            let passError = {
+              password: [response.data.message]
+            }
+            setErrors({...errors, ...passError});
           }
         }
       })
@@ -54,7 +58,7 @@ export default function Login() {
                id="exampleInputEmail" aria-describedby="emailHelp"
                placeholder="Email Address..."
         />
-        {errors && errors.email && <div className="text-danger ps-3 mt-2">{errors.email[0]}</div>}
+        {errors && errors?.email && <div className="text-danger ps-3 mt-2">{errors.email[0]}</div>}
       </div>
       <div className="mb-3">
         <input ref={passwordRef}
@@ -63,7 +67,7 @@ export default function Login() {
                id="exampleInputPassword"
                placeholder="Password"
         />
-        {errors && errors.password && <div className="text-danger ps-3 mt-2">{errors.password[0]}</div>}
+        {errors && errors?.password && <div className="text-danger ps-3 mt-2">{errors.password[0]}</div>}
       </div>
       {/*<div className="mb-3">
         <div className="form-check">

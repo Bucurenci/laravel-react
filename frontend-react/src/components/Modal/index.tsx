@@ -1,3 +1,17 @@
+import {Dispatch, ReactNode, SetStateAction} from "react";
+
+interface ModalProps {
+  children: ReactNode,
+  showModal: boolean,
+  setShowModal: Dispatch<SetStateAction<boolean>>,
+  title: string,
+  saveButton?: string,
+  deleteButton?: string,
+  onSave?: () => void,
+  onDelete?: () => void,
+  onClose?: () => void
+}
+
 export default function Modal({
                                 children,
                                 showModal,
@@ -8,7 +22,7 @@ export default function Modal({
                                 onSave,
                                 onDelete,
                                 onClose
-                              }) {
+                              }: ModalProps) {
 
   if (!showModal) {
     return;
@@ -33,14 +47,14 @@ export default function Modal({
 
   const handleClose = () => {
     setShowModal(false);
-    
+
     if (onClose) {
       onClose();
     }
   }
 
   return (
-    <div onMouseDown={handleClose} className="modal show modal-xl fade" tabIndex="-1" style={modalStyle}>
+    <div onMouseDown={handleClose} className="modal show modal-xl fade" tabIndex={-1} style={modalStyle}>
       <div onMouseDown={(ev) => ev.stopPropagation()}
            className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div className="modal-content">

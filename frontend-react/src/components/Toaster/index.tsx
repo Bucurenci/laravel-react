@@ -1,10 +1,15 @@
-import React from "react";
+import {ReactNode} from "react";
 
-export default function Toaster({children}) {
+interface ToasterProps {
+  children: ReactNode,
+}
+
+export default function Toaster({children}: ToasterProps) {
 
   return (
     <div
-      className="alert alert-success position-absolute top-0 start-50 translate-middle-x fade show w-25 mt-2 z-2"
+      style={{minWidth: '25%', maxWidth: '50%'}}
+      className="position-fixed top-0 end-0 alert alert-success fade show mt-2 me-4 z-2 shadow text-center"
       role="alert">
       {children}
     </div>

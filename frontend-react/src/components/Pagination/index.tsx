@@ -1,4 +1,4 @@
-interface PaginationPropsType {
+interface PaginationProps {
   paginationData: {
     current_page: number,
     last_page: number,
@@ -7,11 +7,11 @@ interface PaginationPropsType {
   onPageChange: (page: number) => void
 }
 
-export default function Pagination({paginationData, onPageChange}: PaginationPropsType) {
+export default function Pagination({paginationData, onPageChange}: PaginationProps) {
 
-  let current_page = paginationData.current_page;
-  let last_page = paginationData.last_page;
-  let siblings = null;
+  let current_page: number = paginationData.current_page;
+  let last_page: number = paginationData.last_page;
+  let siblings: number = 2;
   if (paginationData.siblings) {
     siblings = paginationData.siblings;
   }
@@ -20,7 +20,7 @@ export default function Pagination({paginationData, onPageChange}: PaginationPro
     return;
   }
 
-  const getPages = () => {
+  const getPages = (): number[] => {
     let pages = [];
 
     for (let i = 1; i <= last_page; i++) {
@@ -30,13 +30,11 @@ export default function Pagination({paginationData, onPageChange}: PaginationPro
     return pages;
   }
 
-  const innerPages = getPages().filter((page) => (
+  const innerPages: number[] = getPages().filter((page) => (
     (
       page >= current_page - siblings &&
       page <= current_page + siblings
-    )/* ||
-    (current_page == 1 && (page == 2 || page == 3)) ||
-    (current_page == last_page && (page == last_page - 1 || page == last_page - 2))*/
+    )
   ));
 
   return (
@@ -47,7 +45,7 @@ export default function Pagination({paginationData, onPageChange}: PaginationPro
         {current_page != 1 &&
           <li className="page-item">
             <button className={`page-link`}
-                    onClick={(ev) => onPageChange(current_page - 1)}>Prev
+                    onClick={() => onPageChange(current_page - 1)}>Prev
             </button>
           </li>
         }
@@ -72,7 +70,7 @@ export default function Pagination({paginationData, onPageChange}: PaginationPro
         {innerPages.map((page) => (
             <li className="page-item" key={page}>
               <button className={`page-link ${page == current_page ? 'disabled' : ''}`}
-                      onClick={(ev) => onPageChange(page)}>{page}</button>
+                      onClick={() => onPageChange(page)}>{page}</button>
             </li>
           )
         )}
@@ -88,7 +86,7 @@ export default function Pagination({paginationData, onPageChange}: PaginationPro
         {current_page <= last_page - siblings - 1 &&
           <li className="page-item">
             <button className={`page-link ${current_page == last_page ? 'disabled' : ''}`}
-                    onClick={(ev) => onPageChange(last_page)}>{last_page}</button>
+                    onClick={() => onPageChange(last_page)}>{last_page}</button>
           </li>
         }
 
@@ -96,7 +94,7 @@ export default function Pagination({paginationData, onPageChange}: PaginationPro
         {current_page != last_page &&
           <li className="page-item">
             <button className={`page-link`}
-                    onClick={(ev) => onPageChange(current_page + 1)}>Next
+                    onClick={() => onPageChange(current_page + 1)}>Next
             </button>
           </li>
         }

@@ -1,8 +1,9 @@
 import {Link} from "react-router-dom";
+import {FormEvent} from "react";
 
 export default function ForgotPassword() {
 
-  const onSubmit = (ev) => {
+  const onSubmit = (ev: FormEvent) => {
     ev.preventDefault();
   }
 

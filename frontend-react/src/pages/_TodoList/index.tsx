@@ -1,10 +1,16 @@
 import {FormEvent, useRef, useState} from "react";
-import Task from "../../components/Task";
+import Task from "./components/Task";
+
+export interface Todo {
+  id: number,
+  taskName: string,
+  isCompleted: boolean
+}
 
 export default function TodoList() {
 
   const todoInputRef = useRef<HTMLInputElement>(null!);
-  const [todoList, setTodoList] =useState([]);
+  const [todoList, setTodoList] = useState<Todo[]>([]);
 
   const addNewTask = (e: FormEvent) => {
     e.preventDefault();
@@ -21,7 +27,7 @@ export default function TodoList() {
   }
 
   const removeTask = (taskId: number) => {
-    setTodoList(todoList.filter((task) => task.id !== taskId));
+    setTodoList(todoList.filter((task: Todo) => task.id !== taskId));
   }
 
   const completeTask = (taskId: number) => {
@@ -48,7 +54,7 @@ export default function TodoList() {
                 <input ref={todoInputRef}
                        className="form-control form-control-user form-control-lg"
                        id="todoTaskInput"
-                       placeholder="Todo Task..." />
+                       placeholder="Todo Task..."/>
               </div>
               <div className="col-auto">
                 <button className="btn btn-success btn-lg">Add Task</button>

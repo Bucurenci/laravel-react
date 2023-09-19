@@ -1,30 +1,51 @@
 import {useState, createRef, FC} from "react";
-import Cropper, {ReactCropperElement} from "react-cropper";
+import Cropper, {ReactCropperElement, ReactCropperProps} from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import {dataURLtoFile} from "../../utils/Files";
 
-export const ImageCropper: FC = ({uploadedImage, onCropFile}) => {
+interface ImageCropperProps {
+  uploadedImage: string | ArrayBuffer | null;
+  onCropFile: (image: File) => void
+}
 
-  const [cropData, setCropData] = useState<string | undefined>(null);
+export const ImageCropper: FC<ImageCropperProps> = ({uploadedImage, onCropFile}) => {
+
+  const [cropData, setCropData] = useState<string | undefined>();
   const cropperRef = createRef<ReactCropperElement>();
-  const defaultOptions = {
+
+  const defaultOptions: ReactCropperProps = {
+    // @ts-ignore
     ref: cropperRef,
+    // @ts-ignore
     zoomTo: 0.5,
+    // @ts-ignore
     initialAspectRatio: 1,
+    // @ts-ignore
     aspectRatio: 1,
+    // @ts-ignore
     src: uploadedImage,
+    // @ts-ignore
     viewMode: 1,
+    // @ts-ignore
     minCropBoxHeight: 10,
+    // @ts-ignore
     minCropBoxWidth: 10,
+    // @ts-ignore
     background: false,
+    // @ts-ignore
     responsive: true,
+    // @ts-ignore
     autoCropArea: 1,
+    // @ts-ignore
     checkOrientation: false, // https://github.com/fengyuanchen/cropperjs/issues/671
+    // @ts-ignore
     guides: true,
+    // @ts-ignore
     style: {maxHeight: 700, width: "100%"}
   }
 
   const getCropData = () => {
+    // @ts-ignore
     let dataUrl = cropperRef.current?.cropper.getCroppedCanvas().toDataURL();
 
     if (typeof dataUrl !== "undefined") {
@@ -38,10 +59,10 @@ export const ImageCropper: FC = ({uploadedImage, onCropFile}) => {
   }
 
   const onCancel = () => {
-    setCropData(null);
+    setCropData(undefined);
 
     if (onCropFile) {
-      onCropFile(null);
+      onCropFile({} as File);
     }
   }
 

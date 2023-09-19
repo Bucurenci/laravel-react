@@ -1,34 +1,26 @@
-import axiosClient from "../../../../axios-client";
-import {useStateContext} from "../../../../contexts/ContextProvider";
-import {useRef, useState} from "react";
+import {useState} from "react";
+import {SettingItem} from "../../index";
 
-export default function SettingsItem({setting}) {
+interface SettingsItemProps {
+  setting: SettingItem,
+  onDelete: (settingId: number) => void
+}
+
+export default function SettingsItem({setting, onDelete}: SettingsItemProps) {
   const settingValue = JSON.parse(setting.value);
-  const {setNotification} = useStateContext();
-  const [editable, setEditable] = useState(false);
-  const [newSettingValue, setNewSettingValue] = useState(settingValue);
+  const [editable, setEditable] = useState<boolean>(false);
+  // const [newSettingValue, setNewSettingValue] = useState<SettingItem>(settingValue);
 
   const handleSave = () => {
     setEditable(false);
   }
 
-
-  const handleDelete = (id) => {
-    if (!window.confirm("Are you sure you want to delete this setting?")) {
-      return;
-    }
-
-    axiosClient.delete(`/settings/${setting.id}`)
-      .then((response) => {
-        console.log(response);
-        setNotification("Setting was successfully deleted! ");
-      }).catch(({response}) => {
-      console.log(response);
-    })
+  const handleDelete = () => {
+    onDelete(setting.id);
   }
 
-  const onSettingChange = (ev) => {
-    setNewSettingValue(ev.target.value);
+  const onSettingChange = (/*ev: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>*/) => {
+    // setNewSettingValue(ev.target.value);
   }
 
   const renderSwitchType = () => {
