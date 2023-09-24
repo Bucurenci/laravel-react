@@ -1,5 +1,6 @@
 <code>
 - composer install <br/>
+- cp .env.example .env
 - php artisan key:generate <br/>
 - php artisan storage:link <br/>
 - php artisan migrate
