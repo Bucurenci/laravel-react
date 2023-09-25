@@ -1,49 +1,56 @@
 import {Link} from "react-router-dom";
-import {FormEvent, useRef, useState} from "react";
 import axiosClient from "../../axios-client";
 import {useStateContext} from "../../contexts/ContextProvider";
-import {UserFormErrors} from "../../models/User";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {useForm} from "react-hook-form";
+import {UserCreateSchema, UserCreateType} from "../../validations/UserCreate";
 
 export default function Signup() {
-
-  const firstNameRef = useRef<HTMLInputElement>(null!);
-  const lastNameRef = useRef<HTMLInputElement>(null!);
-  const emailRef = useRef<HTMLInputElement>(null!);
-  const passwordRef = useRef<HTMLInputElement>(null!);
-  const passwordConfirmationRef = useRef<HTMLInputElement>(null!);
-
-  const [responseErrors, setResponseErrors] = useState<UserFormErrors | null>(null);
   const {setAuthUser, setToken} = useStateContext();
 
-  const onSubmit = (ev: FormEvent) => {
-    ev.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: {errors, isSubmitting}
+  } = useForm<UserCreateType>({
+    resolver: zodResolver(UserCreateSchema),
+  });
 
-    const payload = {
-      first_name: firstNameRef.current.value,
-      last_name: lastNameRef.current.value,
-      email: emailRef.current.value,
-      password: passwordRef.current.value,
-      password_confirmation: passwordConfirmationRef.current.value,
-    }
+  const onSubmit = (data: UserCreateType) => {
 
-    setResponseErrors(null);
-
-    axiosClient.post('/signup', payload)
+    axiosClient.post('/signup', data)
       .then(({data}) => {
         setAuthUser(data.user);
         setToken(data.token);
       })
       .catch(error => {
-        const response = error.response;
+        let response = error.response;
 
         if (response && response.status === 422) {
-          setResponseErrors(response.data.errors);
+          let errors = response.data.errors;
+
+          if (errors.first_name) {
+            setError("first_name", {type: "server", message: errors.first_name[0]})
+          }
+          if (errors.last_name) {
+            setError("last_name", {type: "server", message: errors.last_name[0]})
+          }
+          if (errors.email) {
+            setError("email", {type: "server", message: errors.email[0]})
+          }
+          if (errors.password) {
+            setError("password", {type: "server", message: errors.password[0]})
+          }
+          if (errors.password_confirmation) {
+            setError("password_confirmation", {type: "server", message: errors.password_confirmation[0]})
+          }
         }
       })
-  }
+  };
 
   return (
-    <form onSubmit={onSubmit} className="user">
+    <form onSubmit={handleSubmit(onSubmit)} className="user">
 
       <div className="text-center">
         <h1 className="h4 text-gray-900 mb-4">Create an Account!</h1>
@@ -51,42 +58,42 @@ export default function Signup() {
 
       <div className="row mb-3">
         <div className="col-sm-6 mb-3 mb-sm-0">
-          <input ref={firstNameRef} type="text" className="form-control form-control-user" id="exampleFirstName"
+          <input {...register("first_name")} type="text" className="form-control form-control-user"
+                 id="exampleFirstName"
                  placeholder="First Name"/>
-          {responseErrors && responseErrors.first_name &&
-            <div className="text-danger ps-3 mt-2">{responseErrors.first_name[0]}</div>}
+          {errors.first_name &&
+            <p className="text-danger ps-3 mt-2"> {errors.first_name.message}</p>}
         </div>
         <div className="col-sm-6">
-          <input ref={lastNameRef} type="text" className="form-control form-control-user" id="exampleLastName"
+          <input {...register("last_name")} type="text" className="form-control form-control-user" id="exampleLastName"
                  placeholder="Last Name"/>
-          {responseErrors && responseErrors.last_name &&
-            <div className="text-danger ps-3 mt-2">{responseErrors.last_name[0]}</div>}
+          {errors.last_name &&
+            <p className="text-danger ps-3 mt-2"> {errors.last_name.message}</p>}
         </div>
       </div>
       <div className="mb-3">
-        <input ref={emailRef} type="email" className="form-control form-control-user" id="exampleInputEmail"
+        <input {...register("email")} type="email" className="form-control form-control-user" id="exampleInputEmail"
                placeholder="Email Address"/>
-        {responseErrors && responseErrors.email &&
-          <div className="text-danger ps-3 mt-2">{responseErrors.email[0]}</div>}
+        {errors.email && <p className="text-danger ps-3 mt-2"> {errors.email.message}</p>}
       </div>
       <div className="row mb-3">
         <div className="col-sm-6 mb-3 mb-sm-0">
-          <input ref={passwordRef} type="password" className="form-control form-control-user"
+          <input {...register("password")} type="password" className="form-control form-control-user"
                  id="exampleInputPassword" placeholder="Password"/>
         </div>
         <div className="col-sm-6">
-          <input ref={passwordConfirmationRef} type="password" className="form-control form-control-user"
+          <input {...register("password_confirmation")} type="password" className="form-control form-control-user"
                  id="exampleRepeatPassword" placeholder="Repeat Password"/>
         </div>
         <div className="col">
-          {responseErrors && responseErrors.password &&
-            <div className="text-danger ps-3 mt-2">{responseErrors.password[0]}</div>}
-          {responseErrors && responseErrors.password_confirmation &&
-            <div className="text-danger ps-3 mt-2">{responseErrors.password_confirmation[0]}</div>}
+          {errors.password &&
+            <p className="text-danger ps-3 mt-2"> {errors.password.message}</p>}
+          {errors.password_confirmation &&
+            <p className="text-danger ps-3 mt-2"> {errors.password_confirmation.message}</p>}
         </div>
       </div>
       <div className="d-grid gap-2">
-        <button className="btn btn-primary btn-user text-white">
+        <button className="btn btn-primary btn-user text-white" disabled={isSubmitting}>
           Register Account
         </button>
       </div>

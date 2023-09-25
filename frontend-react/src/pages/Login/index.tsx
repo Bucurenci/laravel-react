@@ -1,28 +1,25 @@
 import {Link} from "react-router-dom";
-import {FormEvent, useRef, useState} from "react";
 import {useStateContext} from "../../contexts/ContextProvider";
 import axiosClient from "../../axios-client";
-import {UserFormErrors} from "../../models/User";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {UserLoginSchema, UserLoginType} from "../../validations/UserLogin";
 
 export default function Login() {
-
-  const emailRef = useRef<HTMLInputElement>(null!);
-  const passwordRef = useRef<HTMLInputElement>(null!);
-
-  const [errors, setErrors] = useState<UserFormErrors | null>(null);
   const {setAuthUser, setToken} = useStateContext();
 
-  const onSubmit = (ev: FormEvent) => {
-    ev.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: {errors, isSubmitting}
+  } = useForm<UserLoginType>({
+    resolver: zodResolver(UserLoginSchema),
+  });
 
-    setErrors(null);
+  const onSubmit = (data: UserLoginType) => {
 
-    const payload = {
-      email: emailRef.current.value,
-      password: passwordRef.current.value
-    }
-
-    axiosClient.post('/login', payload)
+    axiosClient.post('/login', data)
       .then(({data}) => {
         setAuthUser(data.user);
         setToken(data.token);
@@ -33,41 +30,45 @@ export default function Login() {
 
         if (response && response.status === 422) {
           if (response.data.errors) {
-            setErrors(response.data.errors);
-          } else if (response.data.message) {
-            let passError = {
-              password: [response.data.message]
+            let errors = response.data.errors;
+
+            if (errors.email) {
+              setError("email", {type: "server", message: errors.email[0]})
             }
-            setErrors({...errors, ...passError});
+            if (errors.password) {
+              setError("password", {type: "server", message: errors.password[0]})
+            }
           }
+        } else if (response.data.message) {
+          setError("password", {type: "server", message: response.data.message})
         }
       })
   }
 
   return (
-    <form onSubmit={onSubmit} className="user">
+    <form onSubmit={handleSubmit(onSubmit)} className="user">
 
       <div className="text-center">
         <h1 className="h4 text-gray-900 mb-4">Login into your account!</h1>
       </div>
 
       <div className="mb-3">
-        <input ref={emailRef}
+        <input {...register("email")}
                type="email"
                className="form-control form-control-user"
                id="exampleInputEmail" aria-describedby="emailHelp"
                placeholder="Email Address..."
         />
-        {errors && errors?.email && <div className="text-danger ps-3 mt-2">{errors.email[0]}</div>}
+        {errors.email && <p className="text-danger ps-3 mt-2"> {errors.email.message}</p>}
       </div>
       <div className="mb-3">
-        <input ref={passwordRef}
+        <input {...register("password")}
                type="password"
                className="form-control form-control-user"
                id="exampleInputPassword"
                placeholder="Password"
         />
-        {errors && errors?.password && <div className="text-danger ps-3 mt-2">{errors.password[0]}</div>}
+        {errors.password && <p className="text-danger ps-3 mt-2"> {errors.password.message}</p>}
       </div>
       {/*<div className="mb-3">
         <div className="form-check">
@@ -78,7 +79,7 @@ export default function Login() {
         </div>
       </div>*/}
       <div className="d-grid gap-2">
-        <button className="btn btn-primary btn-user text-white">
+        <button className="btn btn-primary btn-user text-white" disabled={isSubmitting}>
           Login
         </button>
         {/*<hr/>
