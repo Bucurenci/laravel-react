@@ -12,7 +12,7 @@ export default function Signup() {
   const passwordRef = useRef<HTMLInputElement>(null!);
   const passwordConfirmationRef = useRef<HTMLInputElement>(null!);
 
-  const [errors, setErrors] = useState<UserFormErrors | null>(null);
+  const [responseErrors, setResponseErrors] = useState<UserFormErrors | null>(null);
   const {setAuthUser, setToken} = useStateContext();
 
   const onSubmit = (ev: FormEvent) => {
@@ -26,7 +26,7 @@ export default function Signup() {
       password_confirmation: passwordConfirmationRef.current.value,
     }
 
-    setErrors(null);
+    setResponseErrors(null);
 
     axiosClient.post('/signup', payload)
       .then(({data}) => {
@@ -37,7 +37,7 @@ export default function Signup() {
         const response = error.response;
 
         if (response && response.status === 422) {
-          setErrors(response.data.errors);
+          setResponseErrors(response.data.errors);
         }
       })
   }
@@ -53,18 +53,21 @@ export default function Signup() {
         <div className="col-sm-6 mb-3 mb-sm-0">
           <input ref={firstNameRef} type="text" className="form-control form-control-user" id="exampleFirstName"
                  placeholder="First Name"/>
-          {errors && errors.first_name && <div className="text-danger ps-3 mt-2">{errors.first_name[0]}</div>}
+          {responseErrors && responseErrors.first_name &&
+            <div className="text-danger ps-3 mt-2">{responseErrors.first_name[0]}</div>}
         </div>
         <div className="col-sm-6">
           <input ref={lastNameRef} type="text" className="form-control form-control-user" id="exampleLastName"
                  placeholder="Last Name"/>
-          {errors && errors.last_name && <div className="text-danger ps-3 mt-2">{errors.last_name[0]}</div>}
+          {responseErrors && responseErrors.last_name &&
+            <div className="text-danger ps-3 mt-2">{responseErrors.last_name[0]}</div>}
         </div>
       </div>
       <div className="mb-3">
         <input ref={emailRef} type="email" className="form-control form-control-user" id="exampleInputEmail"
                placeholder="Email Address"/>
-        {errors && errors.email && <div className="text-danger ps-3 mt-2">{errors.email[0]}</div>}
+        {responseErrors && responseErrors.email &&
+          <div className="text-danger ps-3 mt-2">{responseErrors.email[0]}</div>}
       </div>
       <div className="row mb-3">
         <div className="col-sm-6 mb-3 mb-sm-0">
@@ -76,9 +79,10 @@ export default function Signup() {
                  id="exampleRepeatPassword" placeholder="Repeat Password"/>
         </div>
         <div className="col">
-          {errors && errors.password && <div className="text-danger ps-3 mt-2">{errors.password[0]}</div>}
-          {errors && errors.password_confirmation &&
-            <div className="text-danger ps-3 mt-2">{errors.password_confirmation[0]}</div>}
+          {responseErrors && responseErrors.password &&
+            <div className="text-danger ps-3 mt-2">{responseErrors.password[0]}</div>}
+          {responseErrors && responseErrors.password_confirmation &&
+            <div className="text-danger ps-3 mt-2">{responseErrors.password_confirmation[0]}</div>}
         </div>
       </div>
       <div className="d-grid gap-2">
