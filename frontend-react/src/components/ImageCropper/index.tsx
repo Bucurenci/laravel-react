@@ -71,7 +71,7 @@ export const ImageCropper: FC<ImageCropperProps> = ({uploadedImage, onCropFile})
       {cropData ? (
         <>
           <div className="mb-3">
-            <img src={cropData} className="img-fluid" style={{maxHeight: 700}} alt="cropped"/>
+            <img src={cropData} className="img-fluid" style={{maxHeight: 650}} alt="cropped"/>
           </div>
 
           <button className="btn btn-secondary btn-lg" onClick={onCancel}>

@@ -1,4 +1,6 @@
 import {Link, NavLink} from "react-router-dom";
+import {faCog, faFileImage, faPaw, faTengeSign, faUserAlt} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 function Sidebar() {
 
@@ -7,7 +9,7 @@ function Sidebar() {
 
       <Link className="sidebar-brand d-flex align-items-center justify-content-center" to="#">
         <div className="sidebar-brand-icon rotate-n-15">
-          <i className="fas fa-laugh-wink"></i>
+          <FontAwesomeIcon icon={faPaw} size="2x"/>
         </div>
         <div className="sidebar-brand-text mx-3">{import.meta.env.VITE_APP_NAME}</div>
       </Link>
@@ -16,7 +18,7 @@ function Sidebar() {
 
       <li className="nav-item">
         <NavLink to="/users" className="nav-link">
-          <i className="fas fa-fw fa-user-alt me-2"></i>
+          <FontAwesomeIcon icon={faUserAlt} className="me-2"/>
           <span>Users</span>
         </NavLink>
       </li>
@@ -30,7 +32,7 @@ function Sidebar() {
             <li className="nav-item">
                 <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse" data-bs-target="#collapseTwo"
                    aria-expanded="true" aria-controls="collapseTwo">
-                    <i className="fas fa-fw fa-cog"></i>
+                    <FontAwesomeIcon icon={faCog} className="me-2"/>
                     <span>Components</span>
                 </Link>
                 <div id="collapseTwo" className="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -46,7 +48,7 @@ function Sidebar() {
                 <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse"
                    data-bs-target="#collapseUtilities"
                    aria-expanded="true" aria-controls="collapseUtilities">
-                    <i className="fas fa-fw fa-wrench"></i>
+                    <FontAwesomeIcon icon={faWrench} className="me-2"/>
                     <span>Utilities</span>
                 </Link>
                 <div id="collapseUtilities" className="collapse" aria-labelledby="headingUtilities"
@@ -71,7 +73,7 @@ function Sidebar() {
                 <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse"
                    data-bs-target="#collapsePages"
                    aria-expanded="true" aria-controls="collapsePages">
-                    <i className="fas fa-fw fa-folder"></i>
+                    <FontAwesomeIcon icon={faFolder} className="me-2"/>
                     <span>Pages</span>
                 </Link>
                 <div id="collapsePages" className="collapse" aria-labelledby="headingPages"
@@ -91,13 +93,13 @@ function Sidebar() {
 
             <li className="nav-item">
                 <Link className="nav-link" to="charts.html">
-                <i className="fas fa-fw fa-chart-area"></i>
+          <FontAwesomeIcon icon={faChartArea} className="me-2"/>
                 <span>Charts</span></Link>
             </li>
 
             <li className="nav-item">
                 <Link className="nav-link" to="tables.html">
-                <i className="fas fa-fw fa-table"></i>
+          <FontAwesomeIcon icon={faTable} className="me-2"/>
                 <span>Tables</span></Link>
             </li>
 
@@ -121,7 +123,7 @@ function Sidebar() {
         <Link className="nav-link collapsed" to="#" data-bs-toggle="collapse"
               data-bs-target="#collapseUtilities"
               aria-expanded="true" aria-controls="collapseUtilities">
-          <i className="fas fa-fw fa-tenge-sign me-2"></i>
+          <FontAwesomeIcon icon={faTengeSign} className="me-2"/>
           <span>In progress</span>
         </Link>
 
@@ -130,15 +132,15 @@ function Sidebar() {
           <div className="bg-white py-2 collapse-inner rounded">
 
             <NavLink to="/settings" className="collapse-item">
-              <i className="fas fa-fw fa-cog me-2"></i>
+              <FontAwesomeIcon icon={faCog} className="me-2"/>
               <span>Settings</span>
             </NavLink>
             <NavLink to="/todo-list" className="collapse-item">
-              <i className="fas fa-fw fa-list-alt me-2"></i>
+              <FontAwesomeIcon icon={faCog} className="me-2"/>
               <span>Todo List</span>
             </NavLink>
             <NavLink to="/use-loader" className="collapse-item">
-              <i className="fa fa-fw fa-file-photo-o me-2"></i>
+              <FontAwesomeIcon icon={faFileImage} className="me-2"/>
               <span>UseLoader Hook</span>
             </NavLink>
           </div>

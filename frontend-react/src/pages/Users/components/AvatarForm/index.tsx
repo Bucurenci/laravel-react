@@ -2,6 +2,8 @@ import {ChangeEvent, useRef, useState} from 'react';
 import Modal from "../../../../components/Modal";
 import ImageCropper from "../../../../components/ImageCropper";
 import {User, UserFormErrors} from "../../../../models/User";
+import {faPencil, faTrash, faUpload} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 interface AvatarFormProps {
   user: User,
@@ -77,13 +79,15 @@ export default function AvatarForm({user, errors, onUpdate, onDelete}: AvatarFor
             <div className="position-absolute bottom-0 end-0 mb-2 me-2">
               {user.avatar?.medium ? (
                 <>
-                  <button onClick={onSelectImage} className="btn btn-primary"><i className="fa fa-pencil"></i></button>
-                  <button onClick={handleDelete} className="btn btn-danger ms-2"><i className="fa fa-trash"></i>
+                  <button onClick={onSelectImage} className="btn btn-primary">
+                    <FontAwesomeIcon icon={faPencil}/>
+                  </button>
+                  <button onClick={handleDelete} className="btn btn-danger ms-2">
+                    <FontAwesomeIcon icon={faTrash}/>
                   </button>
                 </>
               ) : (
-                <button onClick={onSelectImage}
-                        className="btn btn-primary"><i className="fa fa-upload"></i></button>
+                <button onClick={onSelectImage} className="btn btn-primary"><FontAwesomeIcon icon={faUpload}/></button>
               )}
             </div>
           </div>

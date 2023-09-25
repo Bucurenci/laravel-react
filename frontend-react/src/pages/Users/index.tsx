@@ -6,6 +6,8 @@ import Pagination from "../../components/Pagination";
 import UsersCreate from "./components/UsersCreate";
 import UsersUpdate from "./components/UsersUpdate";
 import {NewUser, User, UserFormErrors} from "../../models/User";
+import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export default function Users() {
   const {authUser, setNotification, setAuthUser} = useStateContext();
@@ -228,7 +230,7 @@ export default function Users() {
               </button>
             ) : (
               <button onClick={openUsersList} className="btn btn-success btn-lg text-white align-self-end">
-                <i className="fa fa-arrow-left me-2"></i>Back to users
+                <FontAwesomeIcon icon={faArrowLeft} className="me-2"/>Back to users
               </button>
             )}
           </div>

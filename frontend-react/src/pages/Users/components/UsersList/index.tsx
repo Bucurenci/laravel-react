@@ -1,4 +1,6 @@
 import {User} from "../../../../models/User";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faPencil, faTrash} from "@fortawesome/free-solid-svg-icons";
 
 interface UsersListProps {
   users: User[],
@@ -38,11 +40,11 @@ export default function UsersList({users, onUserDelete, openUserUpdate}: UsersLi
             <td>{u.created_at}</td>
             <td className="text-right">
               <button onClick={() => onUserDelete(u.id)} className="btn btn-danger ms-2 float-end">
-                <i className="fa fa-trash me-2"></i>
+                <FontAwesomeIcon icon={faTrash} className="me-2"/>
                 Delete
               </button>
               <button onClick={() => openUserUpdate(u)} className="btn btn-primary ms-2 float-end">
-                <i className="fa fa-pencil me-2"></i>
+                <FontAwesomeIcon icon={faPencil} className="me-2"/>
                 Edit
               </button>
             </td>

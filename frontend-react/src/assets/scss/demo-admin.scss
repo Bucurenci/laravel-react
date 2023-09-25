@@ -1,13 +1,6 @@
 // Import Custom SB Admin 2 Variables (Overrides Default Bootstrap Variables)
 @import "variables.scss";
 
-// Import Fontawesome
-@import "../../../node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
-@import "../../../node_modules/@fortawesome/fontawesome-free/scss/regular";
-@import "../../../node_modules/@fortawesome/fontawesome-free/scss/solid";
-@import "../../../node_modules/@fortawesome/fontawesome-free/scss/brands";
-@import "../../../node_modules/@fortawesome/fontawesome-free/scss/v4-shims";
-
 // Import Bootstrap
 @import "../../../node_modules/bootstrap/scss/bootstrap";
 

@@ -2,6 +2,8 @@ import {useEffect} from 'react'
 import {Link} from "react-router-dom";
 import {useStateContext} from "../../contexts/ContextProvider";
 import axiosClient from "../../axios-client";
+import {faBars, faSignOutAlt} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 function Navbar() {
   const {authUser, setAuthUser, setToken} = useStateContext();
@@ -26,7 +28,7 @@ function Navbar() {
     <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
       <button id="sidebarToggleTop" className="btn btn-link d-md-none rounded-circle me-3">
-        <i className="fa fa-bars"></i>
+        <FontAwesomeIcon icon={faBars}/>
       </button>
 
       {/*<form
@@ -202,7 +204,7 @@ function Navbar() {
                       </Link>
                       <div className="dropdown-divider"></div>*/}
             <button onClick={onLogout} className="dropdown-item" data-toggle="modal" data-bs-target="#logoutModal">
-              <i className="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>
+              <FontAwesomeIcon icon={faSignOutAlt} className="me-2 text-gray-400"/>
               Logout
             </button>
           </div>
