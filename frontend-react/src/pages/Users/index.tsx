@@ -1,11 +1,12 @@
 import {useEffect, useState} from "react";
 import axiosClient from "../../axios-client";
-import {NotificationTypes, useStateContext} from "../../contexts/ContextProvider";
+import {useStateContext} from "../../contexts/ContextProvider";
 import UsersList from "./components/UsersList";
 import Pagination from "../../components/Pagination";
 import UsersCreate from "./components/UsersCreate";
 import UsersUpdate from "./components/UsersUpdate";
 import {NewUser, User, UserFormErrors} from "../../models/User";
+import {NotificationType} from "../../models/Notification";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
@@ -114,7 +115,7 @@ export default function Users() {
       })
       .catch(({response}) => {
         setLoading(false);
-        setNotification(response.data, NotificationTypes.ERROR);
+        setNotification(response.data, NotificationType.ERROR);
       })
   }
 

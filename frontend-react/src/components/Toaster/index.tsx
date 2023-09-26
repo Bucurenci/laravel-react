@@ -1,4 +1,4 @@
-import {Notification} from "../../contexts/ContextProvider";
+import {Notification} from "../../models/Notification";
 
 interface ToasterProps {
   notification: Notification
