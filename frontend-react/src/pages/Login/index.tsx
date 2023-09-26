@@ -25,8 +25,8 @@ export default function Login() {
         setToken(data.token);
 
       })
-      .catch(error => {
-        const response = error.response;
+      .catch(errorRes => {
+        const response = errorRes.response;
 
         if (response && response.status === 422) {
           if (response.data.errors) {
@@ -38,9 +38,9 @@ export default function Login() {
             if (errors.password) {
               setError("password", {type: "server", message: errors.password[0]})
             }
+          } else if (response.data.message) {
+            setError("password", {type: "server", message: response.data.message})
           }
-        } else if (response.data.message) {
-          setError("password", {type: "server", message: response.data.message})
         }
       })
   }
@@ -56,7 +56,6 @@ export default function Login() {
         <input {...register("email")}
                type="email"
                className="form-control form-control-user"
-               id="exampleInputEmail" aria-describedby="emailHelp"
                placeholder="Email Address..."
         />
         {errors.email && <p className="text-danger ps-3 mt-2"> {errors.email.message}</p>}
@@ -65,7 +64,6 @@ export default function Login() {
         <input {...register("password")}
                type="password"
                className="form-control form-control-user"
-               id="exampleInputPassword"
                placeholder="Password"
         />
         {errors.password && <p className="text-danger ps-3 mt-2"> {errors.password.message}</p>}

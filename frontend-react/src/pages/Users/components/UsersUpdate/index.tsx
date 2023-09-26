@@ -25,7 +25,7 @@ export default function UsersUpdate({user, onUserUpdate, onAvatarUpdate, onAvata
             </div>
           )}
           <div className="col-12 col-xl-8 col-xxl-8">
-            <UserForm user={user} errors={errors} onUserUpdate={onUserUpdate}/>
+            <UserForm user={user} serverErrors={errors} onUserUpdate={onUserUpdate}/>
           </div>
         </div>
       </div>

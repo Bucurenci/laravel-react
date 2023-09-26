@@ -59,31 +59,30 @@ export default function Signup() {
       <div className="row mb-3">
         <div className="col-sm-6 mb-3 mb-sm-0">
           <input {...register("first_name")} type="text" className="form-control form-control-user"
-                 id="exampleFirstName"
                  placeholder="First Name"/>
           {errors.first_name &&
             <p className="text-danger ps-3 mt-2"> {errors.first_name.message}</p>}
         </div>
         <div className="col-sm-6">
-          <input {...register("last_name")} type="text" className="form-control form-control-user" id="exampleLastName"
+          <input {...register("last_name")} type="text" className="form-control form-control-user"
                  placeholder="Last Name"/>
           {errors.last_name &&
             <p className="text-danger ps-3 mt-2"> {errors.last_name.message}</p>}
         </div>
       </div>
       <div className="mb-3">
-        <input {...register("email")} type="email" className="form-control form-control-user" id="exampleInputEmail"
+        <input {...register("email")} type="email" className="form-control form-control-user"
                placeholder="Email Address"/>
         {errors.email && <p className="text-danger ps-3 mt-2"> {errors.email.message}</p>}
       </div>
       <div className="row mb-3">
         <div className="col-sm-6 mb-3 mb-sm-0">
           <input {...register("password")} type="password" className="form-control form-control-user"
-                 id="exampleInputPassword" placeholder="Password"/>
+                 placeholder="Password"/>
         </div>
         <div className="col-sm-6">
           <input {...register("password_confirmation")} type="password" className="form-control form-control-user"
-                 id="exampleRepeatPassword" placeholder="Repeat Password"/>
+                 placeholder="Repeat Password"/>
         </div>
         <div className="col">
           {errors.password &&

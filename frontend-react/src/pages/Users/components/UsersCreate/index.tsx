@@ -15,7 +15,7 @@ export default function UsersCreate({onUserCreate, errors}: UserCreateProps) {
       <div className="col-12 col-xxl-9">
         <div className="row align-items-center justify-content-center">
           <div className="col-12 col-xl-8 col-xxl-8">
-            <UserForm errors={errors} onUserCreate={onUserCreate}/>
+            <UserForm serverErrors={errors} onUserCreate={onUserCreate}/>
           </div>
         </div>
       </div>

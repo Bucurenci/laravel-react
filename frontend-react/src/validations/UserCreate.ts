@@ -25,7 +25,7 @@ export const UserCreateSchema = z.object({
 })
     .refine((data) => data.password === data.password_confirmation, {
         message: "Passwords do not match",
-        path: ["password"],
+        path: ["password_confirmation"],
     });
 
 export type UserCreateType = z.infer<typeof UserCreateSchema>
