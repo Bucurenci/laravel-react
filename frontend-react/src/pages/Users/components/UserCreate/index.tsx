@@ -6,7 +6,7 @@ interface UserCreateProps {
   onUserCreate: (user: UserCreateType) => void
 }
 
-export default function UsersCreate({onUserCreate, errors}: UserCreateProps) {
+export default function UserCreate({onUserCreate, errors}: UserCreateProps) {
 
   return (
 

@@ -10,7 +10,7 @@ interface UserUpdateProps {
   onAvatarDelete: (user: User) => void
 }
 
-export default function UsersUpdate({user, onUserUpdate, onAvatarUpdate, onAvatarDelete, errors}: UserUpdateProps) {
+export default function UserUpdate({user, onUserUpdate, onAvatarUpdate, onAvatarDelete, errors}: UserUpdateProps) {
 
   return (
 

@@ -3,8 +3,8 @@ import axiosClient from "../../axios-client";
 import {useStateContext} from "../../contexts/ContextProvider";
 import UsersList from "./components/UsersList";
 import Pagination from "../../components/Pagination";
-import UsersCreate from "./components/UsersCreate";
-import UsersUpdate from "./components/UsersUpdate";
+import UserCreate from "./components/UserCreate";
+import UserUpdate from "./components/UserUpdate";
 import {User, UserFormErrors} from "../../models/User";
 import {NotificationType} from "../../models/Notification";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
@@ -252,10 +252,10 @@ export default function Users() {
           </>
         )}
 
-        {createPage && <UsersCreate onUserCreate={handleUserCreate} errors={errors}/>}
+        {createPage && <UserCreate onUserCreate={handleUserCreate} errors={errors}/>}
         {updatePage &&
-          <UsersUpdate user={selectedUser} onUserUpdate={handleUserUpdate} onAvatarUpdate={handleAvatarUpdate}
-                       onAvatarDelete={handleAvatarDelete} errors={errors}/>}
+          <UserUpdate user={selectedUser} onUserUpdate={handleUserUpdate} onAvatarUpdate={handleAvatarUpdate}
+                      onAvatarDelete={handleAvatarDelete} errors={errors}/>}
       </div>
     </div>
   );
