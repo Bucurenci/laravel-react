@@ -1,6 +1,7 @@
 import {User} from "../../../../models/User";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPencil, faTrash} from "@fortawesome/free-solid-svg-icons";
+import {useStateContext} from "../../../../contexts/ContextProvider";
 
 interface UsersListProps {
   users: User[],
@@ -9,6 +10,7 @@ interface UsersListProps {
 }
 
 export default function UsersList({users, onUserDelete, openUserUpdate}: UsersListProps) {
+  const {authUser} = useStateContext();
 
   return (
     <div className="table-responsive">
@@ -39,10 +41,12 @@ export default function UsersList({users, onUserDelete, openUserUpdate}: UsersLi
             <td>{u.last_name}</td>
             <td>{u.created_at}</td>
             <td className="text-right">
-              <button onClick={() => onUserDelete(u.id)} className="btn btn-danger ms-2 float-end">
-                <FontAwesomeIcon icon={faTrash} className="me-2"/>
-                Delete
-              </button>
+              {authUser?.id !== u.id && (
+                <button onClick={() => onUserDelete(u.id)} className="btn btn-danger ms-2 float-end">
+                  <FontAwesomeIcon icon={faTrash} className="me-2"/>
+                  Delete
+                </button>
+              )}
               <button onClick={() => openUserUpdate(u)} className="btn btn-primary ms-2 float-end">
                 <FontAwesomeIcon icon={faPencil} className="me-2"/>
                 Edit

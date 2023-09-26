@@ -25,7 +25,7 @@ export default function AdminLayout() {
 
             <div className="container-fluid position-relative">
 
-              {notification && <Toaster>{notification}</Toaster>}
+              {notification && <Toaster notification={notification}/>}
 
               <Outlet/>
 

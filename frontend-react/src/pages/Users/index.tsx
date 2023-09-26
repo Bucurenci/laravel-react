@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import axiosClient from "../../axios-client";
-import {useStateContext} from "../../contexts/ContextProvider";
+import {NotificationTypes, useStateContext} from "../../contexts/ContextProvider";
 import UsersList from "./components/UsersList";
 import Pagination from "../../components/Pagination";
 import UsersCreate from "./components/UsersCreate";
@@ -111,6 +111,10 @@ export default function Users() {
         setLoading(false);
         getUsers(paginationData.current_page);
         setNotification("User was successfully deleted! ");
+      })
+      .catch(({response}) => {
+        setLoading(false);
+        setNotification(response.data, NotificationTypes.ERROR);
       })
   }
 

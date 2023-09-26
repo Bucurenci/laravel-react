@@ -1,17 +1,17 @@
-import {ReactNode} from "react";
+import {Notification} from "../../contexts/ContextProvider";
 
 interface ToasterProps {
-  children: ReactNode,
+  notification: Notification
 }
 
-export default function Toaster({children}: ToasterProps) {
+export default function Toaster({notification}: ToasterProps) {
 
   return (
     <div
       style={{minWidth: '25%', maxWidth: '50%'}}
-      className="position-fixed top-0 end-0 alert alert-success fade show mt-2 me-4 z-2 shadow text-center"
+      className={`position-fixed top-0 end-0 alert alert-${notification.type} fade show mt-2 me-4 z-2 shadow text-center`}
       role="alert">
-      {children}
+      {notification.content}
     </div>
   );
 }

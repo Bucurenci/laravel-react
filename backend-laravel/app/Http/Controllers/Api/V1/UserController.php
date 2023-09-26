@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -70,9 +71,13 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        if ($user->id == Auth::id()) {
+            return response("You cannot delete this user!", 403);
+        }
+
         $user->delete();
 
-        return response('', 204);
+        return response()->noContent();
     }
 
     public function uploadImage(UpdateUserImageRequest $request, int $id)

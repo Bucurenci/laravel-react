@@ -1,12 +1,23 @@
 import {ReactNode, createContext, useContext, useState, Dispatch, SetStateAction} from "react";
 import {AuthUser} from "../models/User";
 
+export enum NotificationTypes {
+  ERROR = "danger",
+  SUCCESS = "success",
+  WARNING = "warning"
+}
+
+export type Notification = {
+  content: ReactNode,
+  type?: NotificationTypes
+}
+
 export interface ContextProviderType {
   authUser: AuthUser | null;
-  notification: ReactNode;
+  notification: Notification | null;
   token: string | null;
   setAuthUser: Dispatch<SetStateAction<AuthUser | null>>,
-  setNotification: (message: ReactNode) => void;
+  setNotification: (notification: ReactNode, type?: NotificationTypes) => void;
   setToken: (token: string | null) => void,
 }
 
@@ -16,7 +27,7 @@ interface ContextProviderProps {
 
 const StateContext = createContext<ContextProviderType>({
   authUser: null,
-  notification: '',
+  notification: null,
   token: localStorage.getItem('ACCESS_TOKEN'),
   setAuthUser: () => {
   },
@@ -28,14 +39,14 @@ const StateContext = createContext<ContextProviderType>({
 
 export const ContextProvider = ({children}: ContextProviderProps) => {
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
-  const [notification, _setNotification] = useState<ReactNode>('');
+  const [notification, _setNotification] = useState<Notification | null>(null);
   const [token, _setToken] = useState<string | null>(localStorage.getItem('ACCESS_TOKEN'));
 
-  const setNotification = (message: ReactNode | null) => {
-    _setNotification(message);
+  const setNotification = (notification: ReactNode, type: NotificationTypes = NotificationTypes.SUCCESS) => {
+    _setNotification({content: notification, type: type});
 
     setTimeout(() => {
-      _setNotification('');
+      _setNotification(null);
     }, 4000);
   }
 
