@@ -1,30 +1,23 @@
-import {NewUser, User, UserFormErrors} from "../../models/User";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useEffect} from "react";
-import {UserUpdateSchema, UserUpdateType} from "../../validations/UserUpdate";
-import {UserCreateSchema, UserCreateType} from "../../validations/UserCreate";
+import {UserCreateSchema, UserCreateType, UserFormErrors} from "../../../../models/User";
 
-interface UserFormProps {
-  user?: User,
+interface UserUpdateFormProps {
   serverErrors: UserFormErrors | null,
-  onUserUpdate?: (formData: User) => void
-  onUserCreate?: (formData: NewUser) => void
+  onUserCreate: (formData: UserCreateType) => void
 }
 
-export default function UserForm({user, serverErrors, onUserCreate, onUserUpdate}: UserFormProps) {
+export default function UserCreateForm({serverErrors, onUserCreate}: UserUpdateFormProps) {
 
   const {
     register,
     handleSubmit,
     setError,
     formState: {errors, isSubmitting},
-  } = onUserUpdate && user ?
-    useForm<UserUpdateType>({resolver: zodResolver(UserUpdateSchema), defaultValues: {id: user.id}})
-    :
-    useForm<UserCreateType>({resolver: zodResolver(UserCreateSchema)})
-
-  console.log();
+  } = useForm<UserCreateType>({
+    resolver: zodResolver(UserCreateSchema)
+  })
 
   useEffect(() => {
 
@@ -48,14 +41,8 @@ export default function UserForm({user, serverErrors, onUserCreate, onUserUpdate
     }
   }, [serverErrors])
 
-  const onSubmit = (data: UserCreateType | UserUpdateType) => {
-
-    if (onUserUpdate && user) {
-      onUserUpdate(data);
-
-    } else if (onUserCreate) {
-      onUserCreate(data)
-    }
+  const onSubmit = (data: UserCreateType) => {
+    onUserCreate(data);
   }
 
   return (
@@ -67,7 +54,6 @@ export default function UserForm({user, serverErrors, onUserCreate, onUserUpdate
           <div className="row">
             <div className="col-md-6 mb-3 mb-md-0">
               <input {...register("first_name")}
-                     defaultValue={user?.first_name ? user.first_name : ''}
                      type="text" autoComplete="off"
                      className="form-control form-control-user"
                      placeholder="First Name"/>
@@ -76,7 +62,6 @@ export default function UserForm({user, serverErrors, onUserCreate, onUserUpdate
             </div>
             <div className="col-md-6 mb-3">
               <input {...register("last_name")}
-                     defaultValue={user?.last_name ? user.last_name : ''}
                      type="text" autoComplete="off"
                      className="form-control form-control-user"
                      placeholder="Last Name"/>
@@ -86,7 +71,6 @@ export default function UserForm({user, serverErrors, onUserCreate, onUserUpdate
           </div>
           <div className="mb-3">
             <input {...register("email")}
-                   defaultValue={user?.email ? user.email : ''}
                    type="email"
                    className="form-control form-control-user"
                    autoComplete="off"
@@ -118,7 +102,7 @@ export default function UserForm({user, serverErrors, onUserCreate, onUserUpdate
           </div>
           <div className="d-grid gap-2">
             <button className="btn btn-primary btn-user text-white" disabled={isSubmitting}>
-              {user?.id ? `Save` : 'Create'}
+              Create
             </button>
           </div>
         </div>

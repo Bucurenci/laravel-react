@@ -5,10 +5,11 @@ import UsersList from "./components/UsersList";
 import Pagination from "../../components/Pagination";
 import UsersCreate from "./components/UsersCreate";
 import UsersUpdate from "./components/UsersUpdate";
-import {NewUser, User, UserFormErrors} from "../../models/User";
+import {User, UserFormErrors} from "../../models/User";
 import {NotificationType} from "../../models/Notification";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {UserUpdateType, UserCreateType} from "../../models/User";
 
 export default function Users() {
   const {authUser, setNotification, setAuthUser} = useStateContext();
@@ -45,7 +46,7 @@ export default function Users() {
       })
   }
 
-  const handleUserCreate = (userData: NewUser) => {
+  const handleUserCreate = (userData: UserCreateType) => {
     setLoading(true);
 
     axiosClient.post(`/users`, userData)
@@ -66,7 +67,7 @@ export default function Users() {
       })
   }
 
-  const handleUserUpdate = (formData: User) => {
+  const handleUserUpdate = (formData: UserUpdateType) => {
 
     setLoading(true);
 

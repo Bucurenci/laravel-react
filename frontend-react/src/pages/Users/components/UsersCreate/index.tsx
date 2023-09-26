@@ -1,9 +1,9 @@
-import UserForm from "../../../../components/UserForm";
-import {NewUser, UserFormErrors} from "../../../../models/User";
+import UserCreateForm from "../UserCreateForm";
+import {UserFormErrors, UserCreateType} from "../../../../models/User";
 
 interface UserCreateProps {
   errors: UserFormErrors | null,
-  onUserCreate: (user: NewUser) => void
+  onUserCreate: (user: UserCreateType) => void
 }
 
 export default function UsersCreate({onUserCreate, errors}: UserCreateProps) {
@@ -15,7 +15,7 @@ export default function UsersCreate({onUserCreate, errors}: UserCreateProps) {
       <div className="col-12 col-xxl-9">
         <div className="row align-items-center justify-content-center">
           <div className="col-12 col-xl-8 col-xxl-8">
-            <UserForm serverErrors={errors} onUserCreate={onUserCreate}/>
+            <UserCreateForm serverErrors={errors} onUserCreate={onUserCreate}/>
           </div>
         </div>
       </div>

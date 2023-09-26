@@ -3,7 +3,7 @@ import {useStateContext} from "../../contexts/ContextProvider";
 import axiosClient from "../../axios-client";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {UserLoginSchema, UserLoginType} from "../../validations/UserLogin";
+import {UserLoginSchema, UserLoginType} from "../../models/User";
 
 export default function Login() {
   const {setAuthUser, setToken} = useStateContext();

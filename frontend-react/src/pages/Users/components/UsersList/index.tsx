@@ -1,12 +1,12 @@
-import {User} from "../../../../models/User";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faPencil, faTrash} from "@fortawesome/free-solid-svg-icons";
 import {useStateContext} from "../../../../contexts/ContextProvider";
+import {UserUpdateType, User} from "../../../../models/User";
 
 interface UsersListProps {
   users: User[],
   onUserDelete: (id: number) => void,
-  openUserUpdate: (u: User) => void,
+  openUserUpdate: (u: UserUpdateType) => void,
 }
 
 export default function UsersList({users, onUserDelete, openUserUpdate}: UsersListProps) {

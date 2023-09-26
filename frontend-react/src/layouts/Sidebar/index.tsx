@@ -1,5 +1,5 @@
 import {Link, NavLink} from "react-router-dom";
-import {faCog, faFileImage, faPaw, faTengeSign, faUserAlt} from "@fortawesome/free-solid-svg-icons";
+import {faCog, faPaw, faTengeSign, faUserAlt} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 function Sidebar() {
@@ -138,10 +138,6 @@ function Sidebar() {
             <NavLink to="/todo-list" className="collapse-item">
               <FontAwesomeIcon icon={faCog} className="me-2"/>
               <span>Todo List</span>
-            </NavLink>
-            <NavLink to="/use-loader" className="collapse-item">
-              <FontAwesomeIcon icon={faFileImage} className="me-2"/>
-              <span>UseLoader Hook</span>
             </NavLink>
           </div>
         </div>

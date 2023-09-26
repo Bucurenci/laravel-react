@@ -7,7 +7,6 @@ import NotFound from "./pages/NotFound";
 import Users from "./pages/Users";
 import ForgotPassword from "./pages/ForgotPassword";
 import TodoList from "./pages/_TodoList";
-import UseLoaderHook, {dogData} from "./pages/_UseLoaderHook";
 import Settings from "./pages/Settings";
 
 const router = createBrowserRouter([
@@ -26,11 +25,6 @@ const router = createBrowserRouter([
       {
         path: '/todo-list',
         element: <TodoList/>
-      },
-      {
-        path: '/use-loader',
-        element: <UseLoaderHook/>,
-        loader: dogData
       },
       {
         path: '/settings',

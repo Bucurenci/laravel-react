@@ -1,11 +1,11 @@
-import UserForm from "../../../../components/UserForm";
+import UserUpdateForm from "../UserUpdateForm";
 import AvatarForm from "../AvatarForm";
-import {User, UserFormErrors} from "../../../../models/User";
+import {UserUpdateType, User, UserFormErrors} from "../../../../models/User";
 
 interface UserUpdateProps {
   user: User,
   errors: UserFormErrors | null,
-  onUserUpdate: (user: User) => void,
+  onUserUpdate: (user: UserUpdateType) => void,
   onAvatarUpdate: (user: User, file: File) => void,
   onAvatarDelete: (user: User) => void
 }
@@ -25,7 +25,7 @@ export default function UsersUpdate({user, onUserUpdate, onAvatarUpdate, onAvata
             </div>
           )}
           <div className="col-12 col-xl-8 col-xxl-8">
-            <UserForm user={user} serverErrors={errors} onUserUpdate={onUserUpdate}/>
+            <UserUpdateForm user={user} serverErrors={errors} onUserUpdate={onUserUpdate}/>
           </div>
         </div>
       </div>

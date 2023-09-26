@@ -3,7 +3,7 @@ import axiosClient from "../../axios-client";
 import {useStateContext} from "../../contexts/ContextProvider";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useForm} from "react-hook-form";
-import {UserCreateSchema, UserCreateType} from "../../validations/UserCreate";
+import {UserCreateSchema, UserCreateType} from "../../models/User";
 
 export default function Signup() {
   const {setAuthUser, setToken} = useStateContext();
