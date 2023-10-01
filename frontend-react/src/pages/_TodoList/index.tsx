@@ -44,40 +44,42 @@ export default function TodoList() {
 
   return (
     <>
-      <Typography variant="h5" mb={3}>Add/Remove TODO Tasks</Typography><Paper sx={{p: 2}}>
+      <Typography variant="h4" mb={3} gutterBottom>Add/Remove TODO Tasks</Typography>
 
-      <Grid container justifyContent="center">
+      <Paper sx={{p: 2}}>
 
-        <Grid item xs={12} md={10} lg={8} xl={7}>
-          <form onSubmit={addNewTask}>
-            <Box m={1}>
-              <TextField
-                label="Todo Task..."
-                inputRef={todoInputRef}
-                variant="outlined"
-                fullWidth
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Button type="submit" variant="contained">Add Task</Button>
-                    </InputAdornment>
-                  ),
-                }}
-              />
-            </Box>
-          </form>
+        <Grid container justifyContent="center">
 
-          {todoList.length > 0 &&
-            <Box m={1} mt={4}>
-              {todoList.map((task) => {
-                return <Task key={task.id} task={task} onDelete={removeTask} toggleUpdate={toggleTask}/>;
-              })}
-            </Box>
-          }
+          <Grid item xs={12} md={10} lg={8} xl={7}>
+            <form onSubmit={addNewTask}>
+              <Box m={1}>
+                <TextField
+                  label="Todo Task..."
+                  inputRef={todoInputRef}
+                  variant="outlined"
+                  fullWidth
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Button type="submit" variant="contained">Add Task</Button>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Box>
+            </form>
+
+            {todoList.length > 0 &&
+              <Box m={1} mt={4}>
+                {todoList.map((task) => {
+                  return <Task key={task.id} task={task} onDelete={removeTask} toggleUpdate={toggleTask}/>;
+                })}
+              </Box>
+            }
+          </Grid>
+
         </Grid>
-
-      </Grid>
-    </Paper>
+      </Paper>
     </>
   );
 }
