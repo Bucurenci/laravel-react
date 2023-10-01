@@ -2,8 +2,10 @@ import {ChangeEvent, useRef, useState} from 'react';
 import Modal from "../../../../components/Modal";
 import ImageCropper from "../../../../components/ImageCropper";
 import {User, UserFormErrors} from "../../../../models/User";
-import {faPencil, faTrash, faUpload} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {Box, Button, Stack} from "@mui/material";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 interface AvatarFormProps {
   user: User,
@@ -76,20 +78,22 @@ export default function AvatarForm({user, errors, onUpdate, onDelete}: AvatarFor
           <div className="position-relative d-inline-block">
             <img src={user.avatar?.medium ? user.avatar.medium : "/img/user-avatar-placeholder.png"}
                  className="img-fluid rounded shadow" alt="User Avatar"/>
-            <div className="position-absolute bottom-0 end-0 mb-2 me-2">
+            <Box component="div" sx={{position: "absolute", bottom: 0, right: 0, mb: 1, mr: 1}}>
               {user.avatar?.medium ? (
-                <>
-                  <button onClick={onSelectImage} className="btn btn-primary">
-                    <FontAwesomeIcon icon={faPencil}/>
-                  </button>
-                  <button onClick={handleDelete} className="btn btn-danger ms-2">
-                    <FontAwesomeIcon icon={faTrash}/>
-                  </button>
-                </>
+                <Stack direction="row" spacing={1}>
+                  <Button onClick={onSelectImage} variant="contained" sx={{minWidth: 45, px: 0}}>
+                    <EditIcon/>
+                  </Button>
+                  <Button onClick={handleDelete} variant="contained" color="error" sx={{minWidth: 45, px: 0}}>
+                    <DeleteIcon/>
+                  </Button>
+                </Stack>
               ) : (
-                <button onClick={onSelectImage} className="btn btn-primary"><FontAwesomeIcon icon={faUpload}/></button>
+                <Button onClick={onSelectImage} variant="contained" sx={{minWidth: 45, px: 0}}>
+                  <CloudUploadIcon/>
+                </Button>
               )}
-            </div>
+            </Box>
           </div>
           {errors?.avatar && <div className="text-danger text-center mt-2">{errors.avatar[0]}</div>}
         </>

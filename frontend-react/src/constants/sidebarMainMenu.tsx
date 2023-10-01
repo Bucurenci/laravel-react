@@ -1,4 +1,4 @@
-import BarChartIcon from '@mui/icons-material/BarChart';
+import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import PeopleIcon from '@mui/icons-material/People';
 import PersonIcon from '@mui/icons-material/Person';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -21,7 +21,7 @@ export const sidebarMainMenu: ISidebarListItem[] = [
   {
     id: 1,
     label: 'Dashboard',
-    icon: <BarChartIcon/>,
+    icon: <DashboardRoundedIcon/>,
     path: '/dashboard',
   },
   {

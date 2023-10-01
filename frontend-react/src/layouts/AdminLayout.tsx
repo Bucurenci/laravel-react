@@ -82,7 +82,13 @@ export default function AdminLayout() {
           </Box>
           {/* The Main Content */}
           <Box component="main"
-               sx={{flexGrow: 1, p: 3, overflowY: 'auto', width: {md: `calc(100% - ${drawerWidth}px)`}}}
+               sx={{
+                 flexGrow: 1,
+                 px: {xs: 2, lg: 5},
+                 py: {xs: 4, lg: 5},
+                 overflowY: 'auto',
+                 width: {md: `calc(100% - ${drawerWidth}px)`}
+               }}
           >
             {notification && <Toaster notification={notification}/>}
 

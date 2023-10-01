@@ -1,15 +1,15 @@
-import {useEffect, useState} from "react";
+import {ChangeEvent, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import axiosClient from "../../axios-client";
 import {useStateContext} from "../../contexts/ContextProvider";
-import Pagination from "../../components/Pagination";
 import {User, UserFormErrors} from "../../models/User";
-import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {UserUpdateType} from "../../models/User";
 import UserUpdateForm from "./components/UserUpdateForm";
 import AvatarForm from "./components/AvatarForm";
 import UsersTable from "./components/UsersTable";
+import {Paper, Pagination, Grid, Box, Button, Typography} from "@mui/material";
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import ReplyIcon from '@mui/icons-material/Reply';
 
 export default function ListPage() {
   const navigate = useNavigate();
@@ -169,8 +169,13 @@ export default function ListPage() {
       })
   }
 
-  const changePage = (page: number) => {
-    getUsers(page);
+  const changePage = (event: ChangeEvent<unknown>, page: number) => {
+    event.preventDefault();
+
+    if (paginationData.current_page !== page) {
+      setPaginationData({...paginationData, current_page: page})
+      getUsers(page);
+    }
   }
 
   const openUsersTable = () => {
@@ -184,65 +189,78 @@ export default function ListPage() {
   }
 
   return (
+    <>
+      <Grid container minHeight={75} display="flex" flexDirection="row"
+            justifyContent="space-between" alignItems="top">
+        <Box component="div">
+          {!updatePage ? (
+            <Typography variant="h4" mb={0} gutterBottom>Users list</Typography>
+          ) : (
+            <Typography variant="h4" mb={0} gutterBottom>Edit
+              User: {selectedUser?.first_name} {selectedUser?.last_name}</Typography>
+          )}
+        </Box>
+        <Box component="div">
+          {!updatePage ? (
+            <Button onClick={() => navigate('/users-create')} variant="contained" size="large" color="success"
+                    startIcon={<PersonAddIcon/>}>
+              New user
+            </Button>
+          ) : (
+            <Button onClick={openUsersTable} variant="contained" size="large" color="success"
+                    startIcon={<ReplyIcon/>}>
+              Back to users
+            </Button>
+          )}
+        </Box>
+      </Grid>
 
-    <div className="card border-0 shadow-lg">
-      {loading && (
-        <div style={{backgroundColor: 'rgba(0, 0, 0, .1)'}}
-             className="position-absolute d-flex justify-content-center align-items-center top-0 start-0 w-100 h-100 z-2">
-          <div className="spinner-border text-center" role="status" style={{width: '5rem', height: '5rem'}}>
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      )}
-      <div className="card-header">
-        <div className="d-flex flex-row justify-content-between py-2">
-          <div className="align-self-start">
-            {!updatePage && <h1 className="fs-2">Users List</h1>}
-            {updatePage && <h1 className="fs-2">Edit User: {selectedUser?.first_name} {selectedUser?.last_name}</h1>}
-          </div>
-          <div className="align-self-end">
-            {!updatePage ? (
-              <button onClick={() => navigate('/users-create')}
-                      className="btn btn-success btn-lg text-white align-self-end">
-                Add new
-              </button>
-            ) : (
-              <button onClick={openUsersTable} className="btn btn-success btn-lg text-white align-self-end">
-                <FontAwesomeIcon icon={faArrowLeft} className="me-2"/>Back to users
-              </button>
-            )}
-          </div>
-        </div>
-      </div>
-      <div className="card-body">
-        {!updatePage && (
-          <>
-            <UsersTable users={users} openUserUpdate={openUserUpdate} onUserDelete={handleUserDelete}/>
-            <div className="mt-4">
-              <Pagination paginationData={paginationData} onPageChange={changePage}/>
-            </div>
-          </>
-        )}
 
-        {updatePage && (
-          <div className="row justify-content-center">
-
-            <div className="col-12 col-xxl-9">
-              <div className="row align-items-center justify-content-center">
-                {selectedUser.id && (
-                  <div className="col-12 col-lg-4 col-xl-4 col-xxl-4 mb-4 mb-xl-0 text-center">
-                    <AvatarForm user={selectedUser} errors={errors} onUpdate={handleAvatarUpdate}
-                                onDelete={handleAvatarDelete}/>
-                  </div>
-                )}
-                <div className="col-12 col-xl-8 col-xxl-8">
-                  <UserUpdateForm user={selectedUser} serverErrors={errors} onUserUpdate={handleUserUpdate}/>
-                </div>
-              </div>
+      <Paper sx={{position: "relative"}}>
+        {loading && (
+          <div style={{backgroundColor: 'rgba(0, 0, 0, .1)'}}
+               className="position-absolute d-flex justify-content-center align-items-center top-0 start-0 w-100 h-100 z-2">
+            <div className="spinner-border text-center" role="status" style={{width: '5rem', height: '5rem'}}>
+              <span className="visually-hidden">Loading...</span>
             </div>
           </div>
         )}
-      </div>
-    </div>
+        <div className="card-body">
+          {!updatePage && (
+            <>
+              <UsersTable users={users} openUserUpdate={openUserUpdate} onUserDelete={handleUserDelete}/>
+
+              <Grid container minHeight={80} mt={0} spacing={2} display="flex" justifyContent="center"
+                    alignItems="center">
+                <Pagination count={paginationData.last_page}
+                            onChange={changePage}
+                            color="primary"/>
+              </Grid>
+            </>
+          )}
+
+          {updatePage && (
+            <Grid container display="flex" justifyContent="center" sx={{p: {xs: 2, sm: 3, md: 4}}}>
+              <Grid item xs={12} sm={12} md={12} lg={11} xl={9}>
+
+                <Grid container display="flex" justifyContent="center" alignItems="center"
+                      columnSpacing={{xs: 0, lg: 3}}>
+                  {selectedUser.id && (
+                    <Grid item xs={12} lg={4} sx={{mb: {xs: 3, lg: 0}}}>
+                      <AvatarForm user={selectedUser} errors={errors} onUpdate={handleAvatarUpdate}
+                                  onDelete={handleAvatarDelete}/>
+                    </Grid>
+                  )}
+                  <Grid item xs={12} lg={8}>
+                    <UserUpdateForm user={selectedUser} serverErrors={errors} onUserUpdate={handleUserUpdate}/>
+                  </Grid>
+                </Grid>
+
+              </Grid>
+            </Grid>
+          )}
+        </div>
+      </Paper>
+    </>
   );
 }

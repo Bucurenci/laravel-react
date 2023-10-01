@@ -1,10 +1,9 @@
 import EditIcon from '@mui/icons-material/Edit';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
-import {useStateContext} from "../../../../contexts/ContextProvider";
 import {UserUpdateType, User} from "../../../../models/User";
 import {
   Avatar, Button,
-  Fab, Stack,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -21,7 +20,6 @@ interface UsersListProps {
 }
 
 export default function UsersTable({users, onUserDelete, openUserUpdate}: UsersListProps) {
-  const {authUser} = useStateContext();
 
   return (
     <TableContainer>
@@ -39,11 +37,11 @@ export default function UsersTable({users, onUserDelete, openUserUpdate}: UsersL
         </TableHead>
         <TableBody>
           {users.map((user) => (
-            <TableRow key={user.id} hover sx={{'&:last-child td, &:last-child th': {border: 0}}}
+            <TableRow key={user.id} hover
             >
               <TableCell>{user.id}</TableCell>
               <TableCell>
-                <Avatar sx={{width: 60, height: 60}} src={user.avatar?.thumb}>
+                <Avatar sx={{width: 50, height: 50}} src={user.avatar?.thumb}>
                   {user.first_name.charAt(0).toUpperCase()}
                 </Avatar>
               </TableCell>
@@ -56,13 +54,14 @@ export default function UsersTable({users, onUserDelete, openUserUpdate}: UsersL
                 <Stack direction="row" spacing={2}>
 
                   <Tooltip title="Edit User" placement="top">
-                    <Button onClick={() => openUserUpdate(user)} variant="contained">
+                    <Button onClick={() => openUserUpdate(user)} variant="contained" sx={{minWidth: 45, px: 0}}>
                       <EditIcon/>
                     </Button>
                   </Tooltip>
 
                   <Tooltip title="Delete User" placement="top">
-                    <Button onClick={() => onUserDelete(user.id)} variant="contained" color="error">
+                    <Button onClick={() => onUserDelete(user.id)} variant="contained" color="error"
+                            sx={{minWidth: 45, px: 0}}>
                       <PersonOffIcon/>
                     </Button>
                   </Tooltip>

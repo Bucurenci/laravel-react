@@ -3,9 +3,9 @@ import {useNavigate} from "react-router-dom";
 import {UserCreateType, UserFormErrors} from "../../models/User";
 import axiosClient from "../../axios-client";
 import {useStateContext} from "../../contexts/ContextProvider";
-import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import UserCreateForm from "./components/UserCreateForm";
+import {Box, Button, Grid, Paper, Typography} from "@mui/material";
+import ReplyIcon from '@mui/icons-material/Reply';
 
 export default function CreatePage() {
   const {setNotification} = useStateContext();
@@ -35,41 +35,38 @@ export default function CreatePage() {
   }
 
   return (
-    <div className="card border-0 shadow-lg">
-      {loading && (
-        <div style={{backgroundColor: 'rgba(0, 0, 0, .1)'}}
-             className="position-absolute d-flex justify-content-center align-items-center top-0 start-0 w-100 h-100 z-2">
-          <div className="spinner-border text-center" role="status" style={{width: '5rem', height: '5rem'}}>
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      )}
-      <div className="card-header">
-        <div className="d-flex flex-row justify-content-between py-2">
-          <div className="align-self-start">
-            <h1 className="fs-2">Create new user</h1>
-          </div>
-          <div className="align-self-end">
+    <>
+      <Grid container minHeight={75} display="flex" flexDirection="row"
+            justifyContent="space-between" alignItems="top">
+        <Box component="div">
+          <Typography variant="h4" mb={0} gutterBottom>Create new user</Typography>
 
-            <button onClick={() => navigate("/users-list")}
-                    className="btn btn-success btn-lg text-white align-self-end">
-              <FontAwesomeIcon icon={faArrowLeft} className="me-2"/>Back to users
-            </button>
-          </div>
-        </div>
-      </div>
-      <div className="card-body">
-        <div className="row justify-content-center">
+        </Box>
+        <Box component="div">
+          <Button onClick={() => navigate("/users-list")} variant="contained" size="large" color="success"
+                  startIcon={<ReplyIcon/>}>
+            Back to users
+          </Button>
+        </Box>
+      </Grid>
 
-          <div className="col-12 col-xxl-9">
-            <div className="row align-items-center justify-content-center">
-              <div className="col-12 col-xl-8 col-xxl-8">
-                <UserCreateForm serverErrors={errors} onUserCreate={handleUserCreate}/>
-              </div>
+      <Paper sx={{position: "relative"}}>
+        {loading && (
+          <div style={{backgroundColor: 'rgba(0, 0, 0, .1)'}}
+               className="position-absolute d-flex justify-content-center align-items-center top-0 start-0 w-100 h-100 z-2">
+            <div className="spinner-border text-center" role="status" style={{width: '5rem', height: '5rem'}}>
+              <span className="visually-hidden">Loading...</span>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        )}
+
+
+        <Grid container display="flex" justifyContent="center" sx={{p: {xs: 2, sm: 3, md: 4}}}>
+          <Grid item xs={12} lg={9} xl={7}>
+            <UserCreateForm serverErrors={errors} onUserCreate={handleUserCreate}/>
+          </Grid>
+        </Grid>
+      </Paper>
+    </>
   );
 }
