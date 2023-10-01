@@ -1,5 +1,6 @@
 import {FormEvent, useRef, useState} from "react";
 import Task from "./components/Task";
+import {Box, Button, Grid, InputAdornment, Paper, TextField, Typography} from "@mui/material";
 
 export interface Todo {
   id: number,
@@ -14,6 +15,8 @@ export default function TodoList() {
 
   const addNewTask = (e: FormEvent) => {
     e.preventDefault();
+
+    console.log(todoInputRef.current.value);
 
     if (todoInputRef.current.value) {
       setTodoList([...todoList, {
@@ -30,47 +33,51 @@ export default function TodoList() {
     setTodoList(todoList.filter((task: Todo) => task.id !== taskId));
   }
 
-  const completeTask = (taskId: number) => {
+  const toggleTask = (taskId: number) => {
     setTodoList(todoList.map((task) => {
       if (task.id == taskId) {
-        return {...task, isCompleted: true};
+        return {...task, isCompleted: !task.isCompleted};
       }
       return task;
     }));
   }
 
   return (
-    <div className="card border-0 shadow-lg">
-      <div className="card-header">
-        <h1 className="h2">Add/Remove TODO Tasks</h1>
-      </div>
-      <div className="card-body py-4">
-        <div className="row justify-content-center">
-          <div className="col col-md-9 col-xl-7">
+    <>
+      <Typography variant="h5" mb={3}>Add/Remove TODO Tasks</Typography><Paper sx={{p: 2}}>
 
-            <form onSubmit={addNewTask} className="row">
+      <Grid container justifyContent="center">
 
-              <div className="col">
-                <input ref={todoInputRef}
-                       className="form-control form-control-user form-control-lg"
-                       id="todoTaskInput"
-                       placeholder="Todo Task..."/>
-              </div>
-              <div className="col-auto">
-                <button className="btn btn-success btn-lg">Add Task</button>
-              </div>
-            </form>
+        <Grid item xs={12} md={10} lg={8} xl={7}>
+          <form onSubmit={addNewTask}>
+            <Box m={1}>
+              <TextField
+                label="Todo Task..."
+                inputRef={todoInputRef}
+                variant="outlined"
+                fullWidth
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <Button type="submit" variant="contained">Add Task</Button>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Box>
+          </form>
 
-            {todoList &&
-              <div className="col-12 mt-4">
-                {todoList.map((task) => {
-                  return <Task key={task.id} task={task} onDelete={removeTask} onUpdate={completeTask}/>;
-                })}
-              </div>
-            }
-          </div>
-        </div>
-      </div>
-    </div>
+          {todoList.length > 0 &&
+            <Box m={1} mt={4}>
+              {todoList.map((task) => {
+                return <Task key={task.id} task={task} onDelete={removeTask} toggleUpdate={toggleTask}/>;
+              })}
+            </Box>
+          }
+        </Grid>
+
+      </Grid>
+    </Paper>
+    </>
   );
 }

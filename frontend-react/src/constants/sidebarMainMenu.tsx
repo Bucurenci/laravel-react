@@ -46,7 +46,7 @@ export const sidebarMainMenu: ISidebarListItem[] = [
   },
   {
     id: 3,
-    label: 'Exercises',
+    label: 'Miscellaneous',
     icon: <ModelTrainingIcon/>,
     children: [
       {

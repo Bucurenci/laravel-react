@@ -7,10 +7,9 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle, FormControl,
+  DialogTitle,
   IconButton, Paper,
   Stack,
-  Typography
 } from "@mui/material";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import DeleteIcon from '@mui/icons-material/Delete';
