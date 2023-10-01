@@ -1,10 +1,10 @@
 import EditIcon from '@mui/icons-material/Edit';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import PersonOffIcon from '@mui/icons-material/PersonOff';
 import {useStateContext} from "../../../../contexts/ContextProvider";
 import {UserUpdateType, User} from "../../../../models/User";
 import {
-  Avatar,
-  Fab,
+  Avatar, Button,
+  Fab, Stack,
   Table,
   TableBody,
   TableCell,
@@ -39,14 +39,12 @@ export default function UsersTable({users, onUserDelete, openUserUpdate}: UsersL
         </TableHead>
         <TableBody>
           {users.map((user) => (
-            <TableRow
-              key={user.id}
-              sx={{'&:last-child td, &:last-child th': {border: 0}}}
+            <TableRow key={user.id} hover sx={{'&:last-child td, &:last-child th': {border: 0}}}
             >
               <TableCell>{user.id}</TableCell>
               <TableCell>
-                <Avatar sx={{width: 50, height: 50}} src={authUser?.avatar?.thumb}>
-                  {authUser?.first_name.charAt(0).toUpperCase()}
+                <Avatar sx={{width: 60, height: 60}} src={user.avatar?.thumb}>
+                  {user.first_name.charAt(0).toUpperCase()}
                 </Avatar>
               </TableCell>
               <TableCell>{user.first_name}</TableCell>
@@ -55,18 +53,21 @@ export default function UsersTable({users, onUserDelete, openUserUpdate}: UsersL
               <TableCell>{user.created_at}</TableCell>
               <TableCell align="right">
 
-                <Tooltip title="Edit User" placement="top">
-                  <Fab onClick={() => openUserUpdate(user)} size="small" color="primary" sx={{mr: 1}}
-                       aria-label="edit">
-                    <EditIcon/>
-                  </Fab>
-                </Tooltip>
+                <Stack direction="row" spacing={2}>
 
-                <Tooltip title="Delete User" placement="top">
-                  <Fab onClick={() => onUserDelete(user.id)} size="small" color="secondary" aria-label="add">
-                    <DeleteForeverIcon/>
-                  </Fab>
-                </Tooltip>
+                  <Tooltip title="Edit User" placement="top">
+                    <Button onClick={() => openUserUpdate(user)} variant="contained">
+                      <EditIcon/>
+                    </Button>
+                  </Tooltip>
+
+                  <Tooltip title="Delete User" placement="top">
+                    <Button onClick={() => onUserDelete(user.id)} variant="contained" color="error">
+                      <PersonOffIcon/>
+                    </Button>
+                  </Tooltip>
+
+                </Stack>
 
               </TableCell>
             </TableRow>
