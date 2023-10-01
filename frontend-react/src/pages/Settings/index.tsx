@@ -1,9 +1,20 @@
 import {useEffect, useState} from "react";
 import axiosClient from "../../axios-client";
 import SettingsList from "./components/SettingsList";
-import Modal from "../../components/Modal";
 import ModalForm from "./components/ModalForm";
 import {useStateContext} from "../../contexts/ContextProvider";
+import {
+  Box,
+  Button, Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  IconButton,
+  Paper,
+  Typography
+} from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
 
 export interface SettingItem {
   id: number,
@@ -16,7 +27,7 @@ export default function Settings() {
   const {setNotification} = useStateContext();
   const [settings, setSettings] = useState<SettingItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showDialog, setShowDialog] = useState<boolean>(false);
 
   useEffect(() => {
     getSettings();
@@ -52,25 +63,50 @@ export default function Settings() {
   }
 
   return (
-    <div className="card border-0 shadow-lg">
-      <div className="card-header">
-        <div className="d-flex flex-row justify-content-between py-2">
-          <div className="align-self-start">
-            <h1 className="h2">App Settings</h1>
-          </div>
-          <div className="align-self-end">
-            <button onClick={() => setShowModal(true)} className="btn btn-success btn-lg text-white align-self-end">Add
-              new
-            </button>
-          </div>
-        </div>
-      </div>
-      <div className="card-body">
+    <>
+      <Grid container minHeight={75} display="flex" flexDirection="row"
+            justifyContent="space-between" alignItems="top">
+        <Box component="div">
+          <Typography variant="h4" mb={0} gutterBottom>App Settings</Typography>
+
+        </Box>
+        <Box component="div">
+          <Button onClick={() => setShowDialog(true)} variant="contained" size="large"
+                  startIcon={<AddIcon/>} sx={{mb: {xs: 3, sm: 0}, mt: {xs: 2, sm: 0}}}>
+            Add new setting
+          </Button>
+        </Box>
+      </Grid>
+
+      <Paper sx={{p: 2}}>
         <SettingsList settings={settings} loading={loading} onSettingDelete={handleSettingDelete}/>
-      </div>
-      <Modal title="Add new setting" showModal={showModal} setShowModal={setShowModal}>
-        <ModalForm/>
-      </Modal>
-    </div>
+
+        <Dialog
+          onClose={() => setShowDialog(false)}
+          aria-labelledby="customized-dialog-title"
+          open={showDialog}
+          maxWidth="lg"
+        >
+          <DialogTitle sx={{m: 0, p: 2}} id="customized-dialog-title">
+            Create new setting
+          </DialogTitle>
+          <IconButton
+            aria-label="close"
+            onClick={() => setShowDialog(false)}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: (theme) => theme.palette.grey[500],
+            }}
+          >
+            <CloseIcon/>
+          </IconButton>
+          <DialogContent dividers>
+            <ModalForm/>
+          </DialogContent>
+        </Dialog>
+      </Paper>
+    </>
   );
 }
