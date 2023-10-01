@@ -1,11 +1,21 @@
 import {ChangeEvent, useRef, useState} from 'react';
-import Modal from "../../../../components/Modal";
 import ImageCropper from "../../../../components/ImageCropper";
 import {User, UserFormErrors} from "../../../../models/User";
-import {Box, Button, Stack} from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Stack,
+  Typography
+} from "@mui/material";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface AvatarFormProps {
   user: User,
@@ -16,7 +26,7 @@ interface AvatarFormProps {
 
 export default function AvatarForm({user, errors, onUpdate, onDelete}: AvatarFormProps) {
   const avatarRef = useRef<HTMLInputElement>(null!);
-  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showDialog, setShowDialog] = useState<boolean>(false);
   const [uploadedImage, setUploadedImage] = useState<string | ArrayBuffer | null>(null);
   const [croppedImage, setCroppedImage] = useState<File>({} as File);
 
@@ -34,14 +44,14 @@ export default function AvatarForm({user, errors, onUpdate, onDelete}: AvatarFor
       reader.readAsDataURL(e.target.files[0]);
       reader.addEventListener('load', () => {
         setUploadedImage(reader.result);
-        setShowModal(true);
+        setShowDialog(true);
       });
 
     }
   }
 
   const handleSave = () => {
-    setShowModal(false);
+    setShowDialog(false);
     onUpdate(user, croppedImage);
   }
 
@@ -99,14 +109,38 @@ export default function AvatarForm({user, errors, onUpdate, onDelete}: AvatarFor
         </>
       )}
 
-      <Modal title="Crop the image" showModal={showModal} setShowModal={setShowModal}
-             saveButton={croppedImage.size ? "Upload selection" : ''}
-             onSave={handleSave}>
-
-        <div className="text-center">
+      <Dialog
+        onClose={() => setShowDialog(false)}
+        aria-labelledby="customized-dialog-title"
+        open={showDialog}
+        maxWidth="lg"
+      >
+        <DialogTitle sx={{m: 0, p: 2}} id="customized-dialog-title">
+          Crop the image
+        </DialogTitle>
+        <IconButton
+          aria-label="close"
+          onClick={() => setShowDialog(false)}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon/>
+        </IconButton>
+        <DialogContent dividers>
           <ImageCropper uploadedImage={uploadedImage} onCropFile={onCropFile}/>
-        </div>
-      </Modal>
+        </DialogContent>
+        {croppedImage.size && (
+          <DialogActions>
+            <Button autoFocus onClick={handleSave} variant="contained" size="large">
+              Upload selection
+            </Button>
+          </DialogActions>
+        )}
+      </Dialog>
     </>
   );
 }

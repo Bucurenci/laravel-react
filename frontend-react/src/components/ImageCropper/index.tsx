@@ -2,6 +2,7 @@ import {useState, createRef, FC} from "react";
 import Cropper, {ReactCropperElement, ReactCropperProps} from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import {dataURLtoFile} from "../../utils/Files";
+import {Box, Button, Grid} from "@mui/material";
 
 interface ImageCropperProps {
   uploadedImage: string | ArrayBuffer | null;
@@ -69,25 +70,33 @@ export const ImageCropper: FC<ImageCropperProps> = ({uploadedImage, onCropFile})
   return (
     <>
       {cropData ? (
-        <>
-          <div className="mb-3">
-            <img src={cropData} className="img-fluid" style={{maxHeight: 650}} alt="cropped"/>
-          </div>
+        <Grid container display="flex" flexDirection="column" justifyContent="center">
 
-          <button className="btn btn-secondary btn-lg" onClick={onCancel}>
-            Cancel
-          </button>
-        </>
+          <Box component="div" mb={2}>
+            <img src={cropData} alt="cropped" style={{maxWidth: '100%', height: 'auto', maxHeight: 650}}/>
+          </Box>
+
+          <Box component="div" sx={{textAlign: "center"}}>
+            <Button variant="contained" color="secondary" size="large"
+                    sx={{
+                      backgroundColor: (theme) => theme.palette.grey[500],
+                      '&:hover': {backgroundColor: (theme) => theme.palette.grey[600]}
+                    }}
+                    onClick={onCancel}>
+              Cancel
+            </Button>
+          </Box>
+        </Grid>
       ) : (
-        <>
-          <div className="mb-3">
+        <Grid container display="flex" justifyContent="center">
+          <Box component="div" mb={2}>
             <Cropper {...defaultOptions} />
-          </div>
+          </Box>
 
-          <button className="btn btn-primary btn-lg" onClick={getCropData}>
+          <Button variant="contained" size="large" onClick={getCropData}>
             Crop Image
-          </button>
-        </>
+          </Button>
+        </Grid>
 
       )}
     </>
