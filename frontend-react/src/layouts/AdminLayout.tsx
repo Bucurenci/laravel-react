@@ -1,41 +1,97 @@
-import {Outlet, Navigate} from 'react-router-dom';
+import {useState} from 'react';
 import {useStateContext} from "../contexts/ContextProvider";
-import Navbar from "./Navbar";
+import Drawer from '@mui/material/Drawer';
+import {Box, CssBaseline, createTheme, ThemeProvider, useTheme} from "@mui/material";
 import Sidebar from "./Sidebar";
-import Footer from "./Footer";
+import Navbar from "./Navbar";
+import {Navigate, Outlet} from "react-router-dom";
 import Toaster from "../components/Toaster";
 
 export default function AdminLayout() {
+  const drawerWidth = 240;
+  const [mobileOpen, setMobileOpen] = useState(false);
   const {token, notification} = useStateContext();
 
   if (!token) {
     return <Navigate to="/login"/>
   }
 
+  const newTheme = createTheme({
+    mixins: {
+      toolbar: {
+        minHeight: 75,
+        '@media (min-width:600px)': {minHeight: 75}
+      }
+    }
+  });
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
   return (
-    <div id="page-top">
-      <div id="wrapper">
+    <ThemeProvider theme={newTheme}>
+      <CssBaseline/>
+      <Box>
 
-        <Sidebar/>
+        <Navbar onDrawerToggle={handleDrawerToggle}/>
 
-        <div id="content-wrapper" className="d-flex flex-column">
-          <div id="content">
+        <Box sx={{
+          display: 'flex',
+          overflow: 'hidden',
+          height: (theme) => `calc(100vh - ${theme.mixins.toolbar.minHeight}px)`
+        }}>
+          <Box
+            component="nav"
+            sx={{
+              width: {md: drawerWidth},
+              overflowX: 'hidden',
+              overflowY: 'auto',
+              flexShrink: {md: 0}
+            }}
+            aria-label="mailbox folders"
+          >
+            {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+            <Drawer
+              variant="temporary"
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
+              ModalProps={{
+                position: 'relative',
+                keepMounted: true, // Better open performance on mobile.
+              }}
+              sx={{
+                display: {xs: 'block', md: 'none'},
+                height: (theme) => `calc(100vh - ${theme.mixins.toolbar.minHeight}px)`,
+                mt: (theme) => `${theme.mixins.toolbar.minHeight}px`,
+                '& .MuiDrawer-paper': {boxSizing: 'border-box', width: drawerWidth, position: "relative"}
+              }}
+            >
+              <Sidebar/>
+            </Drawer>
+            <Drawer
+              position="relative"
+              variant="permanent"
+              sx={{
+                display: {xs: 'none', md: 'block'},
+                height: '100%',
+                '& .MuiDrawer-paper': {boxSizing: 'border-box', width: drawerWidth, position: "relative"},
+              }}
+              open={mobileOpen}
+            >
+              <Sidebar/>
+            </Drawer>
+          </Box>
+          {/* The Main Content */}
+          <Box component="main"
+               sx={{flexGrow: 1, p: 3, overflowY: 'auto', width: {md: `calc(100% - ${drawerWidth}px)`}}}
+          >
+            {notification && <Toaster notification={notification}/>}
 
-            <Navbar/>
-
-            <div className="container-fluid position-relative">
-
-              {notification && <Toaster notification={notification}/>}
-
-              <Outlet/>
-
-            </div>
-          </div>
-
-          <Footer/>
-
-        </div>
-      </div>
-    </div>
+            <Outlet/>
+          </Box>
+        </Box>
+      </Box>
+    </ThemeProvider>
   );
 }

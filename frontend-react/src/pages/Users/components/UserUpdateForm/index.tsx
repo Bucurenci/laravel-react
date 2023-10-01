@@ -108,7 +108,7 @@ export default function UserUpdateForm({user, serverErrors, onUserUpdate}: UserU
           </div>
           <div className="d-grid gap-2">
             <button className="btn btn-primary btn-user text-white" disabled={isSubmitting}>
-              {user?.id ? `Save` : 'Create'}
+              {user?.id ? `Save` : 'CreatePage'}
             </button>
           </div>
         </div>

@@ -9,7 +9,7 @@ interface UsersListProps {
   openUserUpdate: (u: UserUpdateType) => void,
 }
 
-export default function UsersList({users, onUserDelete, openUserUpdate}: UsersListProps) {
+export default function UsersTable({users, onUserDelete, openUserUpdate}: UsersListProps) {
   const {authUser} = useStateContext();
 
   return (

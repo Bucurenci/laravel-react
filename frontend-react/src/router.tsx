@@ -1,13 +1,16 @@
 import {createBrowserRouter, Navigate} from "react-router-dom";
-import AdminLayout from "./layouts/AdminLayout";
 import GuestLayout from "./layouts/GuestLayout";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
-import Users from "./pages/Users";
 import ForgotPassword from "./pages/ForgotPassword";
 import TodoList from "./pages/_TodoList";
 import Settings from "./pages/Settings";
+import AdminLayout from "./layouts/AdminLayout";
+import Dashboard from "./pages/Dashboard";
+import UsersPage from "./pages/Users";
+import CreatePage from "./pages/Users/CreatePage";
+import ListPage from "./pages/Users/ListPage";
 
 const router = createBrowserRouter([
   {
@@ -16,11 +19,23 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Navigate to='/users'/>
+        element: <Navigate to="/dashboard"/>
+      },
+      {
+        path: '/dashboard',
+        element: <Dashboard/>
       },
       {
         path: '/users',
-        element: <Users/>
+        element: <UsersPage/>,
+      },
+      {
+        path: '/users-list',
+        element: <ListPage/>
+      },
+      {
+        path: '/users-create',
+        element: <CreatePage/>
       },
       {
         path: '/todo-list',
