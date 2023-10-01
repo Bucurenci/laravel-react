@@ -6,6 +6,7 @@ import {useStateContext} from "../../contexts/ContextProvider";
 import UserCreateForm from "./components/UserCreateForm";
 import {Box, Button, Grid, Paper, Typography} from "@mui/material";
 import ReplyIcon from '@mui/icons-material/Reply';
+import Loading from "../../components/Loading";
 
 export default function CreatePage() {
   const {setNotification} = useStateContext();
@@ -51,15 +52,8 @@ export default function CreatePage() {
       </Grid>
 
       <Paper sx={{position: "relative"}}>
-        {loading && (
-          <div style={{backgroundColor: 'rgba(0, 0, 0, .1)'}}
-               className="position-absolute d-flex justify-content-center align-items-center top-0 start-0 w-100 h-100 z-2">
-            <div className="spinner-border text-center" role="status" style={{width: '5rem', height: '5rem'}}>
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
-        )}
 
+        <Loading isLoading={loading}/>
 
         <Grid container display="flex" justifyContent="center" sx={{p: {xs: 2, sm: 3, md: 4}}}>
           <Grid item xs={12} lg={9} xl={7}>

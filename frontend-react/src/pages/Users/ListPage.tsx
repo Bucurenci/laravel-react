@@ -10,6 +10,7 @@ import UsersTable from "./components/UsersTable";
 import {Paper, Pagination, Grid, Box, Button, Typography} from "@mui/material";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ReplyIcon from '@mui/icons-material/Reply';
+import Loading from "../../components/Loading";
 
 export default function ListPage() {
   const navigate = useNavigate();
@@ -217,14 +218,9 @@ export default function ListPage() {
 
 
       <Paper sx={{position: "relative"}}>
-        {loading && (
-          <div style={{backgroundColor: 'rgba(0, 0, 0, .1)'}}
-               className="position-absolute d-flex justify-content-center align-items-center top-0 start-0 w-100 h-100 z-2">
-            <div className="spinner-border text-center" role="status" style={{width: '5rem', height: '5rem'}}>
-              <span className="visually-hidden">Loading...</span>
-            </div>
-          </div>
-        )}
+
+        <Loading isLoading={loading}/>
+
         <div className="card-body">
           {!updatePage && (
             <>
