@@ -5,10 +5,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 import {useStateContext} from "../../../contexts/ContextProvider";
-import {useEffect, useState} from "react";
+import {useEffect, useState, MouseEvent} from "react";
 import axiosClient from "../../../axios-client";
 
 export default function UserMenu() {
@@ -32,7 +31,7 @@ export default function UserMenu() {
       });
   }
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -50,7 +49,8 @@ export default function UserMenu() {
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
         >
-          <Avatar sx={{width: 32, height: 32}}>{authUser?.first_name.charAt(0).toUpperCase()}</Avatar>
+          <Avatar sx={{width: 40, height: 40}}
+                  src={authUser?.avatar?.thumb}>{authUser?.first_name.charAt(0).toUpperCase()}</Avatar>
         </IconButton>
       </Tooltip>
       <Menu
@@ -88,19 +88,11 @@ export default function UserMenu() {
         transformOrigin={{horizontal: 'right', vertical: 'top'}}
         anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
       >
-        <MenuItem onClick={handleClose}>
-          <Avatar>{authUser?.first_name.charAt(0).toUpperCase()}</Avatar>
-          My account
+        <MenuItem>
+          Hello, {authUser?.first_name} {authUser?.last_name}
         </MenuItem>
 
         <Divider/>
-
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <Settings fontSize="small"/>
-          </ListItemIcon>
-          Settings
-        </MenuItem>
 
         <MenuItem onClick={onLogout}>
           <ListItemIcon>

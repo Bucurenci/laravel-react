@@ -1,7 +1,18 @@
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faPencil, faTrash} from "@fortawesome/free-solid-svg-icons";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import {useStateContext} from "../../../../contexts/ContextProvider";
 import {UserUpdateType, User} from "../../../../models/User";
+import {
+  Avatar,
+  Fab,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Tooltip
+} from "@mui/material";
 
 interface UsersListProps {
   users: User[],
@@ -13,49 +24,55 @@ export default function UsersTable({users, onUserDelete, openUserUpdate}: UsersL
   const {authUser} = useStateContext();
 
   return (
-    <div className="table-responsive">
-      <table className="table align-middle">
-        <thead>
-        <tr>
-          <th>ID</th>
-          <th style={{width: '75px'}}>Avatar</th>
-          <th>Email</th>
-          <th>First Name</th>
-          <th>Last Name</th>
-          <th>Create Date</th>
-          <th className="text-end">Actions</th>
-        </tr>
-        </thead>
-        <tbody>
+    <TableContainer>
+      <Table sx={{minWidth: 650}} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>ID</TableCell>
+            <TableCell>Avatar</TableCell>
+            <TableCell>First name</TableCell>
+            <TableCell>Last name</TableCell>
+            <TableCell>Email</TableCell>
+            <TableCell>Created at</TableCell>
+            <TableCell align="right" width={140}>Actions</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {users.map((user) => (
+            <TableRow
+              key={user.id}
+              sx={{'&:last-child td, &:last-child th': {border: 0}}}
+            >
+              <TableCell>{user.id}</TableCell>
+              <TableCell>
+                <Avatar sx={{width: 50, height: 50}} src={authUser?.avatar?.thumb}>
+                  {authUser?.first_name.charAt(0).toUpperCase()}
+                </Avatar>
+              </TableCell>
+              <TableCell>{user.first_name}</TableCell>
+              <TableCell>{user.last_name}</TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell>{user.created_at}</TableCell>
+              <TableCell align="right">
 
-        {users.map((u, index) => (
-          <tr key={index}>
-            <td>{u.id}</td>
-            <td>
-              <img src={u.avatar ? u.avatar.thumb : "/img/user-avatar-placeholder-xs.png"}
-                   alt={`${u.first_name} Photo`}
-                   className="img-fluid rounded-circle"/>
-            </td>
-            <td>{u.email}</td>
-            <td>{u.first_name}</td>
-            <td>{u.last_name}</td>
-            <td>{u.created_at}</td>
-            <td className="text-right">
-              {authUser?.id !== u.id && (
-                <button onClick={() => onUserDelete(u.id)} className="btn btn-danger ms-2 float-end">
-                  <FontAwesomeIcon icon={faTrash} className="me-2"/>
-                  Delete
-                </button>
-              )}
-              <button onClick={() => openUserUpdate(u)} className="btn btn-primary ms-2 float-end">
-                <FontAwesomeIcon icon={faPencil} className="me-2"/>
-                Edit
-              </button>
-            </td>
-          </tr>
-        ))}
-        </tbody>
-      </table>
-    </div>
+                <Tooltip title="Edit User" placement="top">
+                  <Fab onClick={() => openUserUpdate(user)} size="small" color="primary" sx={{mr: 1}}
+                       aria-label="edit">
+                    <EditIcon/>
+                  </Fab>
+                </Tooltip>
+
+                <Tooltip title="Delete User" placement="top">
+                  <Fab onClick={() => onUserDelete(user.id)} size="small" color="secondary" aria-label="add">
+                    <DeleteForeverIcon/>
+                  </Fab>
+                </Tooltip>
+
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
   )
 }
