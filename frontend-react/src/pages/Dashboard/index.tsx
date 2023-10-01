@@ -1,6 +1,8 @@
+import {Typography} from "@mui/material";
+
 export default function Dashboard() {
 
   return (
-    <h1 className="text-center">This is the Dashboard Page!</h1>
+    <Typography variant="h2" mb={0} sx={{textAlign: 'center'}} gutterBottom>This is the Users Page</Typography>
   );
 }

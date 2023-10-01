@@ -1,11 +1,10 @@
-import {Outlet} from "react-router-dom";
+import {Typography} from "@mui/material";
 
 export default function UsersPage() {
 
   return (
     <>
-      <h1 className="text-center">This is the Users Page</h1>
-      <Outlet/>
+      <Typography variant="h2" mb={0} sx={{textAlign: 'center'}} gutterBottom>This is the Users Page</Typography>
     </>
   );
 }

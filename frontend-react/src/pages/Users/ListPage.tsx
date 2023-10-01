@@ -207,8 +207,8 @@ export default function ListPage() {
               New user
             </Button>
           ) : (
-            <Button onClick={openUsersTable} variant="contained" size="large" color="success"
-                    startIcon={<ReplyIcon/>}>
+            <Button onClick={openUsersTable} variant="contained" size="large"
+                    startIcon={<ReplyIcon/>} sx={{mb: {xs: 3, sm: 0}, mt: {xs: 2, sm: 0}}}>
               Back to users
             </Button>
           )}

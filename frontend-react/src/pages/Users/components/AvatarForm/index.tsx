@@ -7,8 +7,8 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
-  IconButton,
+  DialogTitle, FormControl,
+  IconButton, Paper,
   Stack,
   Typography
 } from "@mui/material";
@@ -68,26 +68,21 @@ export default function AvatarForm({user, errors, onUpdate, onDelete}: AvatarFor
     <>
       {user && (
         <>
-          <form className="user col d-none" autoComplete="off">
+          <input
+            onChange={onImageSelected}
+            ref={avatarRef}
+            type="file"
+            hidden
+            accept="image/*"
+            className="form-control form-control-user"
+            id="exampleInputAvatar" autoComplete="off"
+            placeholder="Email Address"/>
 
-            <div className="col-lg-5 mb-3 mb-lg-0 order-lg-last">
-
-              <div className="mt-3">
-                <input
-                  onChange={onImageSelected}
-                  ref={avatarRef}
-                  type="file"
-                  accept="image/*"
-                  className="form-control form-control-user"
-                  id="exampleInputAvatar" autoComplete="off"
-                  placeholder="Email Address"/>
-              </div>
-            </div>
-          </form>
-
-          <div className="position-relative d-inline-block">
-            <img src={user.avatar?.medium ? user.avatar.medium : "/img/user-avatar-placeholder.png"}
-                 className="img-fluid rounded shadow" alt="User Avatar"/>
+          <Box sx={{position: 'relative', display: 'inline-block'}}>
+            <Paper elevation={3} sx={{overflow: "hidden"}}>
+              <img src={user.avatar?.medium ? user.avatar.medium : "/img/user-avatar-placeholder.png"}
+                   style={{maxWidth: '100%', height: 'auto'}} alt="User Avatar"/>
+            </Paper>
             <Box component="div" sx={{position: "absolute", bottom: 0, right: 0, mb: 1, mr: 1}}>
               {user.avatar?.medium ? (
                 <Stack direction="row" spacing={1}>
@@ -104,7 +99,7 @@ export default function AvatarForm({user, errors, onUpdate, onDelete}: AvatarFor
                 </Button>
               )}
             </Box>
-          </div>
+          </Box>
           {errors?.avatar && <div className="text-danger text-center mt-2">{errors.avatar[0]}</div>}
         </>
       )}

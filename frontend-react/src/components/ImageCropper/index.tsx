@@ -70,7 +70,7 @@ export const ImageCropper: FC<ImageCropperProps> = ({uploadedImage, onCropFile})
   return (
     <>
       {cropData ? (
-        <Grid container display="flex" flexDirection="column" justifyContent="center">
+        <Grid container display="flex" direction="column" justifyContent="center">
 
           <Box component="div" mb={2}>
             <img src={cropData} alt="cropped" style={{maxWidth: '100%', height: 'auto', maxHeight: 650}}/>
@@ -88,14 +88,16 @@ export const ImageCropper: FC<ImageCropperProps> = ({uploadedImage, onCropFile})
           </Box>
         </Grid>
       ) : (
-        <Grid container display="flex" justifyContent="center">
+        <Grid container display="flex" direction="column" justifyContent="center">
           <Box component="div" mb={2}>
             <Cropper {...defaultOptions} />
           </Box>
 
-          <Button variant="contained" size="large" onClick={getCropData}>
-            Crop Image
-          </Button>
+          <Box component="div" sx={{textAlign: "center"}}>
+            <Button variant="contained" size="large" onClick={getCropData}>
+              Crop Image
+            </Button>
+          </Box>
         </Grid>
 
       )}
