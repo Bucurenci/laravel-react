@@ -2,9 +2,14 @@ import {useEffect, useState} from "react";
 import {useNavigate, useLocation} from "react-router-dom";
 import {Collapse, List, ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
 import {ExpandLess, ExpandMore} from "@mui/icons-material";
-import {ISidebarListGroup} from "../../../constants/sidebarMainMenu";
+import {ISidebarListItem} from "../../../constants/sidebarMainMenu";
 
-export default function ListGroup({item}: ISidebarListGroup) {
+interface ListGroupProps {
+  item: ISidebarListItem,
+  key: number
+}
+
+export default function ListGroup({item}: ListGroupProps) {
   const [isOpened, setIsOpened] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -16,7 +21,7 @@ export default function ListGroup({item}: ISidebarListGroup) {
     }
   }, []);
 
-  const handleClick = (menuItem: ISidebarListGroup) => {
+  const handleClick = (menuItem: ISidebarListItem) => {
 
     setIsOpened(prev => !prev);
 
@@ -39,12 +44,12 @@ export default function ListGroup({item}: ISidebarListGroup) {
         <Collapse in={isOpened} timeout="auto">
           <List component="div" disablePadding>
 
-            {item.children.map((child) => {
+            {item.children.map((child: ISidebarListItem) => {
                 return (
                   <ListItemButton
                     key={child.id}
                     sx={{pl: 4}}
-                    onClick={() => navigate(child.path)}
+                    onClick={() => child.path && navigate(child.path)}
                   >
                     <ListItemIcon>
                       {child.icon}

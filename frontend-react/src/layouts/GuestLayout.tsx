@@ -1,30 +1,31 @@
 import {Outlet, Navigate} from 'react-router-dom';
 import {useStateContext} from "../contexts/ContextProvider";
+import {Box, Container, createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 
 export default function GuestLayout() {
   const {token} = useStateContext();
+  const defaultTheme = createTheme();
 
   if (token) {
     return <Navigate to="/"/>;
   }
 
   return (
-    <div className="bg-gradient-primary min-vh-100">
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-lg-6 col-md-9">
-            <div className="card o-hidden border-0 shadow-lg my-5">
-              <div className="card-body p-0">
-                <div className="p-5">
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="sm">
+        <CssBaseline/>
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
 
-                  <Outlet/>
-
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          <Outlet/>
+        </Box>
+      </Container>
+    </ThemeProvider>
   );
 }

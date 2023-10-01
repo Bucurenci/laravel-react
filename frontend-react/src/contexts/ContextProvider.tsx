@@ -1,13 +1,14 @@
 import {ReactNode, createContext, useContext, useState, Dispatch, SetStateAction} from "react";
 import {AuthUser} from "../models/User";
-import {NotificationType, Notification} from "../models/Notification";
+import {Notification} from "../models/Notification";
+import {AlertColor} from "@mui/material";
 
 type ContextProviderType = {
   authUser: AuthUser | null;
   notification: Notification | null;
   token: string | null;
   setAuthUser: Dispatch<SetStateAction<AuthUser | null>>,
-  setNotification: (notification: ReactNode, type?: NotificationType) => void;
+  setNotification: (notification: ReactNode, type?: AlertColor | undefined) => void;
   setToken: (token: string | null) => void,
 }
 
@@ -32,7 +33,7 @@ export const ContextProvider = ({children}: ContextProviderProps) => {
   const [notification, _setNotification] = useState<Notification | null>(null);
   const [token, _setToken] = useState<string | null>(localStorage.getItem('ACCESS_TOKEN'));
 
-  const setNotification = (notification: ReactNode, type: NotificationType = NotificationType.SUCCESS) => {
+  const setNotification = (notification: ReactNode, type: AlertColor | undefined = 'success') => {
     _setNotification({content: notification, type: type});
 
     setTimeout(() => {

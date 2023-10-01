@@ -1,26 +1,44 @@
-import {Link} from "react-router-dom";
-import {useStateContext} from "../../contexts/ContextProvider";
+import {
+  Avatar,
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  Link,
+  TextField,
+  Typography,
+  FormHelperText,
+  FormControl
+} from "@mui/material";
+import { useStateContext } from "../../contexts/ContextProvider";
+import { Controller, useForm } from "react-hook-form";
+import { UserLoginSchema, UserLoginType } from "../../models/User";
+import { zodResolver } from "@hookform/resolvers/zod";
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import axiosClient from "../../axios-client";
-import {useForm} from "react-hook-form";
-import {zodResolver} from "@hookform/resolvers/zod";
-import {UserLoginSchema, UserLoginType} from "../../models/User";
 
-export default function Login() {
-  const {setAuthUser, setToken} = useStateContext();
+export default function LoginForm() {
+  const { setAuthUser, setToken } = useStateContext();
 
   const {
-    register,
+    control,
     handleSubmit,
     setError,
-    formState: {errors, isSubmitting}
+    formState: { isSubmitting }
   } = useForm<UserLoginType>({
+    mode: 'onTouched',
     resolver: zodResolver(UserLoginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    }
   });
 
   const onSubmit = (data: UserLoginType) => {
 
     axiosClient.post('/login', data)
-      .then(({data}) => {
+      .then(({ data }) => {
         setAuthUser(data.user);
         setToken(data.token);
 
@@ -33,68 +51,107 @@ export default function Login() {
             let errors = response.data.errors;
 
             if (errors.email) {
-              setError("email", {type: "server", message: errors.email[0]})
+              setError("email", { type: "server", message: errors.email[0] })
             }
             if (errors.password) {
-              setError("password", {type: "server", message: errors.password[0]})
+              setError("password", { type: "server", message: errors.password[0] })
             }
           } else if (response.data.message) {
-            setError("password", {type: "server", message: response.data.message})
+            setError("password", { type: "server", message: response.data.message })
           }
         }
       })
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="user">
+    <Box px={8} sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+    }}>
+      <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <LockOutlinedIcon />
+      </Avatar>
+      <Typography component="h1" variant="h5">
+        Sign in
+      </Typography>
+      <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Controller
+              name="email"
+              control={control}
+              render={({
+                field: { onChange, onBlur, ref },
+                fieldState: { error },
+              }) => (
+                <FormControl fullWidth>
+                  <TextField
+                    name="email"
+                    id="email"
+                    label="Email"
+                    inputRef={ref}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    error={Boolean(error)}
+                    autoComplete="email"
+                    autoFocus
+                  />
+                  <FormHelperText sx={{ color: "red", mx: 0, mt: 1 }}>
+                    {error?.message ?? ''}
+                  </FormHelperText>
+                </FormControl>
+              )}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Controller
+              name="password"
+              control={control}
+              render={({
+                field: { onChange, onBlur, ref },
+                fieldState: { error },
+              }) => (
+                <FormControl fullWidth>
+                  <TextField
+                    name="password"
+                    type="password"
+                    id="password"
+                    label="Password"
+                    inputRef={ref}
+                    onChange={onChange}
+                    onBlur={onBlur}
+                    error={Boolean(error)}
+                    autoComplete="current-password"
+                  />
+                  <FormHelperText sx={{ color: "red", mx: 0, mt: 1 }}>
+                    {error?.message ?? ''}
+                  </FormHelperText>
+                </FormControl>
+              )}
+            />
+          </Grid>
+        </Grid>
 
-      <div className="text-center">
-        <h1 className="h4 text-gray-900 mb-4">Login into your account!</h1>
-      </div>
-
-      <div className="mb-3">
-        <input {...register("email")}
-               type="email"
-               className="form-control form-control-user"
-               placeholder="Email Address..."
+        <FormControlLabel
+          control={<Checkbox value="remember" color="primary" />}
+          label="Remember me"
         />
-        {errors.email && <p className="text-danger ps-3 mt-2"> {errors.email.message}</p>}
-      </div>
-      <div className="mb-3">
-        <input {...register("password")}
-               type="password"
-               className="form-control form-control-user"
-               placeholder="Password"
-        />
-        {errors.password && <p className="text-danger ps-3 mt-2"> {errors.password.message}</p>}
-      </div>
-      {/*<div className="mb-3">
-        <div className="form-check">
-          <input className="form-check-input" type="checkbox" value="" id="rememberMe" />
-          <label className="form-check-label" htmlFor="rememberMe">
-            Remember Me
-          </label>
-        </div>
-      </div>*/}
-      <div className="d-grid gap-2">
-        <button className="btn btn-primary btn-user text-white" disabled={isSubmitting}>
-          Login
-        </button>
-        {/*<hr/>
-        <Link to="index.html" className="btn btn-google btn-user text-white">
-          <i className="fab fa-google fa-fw"></i> Login with Google
-        </Link>
-        <Link to="index.html" className="btn btn-facebook btn-user text-white">
-          <i className="fab fa-facebook-f fa-fw"></i> Login with Facebook
-        </Link>*/}
-      </div>
-      <hr/>
-      <div className="text-center mt-4">
-        <Link to="/signup">Create an Account!</Link>
-      </div>
-      {/*<div className="text-center">
-        <Link to="/forgot-password">Forgot Password?</Link>
-      </div>*/}
-    </form>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 2, mb: 2 }}
+          disabled={isSubmitting}
+        >
+          Sign In
+        </Button>
+        <Grid container justifyContent="flex-end">
+          <Link href="/signup">
+            {"Don't have an account? Sign Up"}
+          </Link>
+        </Grid>
+      </Box>
+    </Box>
   );
 }

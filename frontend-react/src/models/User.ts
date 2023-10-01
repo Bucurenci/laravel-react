@@ -5,7 +5,7 @@ export const UserLoginSchema = z.object({
         .string().trim().toLowerCase()
         .email("This email address is invalid!"),
     password: z
-        .string(),
+        .string().nonempty("Password must contain at least 1 character(s)"),
 });
 
 export type UserLoginType = z.infer<typeof UserLoginSchema>

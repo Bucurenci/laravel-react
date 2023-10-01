@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import {useStateContext} from "../contexts/ContextProvider";
 import Drawer from '@mui/material/Drawer';
-import {Box, CssBaseline, createTheme, ThemeProvider, useTheme} from "@mui/material";
+import {Box, CssBaseline, createTheme, ThemeProvider} from "@mui/material";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import {Navigate, Outlet} from "react-router-dom";
@@ -16,7 +16,7 @@ export default function AdminLayout() {
     return <Navigate to="/login"/>
   }
 
-  const newTheme = createTheme({
+  const adminTheme = createTheme({
     mixins: {
       toolbar: {
         minHeight: 75,
@@ -30,7 +30,7 @@ export default function AdminLayout() {
   };
 
   return (
-    <ThemeProvider theme={newTheme}>
+    <ThemeProvider theme={adminTheme}>
       <CssBaseline/>
       <Box>
 
@@ -57,7 +57,6 @@ export default function AdminLayout() {
               open={mobileOpen}
               onClose={handleDrawerToggle}
               ModalProps={{
-                position: 'relative',
                 keepMounted: true, // Better open performance on mobile.
               }}
               sx={{
@@ -70,7 +69,6 @@ export default function AdminLayout() {
               <Sidebar/>
             </Drawer>
             <Drawer
-              position="relative"
               variant="permanent"
               sx={{
                 display: {xs: 'none', md: 'block'},

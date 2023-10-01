@@ -4,7 +4,6 @@ import axiosClient from "../../axios-client";
 import {useStateContext} from "../../contexts/ContextProvider";
 import Pagination from "../../components/Pagination";
 import {User, UserFormErrors} from "../../models/User";
-import {NotificationType} from "../../models/Notification";
 import {faArrowLeft} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {UserUpdateType} from "../../models/User";
@@ -96,7 +95,7 @@ export default function ListPage() {
       })
       .catch(({response}) => {
         setLoading(false);
-        setNotification(response.data, NotificationType.ERROR);
+        setNotification(response.data, 'error');
       })
   }
 

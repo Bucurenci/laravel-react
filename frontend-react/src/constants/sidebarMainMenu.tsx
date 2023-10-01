@@ -6,17 +6,18 @@ import ModelTrainingIcon from '@mui/icons-material/ModelTraining';
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import SettingsIcon from '@mui/icons-material/Settings';
 import {ReactComponentElement} from "react";
+import {To} from "react-router-dom";
 
-export interface ISidebarListGroup {
+export interface ISidebarListItem {
   id: number,
   label: string,
   icon: ReactComponentElement<any>,
-  path: string | null,
+  path?: To,
   isOpened?: boolean,
-  children?: ISidebarListGroup[]
+  children?: ISidebarListItem[]
 }
 
-export const sidebarMainMenu: ISidebarListGroup[] = [
+export const sidebarMainMenu: ISidebarListItem[] = [
   {
     id: 1,
     label: 'Dashboard',
@@ -47,7 +48,6 @@ export const sidebarMainMenu: ISidebarListGroup[] = [
     id: 3,
     label: 'Exercises',
     icon: <ModelTrainingIcon/>,
-    path: null,
     children: [
       {
         id: 3.1,
