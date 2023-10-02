@@ -1,7 +1,8 @@
-import {useForm} from "react-hook-form";
+import {Controller, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useEffect} from "react";
 import {UserUpdateSchema, UserUpdateType, User, UserFormErrors} from "../../../../models/User";
+import {Box, Button, FormControl, FormHelperText, Grid, TextField} from "@mui/material";
 
 interface UserUpdateFormProps {
   user: User,
@@ -12,16 +13,19 @@ interface UserUpdateFormProps {
 export default function UserUpdateForm({user, serverErrors, onUserUpdate}: UserUpdateFormProps) {
 
   const {
-    register,
+    control,
     handleSubmit,
     setError,
-    formState: {errors, isSubmitting},
+    formState: {isSubmitting},
   } = useForm<UserUpdateType>({
+    mode: 'onTouched',
     resolver: zodResolver(UserUpdateSchema), defaultValues: {
       id: user.id,
       first_name: user.first_name,
       last_name: user.last_name,
-      email: user.email
+      email: user.email,
+      password: "",
+      password_confirmation: "",
     }
   });
 
@@ -52,67 +56,148 @@ export default function UserUpdateForm({user, serverErrors, onUserUpdate}: UserU
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="user col" autoComplete="off">
+    <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)} sx={{mt: 3}} autoComplete="off">
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <Controller
+            name="first_name"
+            control={control}
+            render={({
+                       field: {value, onChange, onBlur, ref},
+                       fieldState: {error},
+                     }) => (
+              <FormControl fullWidth>
+                <TextField
+                  name="first_name"
+                  label="First name"
+                  inputRef={ref}
+                  value={value}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  error={Boolean(error)}
+                />
+                <FormHelperText sx={{color: "red", mx: 0, mt: 1}}>
+                  {error?.message ?? ''}
+                </FormHelperText>
+              </FormControl>
+            )}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Controller
+            name="last_name"
+            control={control}
+            render={({
+                       field: {value, onChange, onBlur, ref},
+                       fieldState: {error},
+                     }) => (
+              <FormControl fullWidth>
+                <TextField
+                  name="last_name"
+                  label="Last name"
+                  inputRef={ref}
+                  value={value}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  error={Boolean(error)}
+                />
+                <FormHelperText sx={{color: "red", mx: 0, mt: 1}}>
+                  {error?.message ?? ''}
+                </FormHelperText>
+              </FormControl>
+            )}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <Controller
+            name="email"
+            control={control}
+            render={({
+                       field: {value, onChange, onBlur, ref},
+                       fieldState: {error},
+                     }) => (
+              <FormControl fullWidth>
+                <TextField
+                  name="email"
+                  label="Email"
+                  inputRef={ref}
+                  value={value}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  error={Boolean(error)}
+                />
+                <FormHelperText sx={{color: "red", mx: 0, mt: 1}}>
+                  {error?.message ?? ''}
+                </FormHelperText>
+              </FormControl>
+            )}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <Controller
+            name="password"
+            control={control}
+            render={({
+                       field: {value, onChange, onBlur, ref},
+                       fieldState: {error},
+                     }) => (
+              <FormControl fullWidth>
+                <TextField
+                  name="password"
+                  label="Password"
+                  type="password"
+                  autoComplete="new-password"
+                  inputRef={ref}
+                  value={value}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  error={Boolean(error)}
+                />
+                <FormHelperText sx={{color: "red", mx: 0, mt: 1}}>
+                  {error?.message ?? ''}
+                </FormHelperText>
+              </FormControl>
+            )}
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
 
-      <div className="row align-items-center justify-content-center">
-
-        <div className="col">
-          <div className="row">
-            <div className="col-md-6 mb-3 mb-md-0">
-              <input {...register("first_name")}
-                     type="text" autoComplete="off"
-                     className="form-control form-control-user"
-                     placeholder="First Name"/>
-              {errors.first_name &&
-                <p className="text-danger ps-3 mt-2"> {errors.first_name.message}</p>}
-            </div>
-            <div className="col-md-6 mb-3">
-              <input {...register("last_name")}
-                     type="text" autoComplete="off"
-                     className="form-control form-control-user"
-                     placeholder="Last Name"/>
-              {errors.last_name &&
-                <p className="text-danger ps-3 mt-2"> {errors.last_name.message}</p>}
-            </div>
-          </div>
-          <div className="mb-3">
-            <input {...register("email")}
-                   type="email"
-                   className="form-control form-control-user"
-                   autoComplete="off"
-                   placeholder="Email Address"/>
-            {errors.email &&
-              <p className="text-danger ps-3 mt-2"> {errors.email.message}</p>}
-          </div>
-          <div className="row mb-3">
-            <div className="col-md-6 mb-3 mb-md-0">
-              <input {...register("password")}
-                     type="password"
-                     className="form-control form-control-user"
-                     autoComplete="new-password"
-                     placeholder="Password"/>
-            </div>
-            <div className="col-md-6">
-              <input {...register("password_confirmation")}
-                     type="password"
-                     className="form-control form-control-user"
-                     autoComplete="new-password"
-                     placeholder="Repeat Password"/>
-            </div>
-            <div className="col">
-              {errors.password &&
-                <p className="text-danger ps-3 mt-2"> {errors.password.message}</p>}
-              {errors.password_confirmation &&
-                <p className="text-danger ps-3 mt-2"> {errors.password_confirmation.message}</p>}
-            </div>
-          </div>
-          <div className="d-grid gap-2">
-            <button className="btn btn-primary btn-user text-white" disabled={isSubmitting}>
-              {user?.id ? `Save` : 'CreatePage'}
-            </button>
-          </div>
-        </div>
-      </div>
-    </form>
+          <Controller
+            name="password_confirmation"
+            control={control}
+            render={({
+                       field: {value, onChange, onBlur, ref},
+                       fieldState: {error},
+                     }) => (
+              <FormControl fullWidth>
+                <TextField
+                  name="password_confirmation"
+                  label="Confirm password"
+                  type="password"
+                  autoComplete="new-password"
+                  inputRef={ref}
+                  value={value}
+                  onChange={onChange}
+                  onBlur={onBlur}
+                  error={Boolean(error)}
+                />
+                <FormHelperText sx={{color: "red", mx: 0, mt: 1}}>
+                  {error?.message ?? ''}
+                </FormHelperText>
+              </FormControl>
+            )}
+          />
+        </Grid>
+      </Grid>
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        disabled={isSubmitting}
+        sx={{mt: 3, mb: 2}}
+      >
+        Save
+      </Button>
+    </Box>
   );
 }
