@@ -8,9 +8,9 @@ export const UserLoginSchema = z.object({
         .string().nonempty("Password must contain at least 1 character(s)"),
 });
 
-export type UserLoginType = z.infer<typeof UserLoginSchema>
+export type UserLoginType = z.infer<typeof UserLoginSchema>;
 
-export const UserCreateSchema = z.object({
+const UserBaseSchema = z.object({
     first_name: z
         .string().trim()
         .min(3, "First name must contain at least 3 characters")
@@ -22,6 +22,11 @@ export const UserCreateSchema = z.object({
     email: z
         .string().trim().toLowerCase()
         .email("This email address is invalid!"),
+});
+
+type UserBaseType = z.infer<typeof UserBaseSchema>;
+
+export const UserCreateSchema = UserBaseSchema.extend({
     password: z
         .string()
         .min(8, "Password must contain at least 8 characters")
@@ -40,24 +45,9 @@ export const UserCreateSchema = z.object({
 
 export type UserCreateType = z.infer<typeof UserCreateSchema>
 
-export const UserUpdateSchema = z.object({
+export const UserUpdateSchema = UserBaseSchema.extend({
     id: z
         .number(),
-    first_name: z
-        .string()
-        .trim()
-        .min(3, "First name must contain at least 3 characters")
-        .max(20, "First name must contain maximum 20 characters"),
-    last_name: z
-        .string()
-        .trim()
-        .min(3, "Last name must contain at least 3 characters")
-        .max(20, "Last name must contain maximum 20 characters"),
-    email: z
-        .string()
-        .trim()
-        .toLowerCase()
-        .email("This email address is invalid!"),
     password: z
         .union([
             z
