@@ -1,5 +1,19 @@
 import {useState} from "react";
 import {SettingItem} from "../../index";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TableCell,
+  TableRow,
+  TextField,
+  Tooltip
+} from "@mui/material";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface SettingsItemProps {
   setting: SettingItem,
@@ -23,45 +37,68 @@ export default function SettingsItem({setting, onDelete}: SettingsItemProps) {
     // setNewSettingValue(ev.target.value);
   }
 
-  const renderSwitchType = () => {
+  const renderInputType = () => {
 
     switch (setting.type) {
 
       case "text":
-        return <input onChange={onSettingChange} type="email" defaultValue={settingValue.value}
-                      className="form-control form-control-lg w-75" autoFocus={true}/>;
+        return <TextField onChange={onSettingChange} value={settingValue?.value} autoFocus label="Value"
+                          variant="outlined"/>;
       case "email":
-        return <input onChange={onSettingChange} type="email" defaultValue={settingValue.value}
-                      className="form-control form-control-lg w-75" autoFocus={true}/>;
+        return <TextField onChange={onSettingChange} value={settingValue?.value} autoFocus label="Value"
+                          variant="outlined"/>;
       case "select":
-        return <select onChange={onSettingChange} autoFocus={true}>
-          <option value="1">True</option>
-          <option value="0">False</option>
-        </select>;
+        return (
+          <FormControl fullWidth>
+            <InputLabel>Value</InputLabel>
+            <Select label="Age">
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
+          </FormControl>
+        );
 
       default:
-        return <h1>No project match</h1>
+        return <h1>No match</h1>
     }
   }
 
   return (
-    <tr>
-      <td className="fs-4 ps-3">{setting.name}</td>
-      <td className="fs-5">
-        {editable ?
-          renderSwitchType()
-          :
-          setting.value ? JSON.parse(setting.value).value : ''
-        }
-      </td>
-      <td className="text-end pe-3">
-        {editable ?
-          <button className="btn btn-primary btn-lg" onClick={handleSave}>Save</button>
-          :
-          <button className="btn btn-primary btn-lg" onClick={() => setEditable(true)}>Edit</button>
-        }
-        <button className="btn btn-danger btn-lg ms-2" onClick={handleDelete}>Delete</button>
-      </td>
-    </tr>
+    <TableRow hover sx={{'&:last-child td, &:last-child th': {border: 0}}}>
+      <TableCell>{setting.name}</TableCell>
+      <TableCell>{editable ?
+        renderInputType()
+        :
+        setting.value ? JSON.stringify(setting.value) : ''
+      }
+      </TableCell>
+
+      <TableCell align="right">
+
+        <Stack direction="row" spacing={2}>
+
+          {editable ? (
+            <Button onClick={handleSave} variant="contained">
+              Save
+            </Button>
+          ) : (
+            <Tooltip title="Edit Setting" placement="top">
+              <Button onClick={() => setEditable(true)} variant="contained" sx={{minWidth: 45, px: 0}}>
+                <EditIcon/>
+              </Button>
+            </Tooltip>
+          )}
+
+          <Tooltip title="Delete Setting" placement="top">
+            <Button onClick={handleDelete} variant="contained" color="error" sx={{minWidth: 45, px: 0}}>
+              <DeleteIcon/>
+            </Button>
+          </Tooltip>
+
+        </Stack>
+
+      </TableCell>
+    </TableRow>
   );
 }

@@ -221,41 +221,39 @@ export default function ListPage() {
 
         <Loading isLoading={loading}/>
 
-        <div className="card-body">
-          {!updatePage && (
-            <>
-              <UsersTable users={users} openUserUpdate={openUserUpdate} onUserDelete={handleUserDelete}/>
+        {!updatePage && (
+          <>
+            <UsersTable users={users} openUserUpdate={openUserUpdate} onUserDelete={handleUserDelete}/>
 
-              <Grid container minHeight={80} mt={0} spacing={2} display="flex" justifyContent="center"
-                    alignItems="center">
-                <Pagination count={paginationData.last_page}
-                            onChange={changePage}
-                            color="primary"/>
-              </Grid>
-            </>
-          )}
-
-          {updatePage && (
-            <Grid container display="flex" justifyContent="center" sx={{p: {xs: 2, sm: 3, md: 4}}}>
-              <Grid item xs={12} sm={12} md={12} lg={11} xl={9}>
-
-                <Grid container display="flex" justifyContent="center" alignItems="center"
-                      columnSpacing={{xs: 0, lg: 3}}>
-                  {selectedUser.id && (
-                    <Grid item xs={12} lg={4} sx={{mb: {xs: 3, lg: 0}}}>
-                      <AvatarForm user={selectedUser} errors={errors} onUpdate={handleAvatarUpdate}
-                                  onDelete={handleAvatarDelete}/>
-                    </Grid>
-                  )}
-                  <Grid item xs={12} lg={8}>
-                    <UserUpdateForm user={selectedUser} serverErrors={errors} onUserUpdate={handleUserUpdate}/>
-                  </Grid>
-                </Grid>
-
-              </Grid>
+            <Grid container minHeight={80} mt={0} spacing={2} display="flex" justifyContent="center"
+                  alignItems="center">
+              <Pagination count={paginationData.last_page}
+                          onChange={changePage}
+                          color="primary"/>
             </Grid>
-          )}
-        </div>
+          </>
+        )}
+
+        {updatePage && (
+          <Grid container display="flex" justifyContent="center" sx={{p: {xs: 2, sm: 3, md: 4}}}>
+            <Grid item xs={12} sm={12} md={12} lg={11} xl={9}>
+
+              <Grid container display="flex" justifyContent="center" alignItems="center"
+                    columnSpacing={{xs: 0, lg: 3}}>
+                {selectedUser.id && (
+                  <Grid item xs={12} lg={4} sx={{mb: {xs: 3, lg: 0}}}>
+                    <AvatarForm user={selectedUser} errors={errors} onUpdate={handleAvatarUpdate}
+                                onDelete={handleAvatarDelete}/>
+                  </Grid>
+                )}
+                <Grid item xs={12} lg={8}>
+                  <UserUpdateForm user={selectedUser} serverErrors={errors} onUserUpdate={handleUserUpdate}/>
+                </Grid>
+              </Grid>
+
+            </Grid>
+          </Grid>
+        )}
       </Paper>
     </>
   );

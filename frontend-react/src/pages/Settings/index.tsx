@@ -1,7 +1,6 @@
 import {useEffect, useState} from "react";
 import axiosClient from "../../axios-client";
 import SettingsList from "./components/SettingsList";
-import ModalForm from "./components/ModalForm";
 import {useStateContext} from "../../contexts/ContextProvider";
 import {
   Box,
@@ -15,6 +14,8 @@ import {
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
+import Loading from "../../components/Loading";
+import SettingCreateForm from "./components/SettingCreateForm";
 
 export interface SettingItem {
   id: number,
@@ -67,7 +68,7 @@ export default function Settings() {
       <Grid container minHeight={75} display="flex" flexDirection="row"
             justifyContent="space-between" alignItems="top">
         <Box component="div">
-          <Typography variant="h4" mb={0} gutterBottom>App Settings</Typography>
+          <Typography variant="h4" mb={0} gutterBottom>App Settings (Not working properly)</Typography>
 
         </Box>
         <Box component="div">
@@ -78,8 +79,11 @@ export default function Settings() {
         </Box>
       </Grid>
 
-      <Paper sx={{p: 2}}>
-        <SettingsList settings={settings} loading={loading} onSettingDelete={handleSettingDelete}/>
+      <Paper sx={{position: "relative", p: 2}}>
+
+        <Loading isLoading={loading}/>
+
+        <SettingsList settings={settings} onSettingDelete={handleSettingDelete}/>
 
         <Dialog
           onClose={() => setShowDialog(false)}
@@ -87,7 +91,7 @@ export default function Settings() {
           open={showDialog}
           maxWidth="lg"
         >
-          <DialogTitle sx={{m: 0, p: 2}} id="customized-dialog-title">
+          <DialogTitle sx={{m: 0, p: 2}}>
             Create new setting
           </DialogTitle>
           <IconButton
@@ -103,7 +107,9 @@ export default function Settings() {
             <CloseIcon/>
           </IconButton>
           <DialogContent dividers>
-            <ModalForm/>
+
+            <SettingCreateForm/>
+
           </DialogContent>
         </Dialog>
       </Paper>
