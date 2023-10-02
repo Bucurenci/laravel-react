@@ -35,6 +35,10 @@ export const ContextProvider = ({children}: ContextProviderProps) => {
 
   const setNotification = (notification: ReactNode, type: AlertColor | undefined = 'success') => {
     _setNotification({content: notification, type: type});
+
+    setTimeout(() => {
+      _setNotification(null);
+    }, 5000);
   }
 
   const setToken = (token: string | null) => {
