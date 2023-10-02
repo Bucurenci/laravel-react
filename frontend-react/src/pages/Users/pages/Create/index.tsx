@@ -1,14 +1,14 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {UserCreateType, UserFormErrors} from "../../models/User";
-import axiosClient from "../../axios-client";
-import {useStateContext} from "../../contexts/ContextProvider";
-import UserCreateForm from "./components/UserCreateForm";
+import {UserCreateType, UserFormErrors} from "../../../../models/User";
+import axiosClient from "../../../../axios-client";
+import {useStateContext} from "../../../../contexts/ContextProvider";
+import UserCreateForm from "../../components/UserCreateForm";
 import {Box, Button, Grid, Paper, Typography} from "@mui/material";
 import ReplyIcon from '@mui/icons-material/Reply';
-import Loading from "../../components/Loading";
+import Loading from "../../../../components/Loading";
 
-export default function CreatePage() {
+export default function Index() {
   const {setNotification} = useStateContext();
   const [errors, setErrors] = useState<UserFormErrors | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
