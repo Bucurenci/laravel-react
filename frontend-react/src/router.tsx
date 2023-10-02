@@ -30,6 +30,10 @@ const router = createBrowserRouter([
         element: <UsersPage/>,
         children: [
           {
+            path: '',
+            element: <Navigate to="list"/>
+          },
+          {
             path: 'list',
             element: <UsersListPage/>
           },

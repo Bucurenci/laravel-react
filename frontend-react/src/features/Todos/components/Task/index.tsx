@@ -1,8 +1,8 @@
-import {Todo} from "../../../../pages/Miscellaneous/Todos";
 import {Button, Stack, Typography} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import {Todo} from "../../TaskList";
 
 interface TaskProps {
   task: Todo,
