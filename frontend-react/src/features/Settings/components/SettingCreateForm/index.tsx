@@ -1,6 +1,6 @@
 import {FormEvent, useRef, useState} from "react";
 import {Button, FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField} from "@mui/material";
-import axiosClient from "../../../../../../axios-client";
+import axiosClient from "../../../../axios-client";
 
 interface SettingsFormErrors {
   name?: string[],

@@ -1,14 +1,14 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {UserCreateType, UserFormErrors} from "../../../../models/User";
-import axiosClient from "../../../../axios-client";
-import {useStateContext} from "../../../../contexts/ContextProvider";
-import UserCreateForm from "../../components/UserCreateForm";
+import {UserCreateType, UserFormErrors} from "../../../models/User";
+import axiosClient from "../../../axios-client";
+import {useStateContext} from "../../../contexts/ContextProvider";
+import UserCreateForm from "../components/UserCreateForm";
 import {Box, Button, Grid, Paper, Typography} from "@mui/material";
 import ReplyIcon from '@mui/icons-material/Reply';
-import Loading from "../../../../components/Loading";
+import Loading from "../../../components/Loading";
 
-export default function UsersCreatePage() {
+export default function UserCreate() {
   const {setNotification} = useStateContext();
   const [errors, setErrors] = useState<UserFormErrors | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -21,7 +21,7 @@ export default function UsersCreatePage() {
     axiosClient.post(`/users`, userData)
       .then(() => {
         setLoading(false);
-        navigate("/users-list");
+        navigate("/users/list");
         setNotification("User was successfully created!");
       })
       .catch((error) => {
@@ -44,7 +44,7 @@ export default function UsersCreatePage() {
 
         </Box>
         <Box component="div">
-          <Button onClick={() => navigate("/users-list")} variant="contained" size="large"
+          <Button onClick={() => navigate("/users/list")} variant="contained" size="large"
                   startIcon={<ReplyIcon/>} sx={{mb: {xs: 3, sm: 0}, mt: {xs: 2, sm: 0}}}>
             Back to users
           </Button>

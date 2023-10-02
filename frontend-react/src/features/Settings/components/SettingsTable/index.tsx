@@ -1,13 +1,13 @@
 import SettingsItem from "../SettingsItem";
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
-import {SettingItem} from "../../index";
+import {SettingItem} from "../../../../pages/Miscellaneous/Settings";
 
 interface SettingsListProps {
   settings: SettingItem[],
   onSettingDelete: (userId: number) => void
 }
 
-export default function SettingsList({settings, onSettingDelete}: SettingsListProps) {
+export default function SettingsTable({settings, onSettingDelete}: SettingsListProps) {
 
   return (
     <TableContainer>

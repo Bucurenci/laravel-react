@@ -1,6 +1,6 @@
 import {FormEvent, useRef, useState} from "react";
-import Task from "./components/Task";
 import {Box, Button, Grid, InputAdornment, Paper, TextField, Typography} from "@mui/material";
+import Task from "../components/Task";
 
 export interface Todo {
   id: number,
@@ -8,7 +8,7 @@ export interface Todo {
   isCompleted: boolean
 }
 
-export default function TodoList() {
+export default function TaskList() {
 
   const todoInputRef = useRef<HTMLInputElement>(null!);
   const [todoList, setTodoList] = useState<Todo[]>([]);

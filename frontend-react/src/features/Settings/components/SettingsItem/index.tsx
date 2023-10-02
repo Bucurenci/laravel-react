@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {SettingItem} from "../../index";
+import {SettingItem} from "../../../../pages/Miscellaneous/Settings";
 
 interface SettingsItemProps {
   setting: SettingItem,

@@ -11,12 +11,12 @@ import {
   FormHelperText,
   FormControl
 } from "@mui/material";
-import {useStateContext} from "../../../../contexts/ContextProvider";
+import {useStateContext} from "../../../contexts/ContextProvider";
 import {Controller, useForm} from "react-hook-form";
-import {UserLoginSchema, UserLoginType} from "../../../../models/User";
+import {UserLoginSchema, UserLoginType} from "../../../models/User";
 import {zodResolver} from "@hookform/resolvers/zod";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import axiosClient from "../../../../axios-client";
+import axiosClient from "../../../axios-client";
 
 export default function LoginForm() {
   const {setAuthUser, setToken} = useStateContext();
@@ -147,7 +147,7 @@ export default function LoginForm() {
           Sign In
         </Button>
         <Grid container justifyContent="flex-end">
-          <Link href="/Signup">
+          <Link href="/Auth/Signup">
             {"Don't have an account? Sign Up"}
           </Link>
         </Grid>

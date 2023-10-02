@@ -1,18 +1,18 @@
 import {ChangeEvent, useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
-import axiosClient from "../../../../axios-client";
-import {useStateContext} from "../../../../contexts/ContextProvider";
-import {User, UserFormErrors} from "../../../../models/User";
-import {UserUpdateType} from "../../../../models/User";
-import UserUpdateForm from "../../components/UserUpdateForm";
-import AvatarForm from "../../components/AvatarForm";
-import UsersTable from "../../components/UsersTable";
 import {Paper, Pagination, Grid, Box, Button, Typography} from "@mui/material";
+import {useNavigate} from "react-router-dom";
+import axiosClient from "../../../axios-client";
+import {useStateContext} from "../../../contexts/ContextProvider";
+import Loading from "../../../components/Loading";
+import {User, UserFormErrors} from "../../../models/User";
+import {UserUpdateType} from "../../../models/User";
+import UserUpdateForm from "../components/UserUpdateForm";
+import AvatarForm from "../components/AvatarForm";
+import UsersTable from "../components/UsersTable";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ReplyIcon from '@mui/icons-material/Reply';
-import Loading from "../../../../components/Loading";
 
-export default function UsersListPage() {
+export default function UsersList() {
   const navigate = useNavigate();
   const {authUser, setNotification, setAuthUser} = useStateContext();
   const [users, setUsers] = useState<User[]>([]);
@@ -203,7 +203,7 @@ export default function UsersListPage() {
         </Box>
         <Box component="div">
           {!updatePage ? (
-            <Button onClick={() => navigate('/users-create')} variant="contained" size="large" color="success"
+            <Button onClick={() => navigate('/users/create')} variant="contained" size="large" color="success"
                     startIcon={<PersonAddIcon/>}>
               New user
             </Button>

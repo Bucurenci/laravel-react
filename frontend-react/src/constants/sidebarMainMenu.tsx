@@ -34,13 +34,13 @@ export const sidebarMainMenu: ISidebarListItem[] = [
         id: 2.1,
         label: 'Users list',
         icon: <PeopleIcon/>,
-        path: '/users-list'
+        path: '/users/list'
       },
       {
         id: 2.2,
         label: 'Add new user',
         icon: <PersonAddIcon/>,
-        path: '/users-create'
+        path: '/users/create'
       }
     ]
   },

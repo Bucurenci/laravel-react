@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import SettingsList from "./components/SettingsList";
+import SettingsTable from "../components/SettingsTable";
 import {
   Box,
   Button, Dialog,
@@ -12,10 +12,10 @@ import {
 } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
-import SettingCreateForm from "./components/SettingCreateForm";
-import axiosClient from "../../../../axios-client";
-import {useStateContext} from "../../../../contexts/ContextProvider";
-import Loading from "../../../../components/Loading";
+import SettingCreateForm from "../components/SettingCreateForm";
+import axiosClient from "../../../axios-client";
+import {useStateContext} from "../../../contexts/ContextProvider";
+import Loading from "../../../components/Loading";
 
 export interface SettingItem {
   id: number,
@@ -24,7 +24,7 @@ export interface SettingItem {
   value: string
 }
 
-export default function Settings() {
+export default function SettingsList() {
   const {setNotification} = useStateContext();
   const [settings, setSettings] = useState<SettingItem[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -83,7 +83,7 @@ export default function Settings() {
 
         <Loading isLoading={loading}/>
 
-        <SettingsList settings={settings} onSettingDelete={handleSettingDelete}/>
+        <SettingsTable settings={settings} onSettingDelete={handleSettingDelete}/>
 
         <Dialog
           onClose={() => setShowDialog(false)}

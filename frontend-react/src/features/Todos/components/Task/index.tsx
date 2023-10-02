@@ -1,4 +1,4 @@
-import {Todo} from "../../index";
+import {Todo} from "../../../../pages/Miscellaneous/Todos";
 import {Button, Stack, Typography} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';

@@ -1,10 +1,10 @@
 import {Avatar, Box, Button, Grid, Link, TextField, Typography, FormHelperText, FormControl} from "@mui/material";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import {useStateContext} from "../../../../contexts/ContextProvider";
+import {useStateContext} from "../../../contexts/ContextProvider";
 import {useForm, Controller} from "react-hook-form";
-import {UserCreateSchema, UserCreateType} from "../../../../models/User";
+import {UserCreateSchema, UserCreateType} from "../../../models/User";
 import {zodResolver} from "@hookform/resolvers/zod";
-import axiosClient from "../../../../axios-client";
+import axiosClient from "../../../axios-client";
 
 export default function RegisterForm() {
   const {setAuthUser, setToken} = useStateContext();
@@ -208,7 +208,7 @@ export default function RegisterForm() {
         </Button>
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <Link href="/Login">
+            <Link href="/Auth/Login">
               Already have an account? Login!
             </Link>
           </Grid>

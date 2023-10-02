@@ -1,16 +1,16 @@
 import {createBrowserRouter, Navigate} from "react-router-dom";
 import GuestLayout from "./layouts/GuestLayout";
-import Login from "./pages/Auth/pages/Login";
-import Signup from "./pages/Auth/pages/Signup";
+import Login from "./pages/Auth/Login";
+import Signup from "./pages/Auth/Signup";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
 import NotFound from "./pages/NotFound";
-import ForgotPassword from "./pages/Auth/pages/ForgotPassword";
-import TodoList from "./pages/Miscellaneous/pages/_TodoList";
-import Settings from "./pages/Miscellaneous/pages/Settings";
 import AdminLayout from "./layouts/AdminLayout";
 import Dashboard from "./pages/Dashboard";
 import UsersPage from "./pages/Users";
-import UsersCreatePage from "./pages/Users/pages/Create";
-import UsersListPage from "./pages/Users/pages/List";
+import UsersCreatePage from "./pages/Users/Create";
+import UsersListPage from "./pages/Users/List";
+import SettingsPage from "./pages/Miscellaneous/Settings";
+import TodosPage from "./pages/Miscellaneous/Todos";
 
 const router = createBrowserRouter([
   {
@@ -28,22 +28,24 @@ const router = createBrowserRouter([
       {
         path: '/users',
         element: <UsersPage/>,
-      },
-      {
-        path: '/users-list',
-        element: <UsersListPage/>
-      },
-      {
-        path: '/users-create',
-        element: <UsersCreatePage/>
+        children: [
+          {
+            path: 'list',
+            element: <UsersListPage/>
+          },
+          {
+            path: 'create',
+            element: <UsersCreatePage/>
+          },
+        ]
       },
       {
         path: '/todo-list',
-        element: <TodoList/>
+        element: <TodosPage/>
       },
       {
         path: '/settings',
-        element: <Settings/>
+        element: <SettingsPage/>
       },
     ]
   },
