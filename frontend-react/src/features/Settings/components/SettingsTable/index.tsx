@@ -1,6 +1,6 @@
 import SettingsItem from "../SettingsItem";
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
-import {SettingItem} from "../../../../pages/Miscellaneous/Settings";
+import {SettingItem} from "../../SettingsList";
 
 interface SettingsListProps {
   settings: SettingItem[],

@@ -28,7 +28,6 @@ export const sidebarMainMenu: ISidebarListItem[] = [
     id: 2,
     label: 'Users',
     icon: <PersonIcon/>,
-    path: '/users',
     children: [
       {
         id: 2.1,
