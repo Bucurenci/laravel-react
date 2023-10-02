@@ -78,7 +78,7 @@ export default function AvatarForm({user, errors, onUpdate, onDelete}: AvatarFor
             placeholder="Email Address"/>
 
           <Box sx={{position: 'relative', display: 'inline-block'}}>
-            <Paper elevation={3} sx={{display: flex, overflow: "hidden"}}>
+            <Paper elevation={3} sx={{display: 'flex', overflow: "hidden"}}>
               <img src={user.avatar?.medium ? user.avatar.medium : "/img/user-avatar-placeholder.png"}
                    style={{maxWidth: '100%', height: 'auto'}} alt="User Avatar"/>
             </Paper>
