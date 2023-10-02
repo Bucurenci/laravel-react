@@ -8,7 +8,7 @@ import {Box, Button, Grid, Paper, Typography} from "@mui/material";
 import ReplyIcon from '@mui/icons-material/Reply';
 import Loading from "../../../../components/Loading";
 
-export default function Index() {
+export default function UsersCreatePage() {
   const {setNotification} = useStateContext();
   const [errors, setErrors] = useState<UserFormErrors | null>(null);
   const [loading, setLoading] = useState<boolean>(false);

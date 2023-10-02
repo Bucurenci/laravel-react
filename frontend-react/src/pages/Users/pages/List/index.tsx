@@ -1,18 +1,18 @@
 import {ChangeEvent, useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import axiosClient from "../../axios-client";
-import {useStateContext} from "../../contexts/ContextProvider";
-import {User, UserFormErrors} from "../../models/User";
-import {UserUpdateType} from "../../models/User";
-import UserUpdateForm from "./components/UserUpdateForm";
-import AvatarForm from "./components/AvatarForm";
-import UsersTable from "./components/UsersTable";
+import axiosClient from "../../../../axios-client";
+import {useStateContext} from "../../../../contexts/ContextProvider";
+import {User, UserFormErrors} from "../../../../models/User";
+import {UserUpdateType} from "../../../../models/User";
+import UserUpdateForm from "../../components/UserUpdateForm";
+import AvatarForm from "../../components/AvatarForm";
+import UsersTable from "../../components/UsersTable";
 import {Paper, Pagination, Grid, Box, Button, Typography} from "@mui/material";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ReplyIcon from '@mui/icons-material/Reply';
-import Loading from "../../components/Loading";
+import Loading from "../../../../components/Loading";
 
-export default function ListPage() {
+export default function UsersListPage() {
   const navigate = useNavigate();
   const {authUser, setNotification, setAuthUser} = useStateContext();
   const [users, setUsers] = useState<User[]>([]);

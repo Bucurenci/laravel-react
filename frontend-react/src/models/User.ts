@@ -24,8 +24,6 @@ const UserBaseSchema = z.object({
         .email("This email address is invalid!"),
 });
 
-type UserBaseType = z.infer<typeof UserBaseSchema>;
-
 export const UserCreateSchema = UserBaseSchema.extend({
     password: z
         .string()

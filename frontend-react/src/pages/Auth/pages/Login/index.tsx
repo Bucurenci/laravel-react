@@ -11,21 +11,21 @@ import {
   FormHelperText,
   FormControl
 } from "@mui/material";
-import { useStateContext } from "../../contexts/ContextProvider";
-import { Controller, useForm } from "react-hook-form";
-import { UserLoginSchema, UserLoginType } from "../../models/User";
-import { zodResolver } from "@hookform/resolvers/zod";
+import {useStateContext} from "../../../../contexts/ContextProvider";
+import {Controller, useForm} from "react-hook-form";
+import {UserLoginSchema, UserLoginType} from "../../../../models/User";
+import {zodResolver} from "@hookform/resolvers/zod";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import axiosClient from "../../axios-client";
+import axiosClient from "../../../../axios-client";
 
 export default function LoginForm() {
-  const { setAuthUser, setToken } = useStateContext();
+  const {setAuthUser, setToken} = useStateContext();
 
   const {
     control,
     handleSubmit,
     setError,
-    formState: { isSubmitting }
+    formState: {isSubmitting}
   } = useForm<UserLoginType>({
     mode: 'onTouched',
     resolver: zodResolver(UserLoginSchema),
@@ -38,7 +38,7 @@ export default function LoginForm() {
   const onSubmit = (data: UserLoginType) => {
 
     axiosClient.post('/login', data)
-      .then(({ data }) => {
+      .then(({data}) => {
         setAuthUser(data.user);
         setToken(data.token);
 
@@ -51,13 +51,13 @@ export default function LoginForm() {
             let errors = response.data.errors;
 
             if (errors.email) {
-              setError("email", { type: "server", message: errors.email[0] })
+              setError("email", {type: "server", message: errors.email[0]})
             }
             if (errors.password) {
-              setError("password", { type: "server", message: errors.password[0] })
+              setError("password", {type: "server", message: errors.password[0]})
             }
           } else if (response.data.message) {
-            setError("password", { type: "server", message: response.data.message })
+            setError("password", {type: "server", message: response.data.message})
           }
         }
       })
@@ -69,22 +69,22 @@ export default function LoginForm() {
       flexDirection: 'column',
       alignItems: 'center',
     }}>
-      <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-        <LockOutlinedIcon />
+      <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+        <LockOutlinedIcon/>
       </Avatar>
       <Typography component="h1" variant="h5">
         Sign in
       </Typography>
-      <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 3 }}>
+      <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{mt: 3}}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Controller
               name="email"
               control={control}
               render={({
-                field: { onChange, onBlur, ref },
-                fieldState: { error },
-              }) => (
+                         field: {onChange, onBlur, ref},
+                         fieldState: {error},
+                       }) => (
                 <FormControl fullWidth>
                   <TextField
                     name="email"
@@ -97,7 +97,7 @@ export default function LoginForm() {
                     autoComplete="email"
                     autoFocus
                   />
-                  <FormHelperText sx={{ color: "red", mx: 0, mt: 1 }}>
+                  <FormHelperText sx={{color: "red", mx: 0, mt: 1}}>
                     {error?.message ?? ''}
                   </FormHelperText>
                 </FormControl>
@@ -109,9 +109,9 @@ export default function LoginForm() {
               name="password"
               control={control}
               render={({
-                field: { onChange, onBlur, ref },
-                fieldState: { error },
-              }) => (
+                         field: {onChange, onBlur, ref},
+                         fieldState: {error},
+                       }) => (
                 <FormControl fullWidth>
                   <TextField
                     name="password"
@@ -124,7 +124,7 @@ export default function LoginForm() {
                     error={Boolean(error)}
                     autoComplete="current-password"
                   />
-                  <FormHelperText sx={{ color: "red", mx: 0, mt: 1 }}>
+                  <FormHelperText sx={{color: "red", mx: 0, mt: 1}}>
                     {error?.message ?? ''}
                   </FormHelperText>
                 </FormControl>
@@ -134,20 +134,20 @@ export default function LoginForm() {
         </Grid>
 
         <FormControlLabel
-          control={<Checkbox value="remember" color="primary" />}
+          control={<Checkbox value="remember" color="primary"/>}
           label="Remember me"
         />
         <Button
           type="submit"
           fullWidth
           variant="contained"
-          sx={{ mt: 2, mb: 2 }}
+          sx={{mt: 2, mb: 2}}
           disabled={isSubmitting}
         >
           Sign In
         </Button>
         <Grid container justifyContent="flex-end">
-          <Link href="/signup">
+          <Link href="/Signup">
             {"Don't have an account? Sign Up"}
           </Link>
         </Grid>
