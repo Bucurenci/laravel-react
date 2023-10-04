@@ -140,11 +140,11 @@ class UserController extends Controller
             Storage::disk('public')->delete($path['thumb'] . $user->avatar);
             Storage::disk('public')->delete($path['medium'] . $user->avatar);
 
-            $data['avatar'] = NULL;
-
-            $user->update($data);
+            $data['avatar'] = null;
         }
 
-        return response()->noContent();
+        $user->update($data);
+
+        return new UserResource($user);
     }
 }
