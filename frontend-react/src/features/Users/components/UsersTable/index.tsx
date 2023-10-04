@@ -1,6 +1,7 @@
 import EditIcon from '@mui/icons-material/Edit';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
-import {UserUpdateType, User} from "../../../../models/User";
+import {User} from "../../../../models/User";
+import {useStateContext} from "../../../../contexts/ContextProvider";
 import {
   Avatar, Button,
   Stack,
@@ -16,10 +17,11 @@ import {
 interface UsersListProps {
   users: User[],
   onUserDelete: (id: number) => void,
-  openUserUpdate: (u: UserUpdateType) => void,
+  onUserUpdate: (id: number) => void
 }
 
-export default function UsersTable({users, onUserDelete, openUserUpdate}: UsersListProps) {
+export default function UsersTable({users, onUserDelete, onUserUpdate}: UsersListProps) {
+  const {authUser} = useStateContext();
 
   return (
     <TableContainer>
@@ -54,17 +56,20 @@ export default function UsersTable({users, onUserDelete, openUserUpdate}: UsersL
                 <Stack direction="row" spacing={2}>
 
                   <Tooltip title="Edit User" placement="top">
-                    <Button onClick={() => openUserUpdate(user)} variant="contained" sx={{minWidth: 45, px: 0}}>
+                    <Button onClick={() => onUserUpdate(user.id)} variant="contained"
+                            sx={{minWidth: 45, px: 0}}>
                       <EditIcon/>
                     </Button>
                   </Tooltip>
 
-                  <Tooltip title="Delete User" placement="top">
-                    <Button onClick={() => onUserDelete(user.id)} variant="contained" color="error"
-                            sx={{minWidth: 45, px: 0}}>
-                      <PersonOffIcon/>
-                    </Button>
-                  </Tooltip>
+                  {user.id !== authUser?.id && (
+                    <Tooltip title="Delete User" placement="top">
+                      <Button onClick={() => onUserDelete(user.id)} variant="contained" color="error"
+                              sx={{minWidth: 45, px: 0}}>
+                        <PersonOffIcon/>
+                      </Button>
+                    </Tooltip>
+                  )}
 
                 </Stack>
 

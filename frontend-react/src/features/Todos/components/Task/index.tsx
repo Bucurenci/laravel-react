@@ -1,4 +1,4 @@
-import {Button, Divider, Grid, IconButton, Stack, Typography} from "@mui/material";
+import {Button, Divider, Grid, IconButton, Typography} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
@@ -26,7 +26,7 @@ export default function Task({task, onDelete, toggleUpdate}: TaskProps) {
               {task.isCompleted ? (<s>{task.taskName}</s>) : (task.taskName)}
             </Typography>
           </Grid>
-          <Grid item align="right" xs={3}>
+          <Grid item justifyContent="right" xs={3}>
             <Button onClick={() => onDelete(task.id)} color="error" variant="contained"><DeleteIcon/></Button>
           </Grid>
         </Grid>

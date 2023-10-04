@@ -1,83 +1,49 @@
-import {ChangeEvent, useEffect, useState} from "react";
+import {ChangeEvent, useEffect} from "react";
 import {Paper, Pagination, Grid, Box, Button, Typography} from "@mui/material";
 import {useNavigate} from "react-router-dom";
-import axiosClient from "../../../axios-client";
 import {useStateContext} from "../../../contexts/ContextProvider";
 import Loading from "../../../components/Loading";
-import {User, UserFormErrors} from "../../../models/User";
-import {UserUpdateType} from "../../../models/User";
-import UserUpdateForm from "../components/UserUpdateForm";
-import AvatarForm from "../components/AvatarForm";
 import UsersTable from "../components/UsersTable";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
-import ReplyIcon from '@mui/icons-material/Reply';
+import {useUsersData} from "../../../hooks/Api/useUsersData";
+import {useDeleteUser} from "../../../hooks/Api/useDeleteUser";
+import FetchError from "../../../components/FetchError";
 
-export default function UsersList() {
+interface UsersListProps {
+  page?: number;
+}
+
+export default function UsersList({page}: UsersListProps) {
   const navigate = useNavigate();
-  const {authUser, setNotification, setAuthUser} = useStateContext();
-  const [users, setUsers] = useState<User[]>([]);
-  const [selectedUser, setSelectedUser] = useState<User>({} as User);
-  const [errors, setErrors] = useState<UserFormErrors | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [updatePage, setUpdatePage] = useState<boolean>(false);
-  const [paginationData, setPaginationData] = useState({
-    current_page: 1,
-    siblings: 2,
-    last_page: 1
+  const {setNotification} = useStateContext();
+  const {data: users, isLoading: isUsersListLoading, isError: isUsersListError, refetch} = useUsersData({
+    page: page ? page : 1
   });
+  const {
+    mutate: deleteUser,
+    isLoading: isDeleteUserLoading,
+    isSuccess: isDeleteUserSuccess,
+    isError: isDeleteUserError
+  } = useDeleteUser();
 
   useEffect(() => {
-    getUsers(paginationData.current_page);
-  }, []);
+    if (isDeleteUserSuccess) {
+      setNotification("User was successfully deleted! ");
+    }
 
-  const getUsers = (page: number) => {
-    setLoading(true);
+    if (isDeleteUserError) {
+      setNotification("An unexpected error occurred... Please try again!", 'error');
+    }
+  }, [isDeleteUserSuccess, isDeleteUserError]);
 
-    axiosClient.get('/users?page=' + page)
-      .then(({data}) => {
-        setLoading(false);
-        setUsers(data.data);
-        setPaginationData({
-          ...paginationData, current_page: data.meta.current_page, last_page: data.meta.last_page
-        });
-      })
-      .catch(() => {
-        setLoading(false);
-        setLoading(false);
-      })
+  const handlePageChange = (event: ChangeEvent<unknown>, page: number) => {
+    event.preventDefault();
+
+    navigate(`/users/list/${page}`);
   }
 
-  const handleUserUpdate = (formData: UserUpdateType) => {
-
-    setLoading(true);
-
-    axiosClient.put(`/users/${formData.id}`, formData)
-      .then((response) => {
-        let userData: User = response.data;
-
-        setLoading(false);
-
-        if (userData.id == authUser?.id) {
-          setAuthUser({...authUser, ...userData});
-        }
-
-        users.map((user, index) => {
-          if (user.id == userData.id) {
-            users[index] = {...users[index], ...userData};
-          }
-        });
-
-        setSelectedUser(userData);
-        openUsersTable();
-        setNotification("User was successfully updated!");
-      })
-      .catch(({response}) => {
-        setLoading(false);
-
-        if (response && response.status === 422) {
-          setErrors(response.data.errors);
-        }
-      })
+  const handleUserUpdate = (userId: number) => {
+    navigate(`/users/update/${userId}?users-page=${page ? page : 1}`);
   }
 
   const handleUserDelete = (userId: number) => {
@@ -86,107 +52,7 @@ export default function UsersList() {
       return;
     }
 
-    setLoading(true);
-
-    axiosClient.delete(`/users/${userId}`)
-      .then(() => {
-        setLoading(false);
-        getUsers(paginationData.current_page);
-        setNotification("User was successfully deleted! ");
-      })
-      .catch(({response}) => {
-        setLoading(false);
-        setNotification(response.data, 'error');
-      })
-  }
-
-  const handleAvatarUpdate = (user: User, imageFile: File) => {
-
-    let formData = new FormData();
-
-    setLoading(true);
-
-    formData.append('avatar', imageFile);
-    axiosClient.post(`/users/${user.id}/upload-image`, formData, {
-        headers: {"Content-Type": "multipart/form-data"},
-        /* TODO a progress bar */
-        /* onUploadProgress: (progressEvent) => {
-           let percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
-           console.log(percentCompleted)
-         },*/
-      },
-    )
-      .then((response) => {
-        let userData: User = response.data;
-
-        setLoading(false);
-        setErrors(null);
-        setSelectedUser(userData);
-        setNotification("The image was successfully updated!");
-
-        if (userData.id == authUser?.id) {
-          setAuthUser({...authUser, ...userData});
-        }
-
-        users.map((user, index) => {
-          if (user.id == userData.id) {
-            users[index] = {...users[index], ...userData};
-          }
-        });
-      })
-      .catch(({response}) => {
-        setLoading(false);
-
-        if (response && response.status === 422) {
-          setErrors(response.data.errors);
-        }
-      })
-  }
-
-  const handleAvatarDelete = (user: User) => {
-
-    if (!window.confirm("Are you sure you want to delete this image?")) {
-      return;
-    }
-
-    setLoading(true);
-
-    axiosClient.patch(`/users/${user?.id}/delete-image`)
-      .then(() => {
-        setLoading(false);
-
-        if (authUser && user.id == authUser.id) {
-          setAuthUser({...authUser, avatar: null});
-        }
-
-        users.map((u, index) => {
-          if (u.id == user?.id) {
-            users[index] = {...users[index], avatar: null};
-          }
-        });
-
-        setSelectedUser({...selectedUser, avatar: null});
-        setNotification("The image was successfully deleted!");
-      })
-  }
-
-  const changePage = (event: ChangeEvent<unknown>, page: number) => {
-    event.preventDefault();
-
-    if (paginationData.current_page !== page) {
-      setPaginationData({...paginationData, current_page: page})
-      getUsers(page);
-    }
-  }
-
-  const openUsersTable = () => {
-    setUpdatePage(false);
-    setErrors(null);
-  }
-
-  const openUserUpdate = (user: User) => {
-    setUpdatePage(true);
-    setSelectedUser(user);
+    deleteUser(userId);
   }
 
   return (
@@ -194,65 +60,37 @@ export default function UsersList() {
       <Grid container minHeight={75} display="flex" flexDirection="row"
             justifyContent="space-between" alignItems="top">
         <Box component="div">
-          {!updatePage ? (
-            <Typography variant="h4" mb={0} gutterBottom>Users list</Typography>
-          ) : (
-            <Typography variant="h4" mb={0} gutterBottom>Edit
-              User: {selectedUser?.first_name} {selectedUser?.last_name}</Typography>
-          )}
+          <Typography variant="h4" mb={0} gutterBottom>Users list</Typography>
         </Box>
         <Box component="div">
-          {!updatePage ? (
-            <Button onClick={() => navigate('/users/create')} variant="contained" size="large" color="success"
-                    startIcon={<PersonAddIcon/>}>
-              New user
-            </Button>
-          ) : (
-            <Button onClick={openUsersTable} variant="contained" size="large"
-                    startIcon={<ReplyIcon/>} sx={{mb: {xs: 3, sm: 0}, mt: {xs: 2, sm: 0}}}>
-              Back to users
-            </Button>
-          )}
+          <Button onClick={() => navigate('/users/create')} variant="contained" size="large" color="success"
+                  startIcon={<PersonAddIcon/>}>
+            New user
+          </Button>
         </Box>
       </Grid>
 
+      <Paper sx={{position: "relative", minHeight: 'calc(100vh - 230px)'}}>
 
-      <Paper sx={{position: "relative"}}>
+        {isUsersListLoading ? (
+          <Loading isLoading={true}/>
+        ) : (isUsersListError ? (
+            <FetchError onFetch={refetch}/>
+          ) : (
+            <>
+              <Loading isLoading={isDeleteUserLoading}/>
 
-        <Loading isLoading={loading}/>
+              <UsersTable users={users?.data} onUserUpdate={handleUserUpdate} onUserDelete={handleUserDelete}/>
 
-        {!updatePage && (
-          <>
-            <UsersTable users={users} openUserUpdate={openUserUpdate} onUserDelete={handleUserDelete}/>
-
-            <Grid container minHeight={80} mt={0} spacing={2} display="flex" justifyContent="center"
-                  alignItems="center">
-              <Pagination count={paginationData.last_page}
-                          onChange={changePage}
-                          color="primary"/>
-            </Grid>
-          </>
-        )}
-
-        {updatePage && (
-          <Grid container display="flex" justifyContent="center" sx={{p: {xs: 2, sm: 3, md: 4}}}>
-            <Grid item xs={12} sm={12} md={12} lg={11} xl={9}>
-
-              <Grid container display="flex" justifyContent="center" alignItems="center"
-                    columnSpacing={{xs: 0, lg: 3}}>
-                {selectedUser.id && (
-                  <Grid item xs={12} lg={4} sx={{mb: {xs: 3, lg: 0}}}>
-                    <AvatarForm user={selectedUser} errors={errors} onUpdate={handleAvatarUpdate}
-                                onDelete={handleAvatarDelete}/>
-                  </Grid>
-                )}
-                <Grid item xs={12} lg={8}>
-                  <UserUpdateForm user={selectedUser} serverErrors={errors} onUserUpdate={handleUserUpdate}/>
-                </Grid>
+              <Grid container minHeight={80} mt={0} spacing={2} display="flex" justifyContent="center"
+                    alignItems="center">
+                <Pagination count={users?.meta?.last_page}
+                            page={users?.meta?.current_page}
+                            onChange={handlePageChange}
+                            color="primary"/>
               </Grid>
-
-            </Grid>
-          </Grid>
+            </>
+          )
         )}
       </Paper>
     </>

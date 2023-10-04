@@ -17,10 +17,6 @@ export default function SettingCreateForm() {
   const onSubmit = (ev: FormEvent) => {
     ev.preventDefault();
 
-    console.log(nameRef);
-    console.log(typeValue);
-    console.log(valueRef);
-
     let payload = {
       name: nameRef.current.value,
       type: typeValue,

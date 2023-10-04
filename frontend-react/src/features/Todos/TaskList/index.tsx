@@ -16,8 +16,6 @@ export default function TaskList() {
   const addNewTask = (e: FormEvent) => {
     e.preventDefault();
 
-    console.log(todoInputRef.current.value);
-
     if (todoInputRef.current.value) {
       setTodoList([...todoList, {
         id: todoList.length ? todoList.length : 0,

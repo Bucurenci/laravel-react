@@ -11,6 +11,7 @@ import UsersCreatePage from "./pages/Users/Create";
 import UsersListPage from "./pages/Users/List";
 import SettingsPage from "./pages/Miscellaneous/Settings";
 import TodosPage from "./pages/Miscellaneous/Todos";
+import UsersUpdatePage from "./pages/Users/Update";
 
 const router = createBrowserRouter([
   {
@@ -38,8 +39,16 @@ const router = createBrowserRouter([
             element: <UsersListPage/>
           },
           {
+            path: 'list/:page',
+            element: <UsersListPage/>
+          },
+          {
             path: 'create',
             element: <UsersCreatePage/>
+          },
+          {
+            path: 'update/:userId',
+            element: <UsersUpdatePage/>
           },
         ]
       },

@@ -194,7 +194,7 @@ export default function UserUpdateForm({user, serverErrors, onUserUpdate}: UserU
         fullWidth
         variant="contained"
         disabled={isSubmitting}
-        sx={{mt: 3, mb: 2}}
+        sx={{mt: 3, mb: 3}}
       >
         Save
       </Button>

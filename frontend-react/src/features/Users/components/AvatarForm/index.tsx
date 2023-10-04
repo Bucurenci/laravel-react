@@ -18,12 +18,12 @@ import CloseIcon from '@mui/icons-material/Close';
 
 interface AvatarFormProps {
   user: User,
-  errors: UserFormErrors | null,
+  serverErrors: UserFormErrors | null,
   onUpdate: (user: User, image: File) => void,
   onDelete: (user: User) => void
 }
 
-export default function AvatarForm({user, errors, onUpdate, onDelete}: AvatarFormProps) {
+export default function AvatarForm({user, serverErrors, onUpdate, onDelete}: AvatarFormProps) {
   const avatarRef = useRef<HTMLInputElement>(null!);
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const [uploadedImage, setUploadedImage] = useState<string | ArrayBuffer | null>(null);
@@ -99,7 +99,7 @@ export default function AvatarForm({user, errors, onUpdate, onDelete}: AvatarFor
               )}
             </Box>
           </Box>
-          {errors?.avatar && <div className="text-danger text-center mt-2">{errors.avatar[0]}</div>}
+          {serverErrors?.avatar && <div className="text-danger text-center mt-2">{serverErrors.avatar[0]}</div>}
         </>
       )}
 
