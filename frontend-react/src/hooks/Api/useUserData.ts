@@ -1,9 +1,9 @@
 import {useQuery, useQueryClient} from "@tanstack/react-query";
 import axiosClient from "../../axios-client";
-import {User} from "../../models/User";
+import {User, UsersCollectionResponse} from "../../models/User";
 
 const getUserData = async (userId: number) => {
-    const {data} = await axiosClient.get(`/users/${userId}`);
+    const {data} = await axiosClient.get<User>(`/users/${userId}`);
     return data;
 }
 
@@ -19,13 +19,11 @@ export const useUserData = ({id, page = 1}: UseUserDataParams) => {
         queryKey: ['getUserData', id],
         queryFn: () => getUserData(id),
         initialData: () => {
-
-            // @ts-ignore
-            const queryData = queryClient.getQueryData(['getUsersData', page])?.data;
+            const queryData = queryClient.getQueryData<UsersCollectionResponse>(['getUsersData', page]);
 
             let userData = undefined;
             if (queryData) {
-                userData = queryData.find((user: User) => id === user?.id)
+                userData = queryData.data.find((user: User) => id === user?.id)
             }
             return userData
         }

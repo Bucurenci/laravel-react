@@ -1,10 +1,10 @@
 import {Alert, Button, Grid} from "@mui/material";
-import {ReactDOM} from "react";
+import {ReactNode} from "react";
 
 interface FetchErrorProps {
   onFetch: () => void,
   buttonLabel?: string,
-  children?: ReactDOM
+  children?: ReactNode
 }
 
 export default function FetchError({onFetch, buttonLabel, children}: FetchErrorProps) {

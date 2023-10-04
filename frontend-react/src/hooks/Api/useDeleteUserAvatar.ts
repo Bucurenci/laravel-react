@@ -1,46 +1,49 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import axiosClient from "../../axios-client";
-import {User} from "../../models/User";
 import {useStateContext} from "../../contexts/ContextProvider";
+import {User, UsersCollectionResponse} from "../../models/User";
 
 const deleteUserAvatarData = async (userId: number) => {
-    const {data} = await axiosClient.patch(`/users/${userId}/delete-image`);
+    const {data} = await axiosClient.patch<User>(`/users/${userId}/delete-image`, {avatar: null});
     return data;
 }
 
 interface UseDeleteUserAvatarParams {
-    userId: number,
     page: number
 }
 
-export const useDeleteUserAvatar = ({userId, page = 1}: UseDeleteUserAvatarParams) => {
+export const useDeleteUserAvatar = ({page = 1}: UseDeleteUserAvatarParams) => {
     const {authUser, setAuthUser} = useStateContext();
     const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: deleteUserAvatarData,
-        onSuccess: () => {
+        onSuccess: (userData: User) => {
 
-            if (userId == authUser?.id) {
-                setAuthUser({...authUser, avatar: null});
+            if (userData.id == authUser?.id) {
+                setAuthUser({...authUser, ...userData});
             }
 
-            queryClient.setQueriesData(['getUserData', userId], (oldQueryData) => {
+            queryClient.setQueriesData<User>(['getUserData', userData.id], (oldQueryData) => {
 
-                return {...oldQueryData, avatar: null};
+                return {...oldQueryData, ...userData};
             });
 
-            queryClient.setQueriesData(['getUsersData', page], (oldQueryData) => {
+            queryClient.setQueriesData<UsersCollectionResponse>(['getUsersData', page], (oldQueryData) => {
 
-                let newQueryData = {...oldQueryData, ...{data: []}};
+                let newQueryData = {} as UsersCollectionResponse;
 
-                oldQueryData.data.map((user, index) => {
-                    if (user.id == userId) {
-                        newQueryData.data[index].avatar = null;
-                    } else {
-                        newQueryData.data[index] = user;
-                    }
-                });
+                if (oldQueryData) {
+                    newQueryData = {...oldQueryData, ...{data: []}};
+
+                    oldQueryData.data.map((user: User, index: number) => {
+                        if (user.id == userData.id) {
+                            newQueryData.data[index] = userData;
+                        } else {
+                            newQueryData.data[index] = user;
+                        }
+                    });
+                }
 
                 return newQueryData;
             });

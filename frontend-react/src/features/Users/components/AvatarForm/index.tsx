@@ -19,7 +19,7 @@ import CloseIcon from '@mui/icons-material/Close';
 interface AvatarFormProps {
   user: User,
   serverErrors: UserFormErrors | null,
-  onUpdate: (user: User, image: File) => void,
+  onUpdate: (image: File) => void,
   onDelete: (user: User) => void
 }
 
@@ -51,7 +51,7 @@ export default function AvatarForm({user, serverErrors, onUpdate, onDelete}: Ava
 
   const handleSave = () => {
     setShowDialog(false);
-    onUpdate(user, croppedImage);
+    onUpdate(croppedImage);
   }
 
   const handleDelete = () => {

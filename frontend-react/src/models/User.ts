@@ -104,3 +104,39 @@ export interface UserFormErrors {
     avatar?: string[],
 
 }
+
+interface ResponseCollectionLinks {
+    active: boolean,
+    label: string,
+    url: string
+}
+
+interface ResponseCollectionMetaLinks {
+    active: boolean,
+    label: string,
+    url: string
+}
+
+interface ResponseCollectionMeta {
+    current_page: number,
+    last_page: number,
+    from: number,
+    path: string,
+    per_page: number,
+    to: number,
+    total: number,
+    links: ResponseCollectionMetaLinks[]
+}
+
+interface ResponseCollectionLinks {
+    first: string | null,
+    last: string | null,
+    next: string | null,
+    prev: string | null
+}
+
+export interface UsersCollectionResponse {
+    data: User[],
+    links: ResponseCollectionLinks,
+    meta: ResponseCollectionMeta
+}

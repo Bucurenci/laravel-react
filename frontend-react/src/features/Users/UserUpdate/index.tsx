@@ -1,5 +1,5 @@
 import {useNavigate, useSearchParams} from "react-router-dom";
-import {User, UserFormErrors, UserUpdateType} from "../../../models/User";
+import {UserFormErrors, UserUpdateType} from "../../../models/User";
 import {useStateContext} from "../../../contexts/ContextProvider";
 import UserUpdateForm from "../components/UserUpdateForm";
 import AvatarForm from "../components/AvatarForm";
@@ -56,7 +56,6 @@ export default function UserUpdate({userId}: UserUpdateProps) {
     isSuccess: isDeleteAvatarSuccess,
     error: deleteAvatarError
   } = useDeleteUserAvatar({
-    userId: userId,
     page: usersPage ? parseInt(usersPage) : 1
   });
 
@@ -74,18 +73,24 @@ export default function UserUpdate({userId}: UserUpdateProps) {
       setNotification("User`s image was successfully deleted!");
     }
 
-    if (updateUserError || updateAvatarError || deleteAvatarError) {
-
-      if (updateUserError?.response.status === 422 || updateAvatarError?.response.status === 422) {
-        if (updateUserError) {
-          setErrors({...errors, ...updateUserError.response.data.errors})
-        }
-        if (updateAvatarError) {
-          setErrors({...errors, ...updateAvatarError.response.data.errors})
-        }
+    if (updateUserError) {
+      if (updateUserError.response.status === 422) {
+        setErrors({...errors, ...updateUserError.response.data.errors})
       } else {
         setNotification("An unexpected error occurred... Please try again!", "error");
       }
+    }
+
+    if (updateAvatarError) {
+      if (updateAvatarError.response.status === 422) {
+        setErrors({...errors, ...updateAvatarError.response.data.errors})
+      } else {
+        setNotification("An unexpected error occurred... Please try again!", "error");
+      }
+    }
+
+    if (deleteAvatarError) {
+      setNotification("An unexpected error occurred... Please try again!", "error");
     }
   }, [isUpdateUserSuccess, isUpdateUserSuccess, isDeleteAvatarSuccess, updateUserError, updateAvatarError, deleteAvatarError]);
 
@@ -93,17 +98,17 @@ export default function UserUpdate({userId}: UserUpdateProps) {
     updateUser(formData);
   }
 
-  const handleAvatarUpdate = (user: User, imageFile: File) => {
+  const handleAvatarUpdate = (imageFile: File) => {
     let formData = new FormData();
     formData.append('avatar', imageFile);
     updateUserAvatar(formData);
   }
 
-  const handleAvatarDelete = (user: User) => {
+  const handleAvatarDelete = () => {
     if (!window.confirm("Are you sure you want to delete this image?")) {
       return;
     }
-    deleteUserAvatar(user.id);
+    deleteUserAvatar(userId);
   }
 
   return (
@@ -139,14 +144,16 @@ export default function UserUpdate({userId}: UserUpdateProps) {
                     <Grid item xs={12} lg={4} sx={{mb: {xs: 3, lg: 0}}}>
                       <Box sx={{position: 'relative'}}>
                         <Loading isLoading={isUpdateAvatarLoading || isDeleteAvatarLoading}/>
-                        <AvatarForm user={user} serverErrors={errors}
-                                    onUpdate={handleAvatarUpdate}
-                                    onDelete={handleAvatarDelete}/>
+                        {user && (
+                          <AvatarForm user={user} serverErrors={errors}
+                                      onUpdate={handleAvatarUpdate}
+                                      onDelete={handleAvatarDelete}/>
+                        )}
                       </Box>
                     </Grid>
 
                     <Grid item xs={12} lg={8}>
-                      <UserUpdateForm user={user} serverErrors={errors} onUserUpdate={handleUserUpdate}/>
+                      {user && <UserUpdateForm user={user} serverErrors={errors} onUserUpdate={handleUserUpdate}/>}
                     </Grid>
                   </Grid>
 

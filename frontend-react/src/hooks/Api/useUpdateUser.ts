@@ -1,11 +1,12 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import axiosClient from "../../axios-client";
-import {User, UserUpdateType} from "../../models/User";
+import {User, UsersCollectionResponse, UserUpdateType} from "../../models/User";
 import {useStateContext} from "../../contexts/ContextProvider";
+import {TUsersExpectedError} from "../../models/Error";
 
-const updateUserData = async (userData: UserUpdateType) => {
+const updateUserData = async (userData: UserUpdateType): Promise<User> => {
 
-    const {data} = await axiosClient.put(`/users/${userData.id}`, userData);
+    const {data} = await axiosClient.put<User>(`/users/${userData.id}`, userData);
     return data;
 }
 
@@ -19,28 +20,32 @@ export const useUpdateUser = ({page = 1}: UseUpdateUserParams) => {
 
     return useMutation({
         mutationFn: updateUserData,
+        onError: (error: TUsersExpectedError) => error,
         onSuccess: (userData: User) => {
 
             if (userData.id == authUser?.id) {
-                setAuthUser(userData);
+                setAuthUser({...authUser, ...userData});
             }
 
-            queryClient.setQueriesData(['getUserData', userData.id], (oldQueryData) => {
+            queryClient.setQueriesData<User>(['getUserData', userData.id], (oldQueryData) => {
 
                 return {...oldQueryData, ...userData};
             });
 
-            queryClient.setQueriesData(['getUsersData', page], (oldQueryData) => {
+            queryClient.setQueriesData<UsersCollectionResponse>(['getUsersData', page], (oldQueryData) => {
+                let newQueryData = {} as UsersCollectionResponse;
 
-                let newQueryData = {...oldQueryData, ...{data: []}};
+                if (oldQueryData) {
+                    newQueryData = {...oldQueryData, ...{data: []}};
 
-                oldQueryData.data.map((user, index) => {
-                    if (user.id == userData.id) {
-                        newQueryData.data[index] = userData;
-                    } else {
-                        newQueryData.data[index] = user;
-                    }
-                });
+                    oldQueryData.data.map((user: User, index: number) => {
+                        if (user.id == userData.id) {
+                            newQueryData.data[index] = userData;
+                        } else {
+                            newQueryData.data[index] = user;
+                        }
+                    });
+                }
 
                 return newQueryData;
             });
