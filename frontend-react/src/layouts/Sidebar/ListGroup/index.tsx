@@ -23,7 +23,9 @@ export default function ListGroup({item}: ListGroupProps) {
 
   const handleClick = (menuItem: ISidebarListItem) => {
 
-    setIsOpened(prev => !prev);
+    if (menuItem.children) {
+      setIsOpened(prev => !prev);
+    }
 
     if (menuItem.path) {
       navigate(menuItem.path);
