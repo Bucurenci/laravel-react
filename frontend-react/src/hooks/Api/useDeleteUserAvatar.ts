@@ -21,7 +21,7 @@ export const useDeleteUserAvatar = ({page = 1}: UseDeleteUserAvatarParams) => {
         onSuccess: (userData: User) => {
 
             if (userData.id == authUser?.id) {
-                setAuthUser(userData);
+                setAuthUser({...authUser, ...userData});
             }
 
             queryClient.setQueriesData<User>(['getUserData', userData.id], () => {

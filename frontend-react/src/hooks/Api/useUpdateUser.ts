@@ -24,7 +24,7 @@ export const useUpdateUser = ({page = 1}: UseUpdateUserParams) => {
         onSuccess: (userData: User) => {
 
             if (userData.id == authUser?.id) {
-                setAuthUser(userData);
+                setAuthUser({...authUser, ...userData});
             }
 
             queryClient.setQueriesData<User>(['getUserData', userData.id], () => {

@@ -26,7 +26,7 @@ export const useUpdateUserAvatar = ({userId, page = 1}: UseUpdateUserAvatarParam
         onSuccess: (userData: User) => {
 
             if (userData.id == authUser?.id) {
-                setAuthUser(userData);
+                setAuthUser({...authUser, ...userData});
             }
 
             queryClient.setQueriesData<User>(['getUserData', userData.id], () => {
