@@ -24,19 +24,18 @@ export const useUpdateUser = ({page = 1}: UseUpdateUserParams) => {
         onSuccess: (userData: User) => {
 
             if (userData.id == authUser?.id) {
-                setAuthUser({...authUser, ...userData});
+                setAuthUser(userData);
             }
 
-            queryClient.setQueriesData<User>(['getUserData', userData.id], (oldQueryData) => {
+            queryClient.setQueriesData<User>(['getUserData', userData.id], () => {
 
-                return {...oldQueryData, ...userData};
+                return userData;
             });
 
             queryClient.setQueriesData<UsersCollectionResponse>(['getUsersData', page], (oldQueryData) => {
                 let newQueryData = {} as UsersCollectionResponse;
 
                 if (oldQueryData) {
-                    newQueryData = {...oldQueryData, ...{data: []}};
 
                     oldQueryData.data.map((user: User, index: number) => {
                         if (user.id == userData.id) {
