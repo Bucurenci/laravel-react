@@ -34,6 +34,7 @@ export const useDeleteUserAvatar = ({page = 1}: UseDeleteUserAvatarParams) => {
                 let newQueryData = {} as UsersCollectionResponse;
 
                 if (oldQueryData) {
+                    newQueryData = {...oldQueryData, ...{data: []}};
 
                     oldQueryData.data.map((user: User, index: number) => {
                         if (user.id == userData.id) {

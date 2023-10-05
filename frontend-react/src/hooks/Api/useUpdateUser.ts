@@ -36,6 +36,7 @@ export const useUpdateUser = ({page = 1}: UseUpdateUserParams) => {
                 let newQueryData = {} as UsersCollectionResponse;
 
                 if (oldQueryData) {
+                    newQueryData = {...oldQueryData, ...{data: []}};
 
                     oldQueryData.data.map((user: User, index: number) => {
                         if (user.id == userData.id) {

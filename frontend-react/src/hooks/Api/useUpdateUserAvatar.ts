@@ -38,6 +38,7 @@ export const useUpdateUserAvatar = ({userId, page = 1}: UseUpdateUserAvatarParam
                 let newQueryData = {} as UsersCollectionResponse;
 
                 if (oldQueryData) {
+                    newQueryData = {...oldQueryData, ...{data: []}};
 
                     oldQueryData.data.map((user, index) => {
                         if (user.id == userData.id) {
