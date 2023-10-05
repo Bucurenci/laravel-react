@@ -76,67 +76,21 @@ export const UserUpdateSchema = UserBaseSchema.extend({
 
 export type UserUpdateType = z.infer<typeof UserUpdateSchema>
 
-interface UserAvatar {
+interface IUserAvatar {
     full: string;
     medium: string;
     thumb: string;
 }
 
-export interface User {
+export interface IUser {
     id: number;
     first_name: string;
     last_name: string;
     email: string;
-    avatar?: UserAvatar | null;
+    avatar?: IUserAvatar | null;
     created_at?: string;
 }
 
-export interface AuthUser extends User {
+export interface IAuthUser extends IUser {
 
-}
-
-export interface UserFormErrors {
-    first_name?: string[],
-    last_name?: string[],
-    email?: string[],
-    password?: string[],
-    password_confirmation?: string[],
-    avatar?: string[],
-
-}
-
-interface ResponseCollectionLinks {
-    active: boolean,
-    label: string,
-    url: string
-}
-
-interface ResponseCollectionMetaLinks {
-    active: boolean,
-    label: string,
-    url: string
-}
-
-interface ResponseCollectionMeta {
-    current_page: number,
-    last_page: number,
-    from: number,
-    path: string,
-    per_page: number,
-    to: number,
-    total: number,
-    links: ResponseCollectionMetaLinks[]
-}
-
-interface ResponseCollectionLinks {
-    first: string | null,
-    last: string | null,
-    next: string | null,
-    prev: string | null
-}
-
-export interface UsersCollectionResponse {
-    data: User[],
-    links: ResponseCollectionLinks,
-    meta: ResponseCollectionMeta
 }

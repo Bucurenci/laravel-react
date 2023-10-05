@@ -1,11 +1,12 @@
 import {Controller, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useEffect} from "react";
-import {UserCreateSchema, UserCreateType, UserFormErrors} from "../../../../models/User";
+import {UserCreateSchema, UserCreateType} from "../../../../models/User";
+import {IUserFormErrors} from "../../../../models/ServerError";
 import {Box, Button, FormControl, FormHelperText, Grid, TextField} from "@mui/material";
 
 interface UserUpdateFormProps {
-  serverErrors: UserFormErrors | null,
+  serverErrors: IUserFormErrors | null,
   onUserCreate: (formData: UserCreateType) => void
 }
 

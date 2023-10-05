@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
 import axiosClient from "../../axios-client";
-import {UsersCollectionResponse} from "../../models/User";
+import {IUsersCollectionResponse} from "../../models/ServerResponse";
 
 const getUsersData = async (page: number) => {
     let requestUrl = `/users`;
@@ -8,7 +8,7 @@ const getUsersData = async (page: number) => {
         requestUrl = `/users?page=${page}`;
     }
 
-    const {data} = await axiosClient.get<UsersCollectionResponse>(requestUrl);
+    const {data} = await axiosClient.get<IUsersCollectionResponse>(requestUrl);
     return data;
 }
 

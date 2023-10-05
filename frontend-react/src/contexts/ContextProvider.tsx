@@ -1,13 +1,13 @@
 import {ReactNode, createContext, useContext, useState, Dispatch, SetStateAction} from "react";
-import {AuthUser} from "../models/User";
+import {IAuthUser} from "../models/User";
 import {Notification} from "../models/Notification";
 import {AlertColor} from "@mui/material";
 
 type ContextProviderType = {
-  authUser: AuthUser | null;
+  authUser: IAuthUser | null;
   notification: Notification | null;
   token: string | null;
-  setAuthUser: Dispatch<SetStateAction<AuthUser | null>>,
+  setAuthUser: Dispatch<SetStateAction<IAuthUser | null>>,
   setNotification: (notification: ReactNode, type?: AlertColor | undefined) => void;
   setToken: (token: string | null) => void,
 }
@@ -29,7 +29,7 @@ const StateContext = createContext<ContextProviderType>({
 });
 
 export const ContextProvider = ({children}: ContextProviderProps) => {
-  const [authUser, setAuthUser] = useState<AuthUser | null>(null);
+  const [authUser, setAuthUser] = useState<IAuthUser | null>(null);
   const [notification, _setNotification] = useState<Notification | null>(null);
   const [token, _setToken] = useState<string | null>(localStorage.getItem('ACCESS_TOKEN'));
 

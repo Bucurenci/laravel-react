@@ -1,11 +1,12 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import axiosClient from "../../axios-client";
-import {User, UsersCollectionResponse} from "../../models/User";
+import {IUser} from "../../models/User";
+import {IUsersCollectionResponse} from "../../models/ServerResponse";
 import {useStateContext} from "../../contexts/ContextProvider";
-import {TUsersExpectedError} from "../../models/Error";
+import {TUsersExpectedError} from "../../models/ServerError";
 
 const updateUserAvatarData = async (formData: FormData, userId: number) => {
-    const {data} = await axiosClient.post<User>(`/users/${userId}/upload-image`, formData, {
+    const {data} = await axiosClient.post<IUser>(`/users/${userId}/upload-image`, formData, {
         headers: {"Content-Type": "multipart/form-data"}
     });
     return data;
@@ -23,19 +24,19 @@ export const useUpdateUserAvatar = ({userId, page = 1}: UseUpdateUserAvatarParam
     return useMutation({
         mutationFn: (formData: FormData) => updateUserAvatarData(formData, userId),
         onError: (error: TUsersExpectedError) => error,
-        onSuccess: (userData: User) => {
+        onSuccess: (userData: IUser) => {
 
             if (userData.id == authUser?.id) {
                 setAuthUser({...authUser, ...userData});
             }
 
-            queryClient.setQueriesData<User>(['UserData', userData.id], () => {
+            queryClient.setQueriesData<IUser>(['UserData', userData.id], () => {
 
                 return userData;
             });
 
-            queryClient.setQueriesData<UsersCollectionResponse>(['PaginatedUsersData', page], (oldQueryData) => {
-                let newQueryData = {} as UsersCollectionResponse;
+            queryClient.setQueriesData<IUsersCollectionResponse>(['PaginatedUsersData', page], (oldQueryData) => {
+                let newQueryData = {} as IUsersCollectionResponse;
 
                 if (oldQueryData) {
                     newQueryData = {...oldQueryData, ...{data: []}};

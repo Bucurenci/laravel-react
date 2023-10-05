@@ -1,12 +1,13 @@
 import {useMutation, useQueryClient} from "@tanstack/react-query";
 import axiosClient from "../../axios-client";
-import {User, UsersCollectionResponse, UserUpdateType} from "../../models/User";
+import {IUser, UserUpdateType} from "../../models/User";
+import {IUsersCollectionResponse} from "../../models/ServerResponse";
 import {useStateContext} from "../../contexts/ContextProvider";
-import {TUsersExpectedError} from "../../models/Error";
+import {TUsersExpectedError} from "../../models/ServerError";
 
-const updateUserData = async (userData: UserUpdateType): Promise<User> => {
+const updateUserData = async (userData: UserUpdateType): Promise<IUser> => {
 
-    const {data} = await axiosClient.put<User>(`/users/${userData.id}`, userData);
+    const {data} = await axiosClient.put<IUser>(`/users/${userData.id}`, userData);
     return data;
 }
 
@@ -21,24 +22,24 @@ export const useUpdateUser = ({page = 1}: UseUpdateUserParams) => {
     return useMutation({
         mutationFn: updateUserData,
         onError: (error: TUsersExpectedError) => error,
-        onSuccess: (userData: User) => {
+        onSuccess: (userData: IUser) => {
 
             if (userData.id == authUser?.id) {
                 setAuthUser({...authUser, ...userData});
             }
 
-            queryClient.setQueriesData<User>(['UserData', userData.id], () => {
+            queryClient.setQueriesData<IUser>(['UserData', userData.id], () => {
 
                 return userData;
             });
 
-            queryClient.setQueriesData<UsersCollectionResponse>(['PaginatedUsersData', page], (oldQueryData) => {
-                let newQueryData = {} as UsersCollectionResponse;
+            queryClient.setQueriesData<IUsersCollectionResponse>(['PaginatedUsersData', page], (oldQueryData) => {
+                let newQueryData = {} as IUsersCollectionResponse;
 
                 if (oldQueryData) {
                     newQueryData = {...oldQueryData, ...{data: []}};
 
-                    oldQueryData.data.map((user: User, index: number) => {
+                    oldQueryData.data.map((user: IUser, index: number) => {
                         if (user.id == userData.id) {
                             newQueryData.data[index] = userData;
                         } else {

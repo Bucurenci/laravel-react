@@ -1,6 +1,6 @@
 import EditIcon from '@mui/icons-material/Edit';
 import PersonOffIcon from '@mui/icons-material/PersonOff';
-import {User} from "../../../../models/User";
+import {IUser} from "../../../../models/User";
 import {useStateContext} from "../../../../contexts/ContextProvider";
 import {
   Avatar, Button,
@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 
 interface UsersListProps {
-  users: User[],
+  users: IUser[],
   onUserDelete: (id: number) => void,
   onUserUpdate: (id: number) => void
 }
@@ -55,7 +55,7 @@ export default function UsersTable({users, onUserDelete, onUserUpdate}: UsersLis
 
                 <Stack direction="row" spacing={2}>
 
-                  <Tooltip title="Edit User" placement="top">
+                  <Tooltip title="Edit IUser" placement="top">
                     <Button onClick={() => onUserUpdate(user.id)} variant="contained"
                             sx={{minWidth: 45, px: 0}}>
                       <EditIcon/>
@@ -63,7 +63,7 @@ export default function UsersTable({users, onUserDelete, onUserUpdate}: UsersLis
                   </Tooltip>
 
                   {user.id !== authUser?.id && (
-                    <Tooltip title="Delete User" placement="top">
+                    <Tooltip title="Delete IUser" placement="top">
                       <Button onClick={() => onUserDelete(user.id)} variant="contained" color="error"
                               sx={{minWidth: 45, px: 0}}>
                         <PersonOffIcon/>

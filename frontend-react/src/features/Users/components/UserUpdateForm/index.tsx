@@ -1,12 +1,13 @@
 import {Controller, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useEffect} from "react";
-import {UserUpdateSchema, UserUpdateType, User, UserFormErrors} from "../../../../models/User";
+import {UserUpdateSchema, UserUpdateType, IUser} from "../../../../models/User";
+import {IUserFormErrors} from "../../../../models/ServerError";
 import {Box, Button, FormControl, FormHelperText, Grid, TextField} from "@mui/material";
 
 interface UserUpdateFormProps {
-  user: User,
-  serverErrors: UserFormErrors | null,
+  user: IUser,
+  serverErrors: IUserFormErrors | null,
   onUserUpdate: (formData: UserUpdateType) => void
 }
 

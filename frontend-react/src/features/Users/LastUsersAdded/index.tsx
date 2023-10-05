@@ -12,15 +12,15 @@ import {useUsersData} from "../../../hooks/Api/useUsersData";
 import Loading from "../../../components/Loading";
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
-import {User} from "../../../models/User";
+import {IUser} from "../../../models/User";
 
 export default function LastUsersAdded() {
   const navigate = useNavigate();
   const [showDialog, setShowDialog] = useState<boolean>(false);
-  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedUser, setSelectedUser] = useState<IUser | null>(null);
   const {data: lastUsers, isLoading} = useUsersData({page: 1});
 
-  const handleClickUser = (user: User) => {
+  const handleClickUser = (user: IUser) => {
     setSelectedUser(user);
     setShowDialog(true);
   }

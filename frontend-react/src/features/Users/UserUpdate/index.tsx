@@ -1,5 +1,6 @@
 import {useNavigate, useSearchParams} from "react-router-dom";
-import {UserFormErrors, UserUpdateType} from "../../../models/User";
+import {UserUpdateType} from "../../../models/User";
+import {IUserFormErrors} from "../../../models/ServerError";
 import {useStateContext} from "../../../contexts/ContextProvider";
 import UserUpdateForm from "../components/UserUpdateForm";
 import AvatarForm from "../components/AvatarForm";
@@ -19,7 +20,7 @@ interface UserUpdateProps {
 
 export default function UserUpdate({userId}: UserUpdateProps) {
   const {setNotification} = useStateContext();
-  const [errors, setErrors] = useState<UserFormErrors | null>(null);
+  const [errors, setErrors] = useState<IUserFormErrors | null>(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const usersPage = searchParams.get('users-page');

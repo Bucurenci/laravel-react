@@ -1,4 +1,12 @@
-import {UserFormErrors} from "./User";
+export interface IUserFormErrors {
+    first_name?: string[],
+    last_name?: string[],
+    email?: string[],
+    password?: string[],
+    password_confirmation?: string[],
+    avatar?: string[],
+
+}
 
 export interface IBaseErrorResponse {
     code: string,
@@ -15,7 +23,7 @@ export interface IBaseErrorResponse {
 export type TUsersExpectedError = IBaseErrorResponse & {
     response: {
         data: {
-            errors: UserFormErrors
+            errors: IUserFormErrors
         }
     }
 }

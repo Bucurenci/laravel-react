@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {UserCreateType, UserFormErrors} from "../../../models/User";
+import {UserCreateType} from "../../../models/User";
+import {IUserFormErrors} from "../../../models/ServerError";
 import {useStateContext} from "../../../contexts/ContextProvider";
 import UserCreateForm from "../components/UserCreateForm";
 import {Box, Grid, Paper, Typography} from "@mui/material";
@@ -10,7 +11,7 @@ import {useCreateUser} from "../../../hooks/Api/useCreateUser";
 
 export default function UserCreate() {
   const {setNotification} = useStateContext();
-  const [errors, setErrors] = useState<UserFormErrors | null>(null);
+  const [errors, setErrors] = useState<IUserFormErrors | null>(null);
   const navigate = useNavigate();
   const {mutate: createUser, isLoading, isSuccess, error} = useCreateUser();
 

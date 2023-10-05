@@ -1,10 +1,10 @@
 import {useMutation} from "@tanstack/react-query";
 import axiosClient from "../../axios-client";
-import {AuthUser} from "../../models/User";
+import {IAuthUser} from "../../models/User";
 import {useStateContext} from "../../contexts/ContextProvider";
 
 const logout = async () => {
-    const {data} = await axiosClient.post<AuthUser>(`/logout`);
+    const {data} = await axiosClient.post<IAuthUser>(`/logout`);
     return data;
 }
 

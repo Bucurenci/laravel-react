@@ -1,6 +1,7 @@
 import {ChangeEvent, useRef, useState} from 'react';
 import ImageCropper from "../../../../components/ImageCropper";
-import {User, UserFormErrors} from "../../../../models/User";
+import {IUser} from "../../../../models/User";
+import {IUserFormErrors} from "../../../../models/ServerError";
 import {
   Box,
   Button,
@@ -17,10 +18,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 
 interface AvatarFormProps {
-  user: User,
-  serverErrors: UserFormErrors | null,
+  user: IUser,
+  serverErrors: IUserFormErrors | null,
   onUpdate: (image: File) => void,
-  onDelete: (user: User) => void
+  onDelete: (user: IUser) => void
 }
 
 export default function AvatarForm({user, serverErrors, onUpdate, onDelete}: AvatarFormProps) {
@@ -80,7 +81,7 @@ export default function AvatarForm({user, serverErrors, onUpdate, onDelete}: Ava
           <Box sx={{position: 'relative', display: 'inline-block'}}>
             <Paper elevation={3} sx={{display: 'flex', overflow: "hidden"}}>
               <img src={user.avatar?.medium ? user.avatar.medium : "/img/user-avatar-placeholder.png"}
-                   style={{maxWidth: '100%', height: 'auto'}} alt="User Avatar"/>
+                   style={{maxWidth: '100%', height: 'auto'}} alt="IUser Avatar"/>
             </Paper>
             <Box component="div" sx={{position: "absolute", bottom: 0, right: 0, mb: 1, mr: 1}}>
               {user.avatar?.medium ? (

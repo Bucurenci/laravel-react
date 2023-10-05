@@ -1,11 +1,11 @@
 import {useMutation} from "@tanstack/react-query";
 import axiosClient from "../../axios-client";
-import {User, UserCreateType} from "../../models/User";
-import {TUsersExpectedError} from "../../models/Error";
+import {IUser, UserCreateType} from "../../models/User";
+import {TUsersExpectedError} from "../../models/ServerError";
 
 const postUserData = async (userData: UserCreateType) => {
 
-    const {data} = await axiosClient.post<User>("/users", userData);
+    const {data} = await axiosClient.post<IUser>("/users", userData);
     return data;
 }
 
