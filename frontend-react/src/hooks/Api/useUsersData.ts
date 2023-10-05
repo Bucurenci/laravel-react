@@ -19,7 +19,7 @@ interface UseUsersDataParams {
 export const useUsersData = ({page}: UseUsersDataParams) => {
 
     return useQuery({
-        queryKey: ['getUsersData', page],
+        queryKey: ['PaginatedUsersData', page],
         queryFn: () => getUsersData(page),
         keepPreviousData: true
     });

@@ -16,10 +16,10 @@ export const useUserData = ({id, page = 1}: UseUserDataParams) => {
     const queryClient = useQueryClient();
 
     return useQuery({
-        queryKey: ['getUserData', id],
+        queryKey: ['UserData', id],
         queryFn: () => getUserData(id),
         initialData: () => {
-            const queryData = queryClient.getQueryData<UsersCollectionResponse>(['getUsersData', page]);
+            const queryData = queryClient.getQueryData<UsersCollectionResponse>(['PaginatedUsersData', page]);
 
             let userData = undefined;
             if (queryData) {

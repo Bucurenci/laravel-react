@@ -8,28 +8,25 @@ import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
 import {useStateContext} from "../../../contexts/ContextProvider";
 import {useEffect, useState, MouseEvent} from "react";
-import axiosClient from "../../../axios-client";
+import {useAuthUserData} from "../../../hooks/Api/useAuthUserData";
+import {useLogout} from "../../../hooks/Api/useLogout";
 
 export default function UserMenu() {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
-  const {authUser, setAuthUser, setToken} = useStateContext();
-
-  useEffect(() => {
-    axiosClient.get('/user')
-      .then(({data}) => {
-        setAuthUser(data);
-      })
-  }, []);
+  const {authUser} = useStateContext();
+  const {isLoading, isError} = useAuthUserData();
+  const {mutate: doLogout} = useLogout();
 
   const onLogout = () => {
-
-    axiosClient.post('/logout')
-      .then(() => {
-        setAuthUser(null);
-        setToken(null);
-      });
+    doLogout();
   }
+
+  useEffect(() => {
+    if (isError) {
+      onLogout();
+    }
+  }, [isError]);
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -49,8 +46,12 @@ export default function UserMenu() {
           aria-haspopup="true"
           aria-expanded={open ? 'true' : undefined}
         >
-          <Avatar sx={{width: 40, height: 40}}
-                  src={authUser?.avatar?.thumb}>{authUser?.first_name.charAt(0).toUpperCase()}</Avatar>
+          {isLoading ? (
+            <Avatar sx={{width: 40, height: 40}}/>
+          ) : (
+            <Avatar sx={{width: 40, height: 40}}
+                    src={authUser?.avatar?.thumb}>{authUser?.first_name.charAt(0).toUpperCase()}</Avatar>
+          )}
         </IconButton>
       </Tooltip>
       <Menu
@@ -89,7 +90,7 @@ export default function UserMenu() {
         anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
       >
         <MenuItem>
-          Hello, {authUser?.first_name} {authUser?.last_name}
+          Hello {!isLoading && `${authUser?.first_name} ${authUser?.last_name}`}
         </MenuItem>
 
         <Divider/>

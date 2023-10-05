@@ -24,12 +24,12 @@ export const useDeleteUserAvatar = ({page = 1}: UseDeleteUserAvatarParams) => {
                 setAuthUser({...authUser, ...userData});
             }
 
-            queryClient.setQueriesData<User>(['getUserData', userData.id], () => {
+            queryClient.setQueriesData<User>(['UserData', userData.id], () => {
 
                 return userData;
             });
 
-            queryClient.setQueriesData<UsersCollectionResponse>(['getUsersData', page], (oldQueryData) => {
+            queryClient.setQueriesData<UsersCollectionResponse>(['PaginatedUsersData', page], (oldQueryData) => {
 
                 let newQueryData = {} as UsersCollectionResponse;
 
