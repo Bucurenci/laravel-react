@@ -1,4 +1,14 @@
-import {Avatar, Box, Button, Grid, Link, TextField, Typography, FormHelperText, FormControl} from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Grid,
+  TextField,
+  Typography,
+  FormHelperText,
+  FormControl, Paper, Divider,
+} from "@mui/material";
+import {Link} from "react-router-dom";
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import {useStateContext} from "../../../contexts/ContextProvider";
 import {useForm, Controller} from "react-hook-form";
@@ -59,8 +69,17 @@ export default function RegisterForm() {
   };
 
   return (
-    <>
-      <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+    <Paper sx={{
+      maxWidth: '700px',
+      mt: 14,
+      mx: {xs: 2, sm: "auto"},
+      display: 'flex',
+      flexDirection: "column",
+      alignItems: "center",
+      py: {xs: 2, sm: 4},
+      px: {xs: 4, sm: 8},
+    }}>
+      <Avatar sx={{m: 1, color: 'primary.main', bgcolor: 'grey.300'}}>
         <LockOutlinedIcon/>
       </Avatar>
       <Typography component="h1" variant="h5">
@@ -206,14 +225,13 @@ export default function RegisterForm() {
         >
           Sign Up
         </Button>
-        <Grid container justifyContent="flex-end">
-          <Grid item>
-            <Link href="/login">
-              Already have an account? Login!
-            </Link>
-          </Grid>
-        </Grid>
+
+        <Divider sx={{mt: 1}}>
+          <Link to="/login" style={{textDecoration: "none"}}>
+            Already have an account? Login!
+          </Link>
+        </Divider>
       </Box>
-    </>
+    </Paper>
   );
 }

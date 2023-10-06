@@ -1,5 +1,7 @@
-import {Link} from "react-router-dom";
 import {FormEvent} from "react";
+import {Link} from "react-router-dom";
+import {Avatar, Button, Divider, Grid, Paper, TextField, Typography} from "@mui/material";
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 export default function ForgotPassword() {
 
@@ -8,31 +10,49 @@ export default function ForgotPassword() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="user">
+    <Paper sx={{
+      maxWidth: "550px",
+      mt: 14,
+      mx: {xs: 2, sm: "auto"},
+      display: 'flex',
+      flexDirection: "column",
+      alignItems: "center",
+      py: {xs: 2, sm: 4},
+      px: {xs: 4, sm: 8},
+    }}>
 
-      <div className="text-center">
-        <h1 className="h4 text-gray-900 mb-2">Forgot Your Password?</h1>
-        <p className="mb-4">We get it, stuff happens. Just enter your email address below
-          and we'll send you a link to reset your password!</p>
-      </div>
+      <Avatar sx={{m: 1, color: 'primary.main', bgcolor: 'grey.300'}}>
+        <LockOutlinedIcon/>
+      </Avatar>
+      <Typography component="h1" variant="h5">
+        Forgot Your Password?
+      </Typography>
+      <form onSubmit={onSubmit} className="user">
 
-      <div className="mb-3">
-        <input type="email" className="form-control form-control-user"
-               id="exampleInputEmail" aria-describedby="emailHelp"
-               placeholder="Enter Email Address..."/>
-      </div>
-      <div className="d-grid">
-        <Link to="login.html" className="btn btn-primary btn-user text-white">
+        <div>
+          <p>We get it, stuff happens. Just enter your email address below
+            and we'll send you a link to reset your password!</p>
+        </div>
+
+        <TextField fullWidth name="email" label="email"/>
+
+        <Button type="submit" fullWidth variant="contained" sx={{mt: 2, mb: 2}}>
           Reset Password
-        </Link>
-      </div>
-      <hr/>
-      <div className="text-center mt-4 mb-2">
-        <Link to="/signup">Create an Account!</Link>
-      </div>
-      <div className="text-center">
-        <Link to="/login">Already have an account? Login!</Link>
-      </div>
-    </form>
+        </Button>
+
+        <Divider sx={{mb: 3}}/>
+
+        <Grid container justifyContent="flex-end">
+          <Link to="/signup" style={{textDecoration: "none"}}>
+            {"Don't have an account? Sign Up"}
+          </Link>
+        </Grid>
+        <Grid container justifyContent="flex-end">
+          <Link to="/login" style={{textDecoration: "none"}}>
+            {"Already have an account? Login!"}
+          </Link>
+        </Grid>
+      </form>
+    </Paper>
   );
 }
