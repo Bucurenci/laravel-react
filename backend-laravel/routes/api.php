@@ -25,8 +25,8 @@ Route::prefix('v1')->group(function () {
 
         Route::controller(UserController::class)->group(function () {
             Route::apiResource('/users', UserController::class);
-            Route::post('/users/{id}/upload-image', 'uploadImage');
-            Route::patch('/users/{id}/delete-image', 'deleteImage');
+            Route::post('/users/{user}/upload-image', 'uploadImage');
+            Route::patch('/users/{user}/delete-image', 'deleteImage');
         });
 
         Route::apiResource('/settings', SettingController::class);

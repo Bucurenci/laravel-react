@@ -80,11 +80,9 @@ class UserController extends Controller
         return response()->noContent();
     }
 
-    public function uploadImage(UpdateUserImageRequest $request, int $id)
+    public function uploadImage(UpdateUserImageRequest $request, User $user)
     {
         $data = $request->validated();
-
-        $user = User::query()->find($id);
 
         if ($request->hasFile('avatar')) {
             $rootPath = '/images/users/avatar/';
@@ -125,9 +123,8 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    public function deleteImage(int $id)
+    public function deleteImage(User $user)
     {
-        $user = User::query()->find($id);
 
         if ($user->avatar) {
             $rootPath = '/images/users/avatar/';
